@@ -5,9 +5,11 @@ export const metadata: Metadata = {
   title: "Journey roadmap",
 };
 
-export default async function RoadmapPage(
-  props: PageProps<"/roadmap/[eventId]">
-) {
-  const { eventId } = await props.params;
-  return <RoadmapView eventId={eventId} />;
+interface Props {
+  params: Promise<{ eventId: string }>;
+}
+
+export default async function RoadmapPage({ params }: Props) {
+  const resolved = await params;
+  return <RoadmapView eventId={resolved.eventId} />;
 }

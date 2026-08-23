@@ -29,7 +29,11 @@ export const metadata: Metadata = {
     "Describe your goal in Hindi, English or Hinglish. Get a dependency-mapped roadmap across Indian government portals, with forms pre-filled from your citizen profile.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="en"
