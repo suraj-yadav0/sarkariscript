@@ -1,0 +1,33 @@
+import { StatusBoard } from "@/components/StatusBoard";
+import { PromptBox } from "@/components/PromptBox";
+import { EventsGrid } from "@/components/EventsGrid";
+import { HomeCopy, EventsGridTitle, HowItWorksBlock } from "@/components/HomeCopy";
+
+export default function HomePage() {
+  return (
+    <div className="mx-auto max-w-[1200px] px-4 md:px-6">
+      <section className="grid gap-10 pb-16 pt-12 md:pt-16 lg:grid-cols-12 lg:gap-8">
+        <div className="lg:col-span-7">
+          <HomeCopy />
+          <div className="mt-7 rise" style={{ animationDelay: "160ms" }}>
+            <PromptBox />
+          </div>
+        </div>
+        <aside className="lg:col-span-5">
+          <div className="rise lg:sticky lg:top-24" style={{ animationDelay: "240ms" }}>
+            <StatusBoard />
+          </div>
+        </aside>
+      </section>
+
+      <section className="border-t border-line py-14">
+        <EventsGridTitle />
+        <EventsGrid />
+      </section>
+
+      <section className="border-t border-line py-14 pb-20">
+        <HowItWorksBlock />
+      </section>
+    </div>
+  );
+}
