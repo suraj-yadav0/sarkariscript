@@ -14,7 +14,7 @@
       "name_en": "GST Portal",
       "name_hi": "जीएसटी पोर्टल",
       "short": "GST",
-      "url": "https://www.gst.gov.in",
+      "url": "https://www.gst.gov.in/",
       "line_color": "#B4540A"
     },
     {
@@ -30,7 +30,7 @@
       "name_en": "FSSAI",
       "name_hi": "एफएसएसएआई",
       "short": "FSSAI",
-      "url": "https://foscos.fssai.gov.in",
+      "url": "https://foscos.fssai.gov.in/",
       "line_color": "#7C5CBF"
     },
     {
@@ -38,7 +38,7 @@
       "name_en": "Udyam (MSME)",
       "name_hi": "उद्यम (एमएसएमई)",
       "short": "Udyam",
-      "url": "https://udyamregistration.gov.in",
+      "url": "https://udyamregistration.gov.in/",
       "line_color": "#0E7490"
     },
     {
@@ -46,7 +46,7 @@
       "name_en": "Shram Suvidha",
       "name_hi": "श्रम सुविधा",
       "short": "Shram",
-      "url": "https://shramsuvidha.gov.in",
+      "url": "https://shramsuvidha.gov.in/home",
       "line_color": "#946200"
     },
     {
@@ -78,7 +78,7 @@
       "name_en": "CPGRAMS",
       "name_hi": "सीपीग्राम",
       "short": "CPGRAMS",
-      "url": "https://pgportal.gov.in",
+      "url": "https://pgportal.gov.in/Signin",
       "line_color": "#99304B"
     },
     {
@@ -86,7 +86,7 @@
       "name_en": "RTI Online",
       "name_hi": "आरटीआई ऑनलाइन",
       "short": "RTI",
-      "url": "https://rtionline.gov.in",
+      "url": "https://rtionline.gov.in/index.php",
       "line_color": "#5B3A8E"
     },
     {
@@ -293,7 +293,7 @@
           "title_hi": "दुकान/प्रतिष्ठान पंजीकृत करें",
           "why_en": "Legal identity for your shop under the Shops & Establishments Act. Needed before most other licences.",
           "why_hi": "शॉप्स एंड एस्टैब्लिशमेंट अधिनियम के तहत दुकान की कानूनी पहचान। बाकी ज़्यादातर लाइसेंस से पहले ज़रूरी।",
-          "url": "https://shramsuvidha.gov.in/establishment/registration",
+          "url": "https://shramsuvidha.gov.in/home",
           "est_time_min": 30,
           "fee_note_en": "Free (state labour fee may apply)",
           "fee_note_hi": "नि:शुल्क (राज्य श्रम शुल्क लागू हो सकता है)",
@@ -449,7 +449,7 @@
           "title_hi": "जीएसटीआईएन के लिए आवेदन करें",
           "why_en": "Mandatory once turnover crosses ₹40 lakh (goods) / ₹20 lakh (services). Needed to collect GST and claim input credit.",
           "why_hi": "टर्नओवर ₹40 लाख (सामान) / ₹20 लाख (सेवाएँ) पार होने पर अनिवार्य। जीएसटी वसूलने और इनपुट क्रेडिट के लिए ज़रूरी।",
-          "url": "https://services.gst.gov.in/services/register/applynow",
+          "url": "https://reg.gst.gov.in/registration/",
           "est_time_min": 45,
           "fee_note_en": "Free",
           "fee_note_hi": "नि:शुल्क",
@@ -542,7 +542,7 @@
           "title_hi": "खाद्य लाइसेंस (भोजन बिक्री हेतु)",
           "why_en": "Any shop selling food items — even packaged snacks — needs an FSSAI registration. Basic tier covers turnover up to ₹12 lakh.",
           "why_hi": "खाद्य सामग्री बेचने वाली हर दुकान को एफएसएसएआई पंजीकरण चाहिए। बेसिक श्रेणी ₹12 लाख तक के कारोबार के लिए।",
-          "url": "https://foscos.fssai.gov.in",
+          "url": "https://foscos.fssai.gov.in/",
           "est_time_min": 20,
           "fee_note_en": "₹100/year",
           "fee_note_hi": "₹100/वर्ष",
@@ -983,7 +983,7 @@
           "title_hi": "हाई-सिक्योरिटी नंबर प्लेट",
           "why_en": "Tamper-proof plate with laser-coded chassis number and snap-lock fitting — mandatory nationwide.",
           "why_hi": "लेज़र-कोडेड चेसिस नंबर व स्नैप-लॉक वाली छेड़छाड़-रोधी प्लेट — पूरे देश में अनिवार्य।",
-          "url": "https://bookmyhsrp.com",
+          "url": "https://bookmyhsrp.com/",
           "est_time_min": 15,
           "fee_note_en": "₹400–₹1,400 (two/three-wheeler to car)",
           "fee_note_hi": "₹400–₹1,400 (दो/तिपहिया से कार)",
@@ -1207,7 +1207,7 @@
           "title_hi": "ड्राइविंग टेस्ट स्लॉट बुक करें",
           "why_en": "Slot at your RTO's driving track. Bring your own vehicle (with its papers) unless the school provides one.",
           "why_hi": "अपने आरटीओ के ड्राइविंग ट्रैक पर स्लॉट। स्कूल न दे तो अपनी गाड़ी (दस्तावेज़ सहित) लाएँ।",
-          "url": "https://sarathi.parivahan.gov.in/sarathiservice/apptSlotschedule.do",
+          "url": "https://sarathi.parivahan.gov.in/sarathiservice/stateSelection.do",
           "est_time_min": 15,
           "fee_note_en": "₹300 DL fee + ₹200 test fee",
           "fee_note_hi": "₹300 डीएल शुल्क + ₹200 टेस्ट शुल्क",
@@ -1546,7 +1546,7 @@
           "title_hi": "सीपीग्राम्स पर शिकायत दर्ज करें",
           "why_en": "Single window for central ministries + routed state grievances. Mandatory registration acknowledgement within 24h.",
           "why_hi": "केंद्रीय मंत्रालयों + राज्य शिकायतों की एक खिड़की। 24 घंटे में पंजीकरण पावती अनिवार्य।",
-          "url": "https://pgportal.gov.in/RegisterGrievance/RegisterGrievance",
+          "url": "https://pgportal.gov.in/Signin",
           "est_time_min": 20,
           "fee_note_en": "Free",
           "fee_note_hi": "नि:शुल्क",
@@ -1612,7 +1612,7 @@
           "title_hi": "ट्रैक करें व 30-दिन उच्चस्तरीय घड़ी सेट करें",
           "why_en": "Standard resolution timeline is 30 days. Day 31 onwards you can appeal to higher authority — automatically eligible.",
           "why_hi": "मानक समाधान अवधि 30 दिन है। 31वें दिन से उच्च अधिकारी को अपील का अधिकार स्वतः बनता है।",
-          "url": "https://pgportal.gov.in/Status/TrackStatus",
+          "url": "https://pgportal.gov.in/Signin",
           "est_time_min": 5,
           "fee_note_en": "Free",
           "fee_note_hi": "नि:शुल्क",
@@ -1634,7 +1634,7 @@
           "title_hi": "नोडल अधिकारी को अपील (अनसुलझी हो तो)",
           "why_en": "First appeal goes to the department head. Cite the original registration number and pending duration.",
           "why_hi": "पहली अपील विभाग प्रमुख को जाती है। मूल पंजीकरण संख्या व लंबित अवधि उल्लेख करें।",
-          "url": "https://pgportal.gov.in/Appeal/AppealLogin",
+          "url": "https://pgportal.gov.in/Signin",
           "est_time_min": 15,
           "fee_note_en": "Free",
           "fee_note_hi": "नि:शुल्क",

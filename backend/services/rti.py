@@ -75,7 +75,7 @@ Enclosures:
 
     return {
         "letter": letter,
-        "filing_url": "https://rtionline.gov.in/request/request.php",
+        "filing_url": "https://rtionline.gov.in/index.php",
         "guidance": [
             "RTI Online accepts applications only for central ministries; state departments need the state portal or a physical application.",
             "Fee is Rs 10; BPL applicants are exempt with proof.",
