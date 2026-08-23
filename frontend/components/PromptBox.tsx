@@ -109,9 +109,9 @@ export function PromptBox() {
           <button
             key={ex}
             onClick={() => navigate(ex)}
-            className="group inline-flex max-w-full items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-xs text-muted transition-colors hover:border-saffron hover:text-saffron-deep"
+            className="group inline-flex min-w-0 max-w-full items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-xs text-muted transition-colors hover:border-saffron hover:text-saffron-deep sm:max-w-[320px]"
           >
-            <span className="truncate">{ex}</span>
+            <span className="min-w-0 truncate">{ex}</span>
             <ArrowRight size={11} weight="bold" className="shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
           </button>
         ))}

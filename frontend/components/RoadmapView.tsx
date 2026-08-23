@@ -229,8 +229,8 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                 }`}
               >
                 <div className="p-4 md:p-5">
-                  <div className="flex flex-wrap items-start justify-between gap-2">
-                    <div className="min-w-0">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between sm:gap-2">
+                    <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
                         <span
                           className="rounded-md px-2 py-0.5 font-mono text-[11px] font-medium text-white"
@@ -253,16 +253,16 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                             <CheckCircle size={11} weight="fill" /> {t(lang, "roadmap.done")}
                           </span>
                         )}
-                        {step.depends_on.length > 0 && (
-                          <span className="font-mono text-[11px] text-faint">
-                            {t(lang, "roadmap.dependsOn")}:{" "}
-                            {step.depends_on
-                              .map((d) => findTitle(visibleSteps, d, lang))
-                              .filter(Boolean)
-                              .join(", ")}
-                          </span>
-                        )}
                       </div>
+                      {step.depends_on.length > 0 && (
+                        <p className="mt-1 font-mono text-[11px] text-faint">
+                          {t(lang, "roadmap.dependsOn")}:{" "}
+                          {step.depends_on
+                            .map((d) => findTitle(visibleSteps, d, lang))
+                            .filter(Boolean)
+                            .join(", ")}
+                        </p>
+                      )}
                       <h2 className="mt-2 text-[17px] font-semibold leading-snug tracking-tight">
                         {lang === "hi" ? step.title_hi : step.title_en}
                       </h2>
@@ -281,7 +281,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                       </p>
                     </div>
 
-                    <div className="flex shrink-0 flex-col items-end gap-2">
+                    <div className="flex flex-row items-center justify-between gap-2 sm:flex-col sm:items-end sm:justify-start sm:shrink-0">
                       <a
                         href={step.url}
                         target="_blank"
@@ -289,7 +289,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                         onClick={(e) => {
                           if (!isDone && !ready) e.preventDefault();
                         }}
-                        className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors active:scale-[0.98] ${
+                        className={`inline-flex flex-1 items-center justify-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors active:scale-[0.98] sm:flex-none ${
                           ready && !isDone
                             ? "bg-ink text-paper hover:bg-saffron-deep"
                             : "pointer-events-none cursor-not-allowed bg-black/6 text-faint"
@@ -299,13 +299,13 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                         {t(lang, "roadmap.openform")}
                         <ArrowSquareOut size={13} weight="bold" />
                       </a>
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-1 items-center justify-end gap-2">
                         <button
                           onClick={() =>
                             markStepDone(eventId, step.id, !isDone)
                           }
                           disabled={!ready && !isDone}
-                          className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs transition-colors ${
+                          className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1.5 text-xs transition-colors ${
                             isDone
                               ? "text-leaf underline decoration-dotted underline-offset-4 hover:text-alert"
                               : ready
@@ -319,7 +319,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                           <button
                             onClick={() => toggleOpen(step.id)}
                             aria-expanded={isOpen}
-                            className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs text-muted hover:bg-black/4 hover:text-ink"
+                            className="inline-flex shrink-0 items-center gap-1 rounded-full px-3 py-1.5 text-xs text-muted hover:bg-black/4 hover:text-ink"
                           >
                             {t(lang, "roadmap.details")}
                             <CaretDown
@@ -370,8 +370,8 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                                         {t(lang, "roadmap.youfill")}
                                       </span>
                                     ) : val ? (
-                                      <span className="inline-flex max-w-[220px] items-center gap-1 rounded bg-leaf-soft px-2 py-1 font-mono text-[11px] text-leaf">
-                                        <Check size={10} weight="bold" />
+                                      <span className="inline-flex max-w-[52vw] items-center gap-1 rounded bg-leaf-soft px-2 py-1 font-mono text-[11px] text-leaf sm:max-w-[220px]">
+                                        <Check size={10} weight="bold" className="shrink-0" />
                                         <span className="truncate">{val}</span>
                                       </span>
                                     ) : (
@@ -422,9 +422,9 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                                       type="checkbox"
                                       checked={uploaded}
                                       onChange={() => toggleDoc(doc.id)}
-                                      className="h-4 w-4 rounded"
+                                      className="h-4 w-4 shrink-0 rounded"
                                     />
-                                    <span className={`min-w-0 flex-1 truncate text-sm ${uploaded ? "text-muted line-through decoration-leaf/50" : ""}`}>
+                                    <span className={`min-w-0 flex-1 text-sm ${uploaded ? "text-muted line-through decoration-leaf/50" : ""}`}>
                                       {lang === "hi" ? doc.name_hi : doc.name_en}
                                     </span>
                                     <span

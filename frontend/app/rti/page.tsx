@@ -190,7 +190,7 @@ export default function RtiPage() {
               </div>
               <article className="rounded-xl border border-line bg-white p-6 shadow-[0_1px_2px_rgba(27,27,24,0.04),0_16px_40px_-20px_rgba(27,27,24,0.18)] md:p-9">
                 <h2 className="sr-only">{t(lang, "rti.preview")}</h2>
-                <pre className="whitespace-pre-wrap font-mono text-[12.5px] leading-relaxed text-ink">
+                <pre className="whitespace-pre-wrap [overflow-wrap:anywhere] font-mono text-[12.5px] leading-relaxed text-ink">
                   {draft.letter}
                 </pre>
               </article>

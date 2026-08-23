@@ -108,12 +108,12 @@ export function StatusBoard({ compact = false }: { compact?: boolean }) {
       {!error && statuses !== null && (
         <ul className="divide-y divide-line/70">
           {statuses.slice(0, compact ? 8 : statuses.length).map((p) => (
-            <li key={p.portal_id} className="flex items-center gap-3 px-4 py-2">
+            <li key={p.portal_id} className="flex items-center gap-2 px-3 py-2 sm:gap-3 sm:px-4">
               <a
                 href={p.url}
                 target="_blank"
                 rel="noreferrer"
-                className="group flex min-w-0 flex-1 items-center gap-3"
+                className="group flex min-w-0 flex-1 items-center gap-2 sm:gap-3"
               >
                 <span className={`h-2 w-2 shrink-0 rounded-full ${DOT[p.status]}`} />
                 <span className="min-w-0 flex-1 truncate text-sm group-hover:underline">
@@ -124,11 +124,11 @@ export function StatusBoard({ compact = false }: { compact?: boolean }) {
                   className="shrink-0 text-transparent transition-colors group-hover:text-faint"
                 />
               </a>
-              <span className="w-14 shrink-0 text-right font-mono text-[11px] text-faint">
+              <span className="hidden w-14 shrink-0 text-right font-mono text-[11px] text-faint sm:block">
                 {p.avg_latency_ms}ms
               </span>
               <span
-                className={`w-16 shrink-0 text-right font-mono text-[11px] font-medium ${LABEL_CLS[p.status]}`}
+                className={`w-14 shrink-0 text-right font-mono text-[11px] font-medium sm:w-16 ${LABEL_CLS[p.status]}`}
               >
                 {t(lang, LABEL_KEY[p.status])}
               </span>
