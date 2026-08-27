@@ -72,16 +72,17 @@ export function AppShell({ children }: { children: ReactNode }) {
           <Link
             href="/"
             aria-label="SarkariScript Home"
+            title="SarkariScript Home"
             className="group flex items-center gap-1.5 sm:gap-2 shrink-0 focus-visible:outline-2 focus-visible:outline-saffron"
           >
-            <span className="flex h-7.5 w-7.5 sm:h-9 sm:w-9 items-center justify-center rounded-lg bg-saffron text-white shadow-[inset_0_-2px_0_rgba(0,0,0,0.18)] shrink-0">
-              <Stamp size={17} weight="duotone" className="sm:w-5 sm:h-5" />
+            <span className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg bg-saffron text-white shadow-[inset_0_-2px_0_rgba(0,0,0,0.18)] shrink-0">
+              <Stamp size={18} weight="duotone" className="sm:w-5 sm:h-5" />
             </span>
-            <span className="leading-none">
-              <span className="block text-[13px] sm:text-[15px] font-semibold tracking-tight text-ink">
+            <span className="leading-none hidden md:block">
+              <span className="block text-[14px] sm:text-[15px] font-semibold tracking-tight text-ink">
                 SarkariScript
               </span>
-              <span className="hidden sm:block font-mono text-[9.5px] sm:text-[10px] uppercase tracking-[0.14em] text-faint">
+              <span className="font-mono text-[9.5px] sm:text-[10px] uppercase tracking-[0.14em] text-faint">
                 citizen copilot
               </span>
             </span>

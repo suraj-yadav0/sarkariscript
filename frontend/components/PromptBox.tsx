@@ -373,29 +373,31 @@ export function PromptBox() {
         <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint shrink-0">
           {t(lang, "hero.examples")}
         </span>
-        {examples.slice(exampleIdx, exampleIdx + 1).map((ex) => (
+        <div className="flex items-center gap-1.5 min-w-0 flex-1">
+          {examples.slice(exampleIdx, exampleIdx + 1).map((ex) => (
+            <button
+              key={ex}
+              onClick={() => {
+                setQuery(ex);
+                navigate(ex);
+              }}
+              className="group inline-flex min-w-0 flex-1 items-center justify-between gap-1.5 rounded-full border border-line bg-surface px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs text-muted transition-colors hover:border-saffron hover:text-saffron-deep focus-visible:outline-2 focus-visible:outline-saffron overflow-hidden"
+            >
+              <span className="truncate">{ex}</span>
+              <ArrowRight
+                size={11}
+                weight="bold"
+                className="shrink-0 opacity-40 group-hover:opacity-100"
+              />
+            </button>
+          ))}
           <button
-            key={ex}
-            onClick={() => {
-              setQuery(ex);
-              navigate(ex);
-            }}
-            className="group inline-flex min-w-0 max-w-[calc(100vw-5.5rem)] sm:max-w-[340px] items-center gap-1.5 rounded-full border border-line bg-surface px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs text-muted transition-colors hover:border-saffron hover:text-saffron-deep focus-visible:outline-2 focus-visible:outline-saffron"
+            onClick={() => setExampleIdx((i) => (i + 1) % examples.length)}
+            className="rounded-full px-2 py-1 font-mono text-[11px] text-faint underline decoration-dotted underline-offset-4 hover:text-ink focus-visible:outline-2 focus-visible:outline-saffron shrink-0"
           >
-            <span className="min-w-0 truncate">{ex}</span>
-            <ArrowRight
-              size={11}
-              weight="bold"
-              className="shrink-0 opacity-0 transition-opacity group-hover:opacity-100"
-            />
+            more →
           </button>
-        ))}
-        <button
-          onClick={() => setExampleIdx((i) => (i + 1) % examples.length)}
-          className="rounded-full px-2 py-1 font-mono text-[11px] text-faint underline decoration-dotted underline-offset-4 hover:text-ink focus-visible:outline-2 focus-visible:outline-saffron shrink-0"
-        >
-          more →
-        </button>
+        </div>
       </div>
     </div>
   );
