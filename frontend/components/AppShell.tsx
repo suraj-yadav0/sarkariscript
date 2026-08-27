@@ -28,14 +28,16 @@ function NavItem({
   return (
     <Link
       href={href}
-      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-saffron ${
+      aria-label={label}
+      title={label}
+      className={`inline-flex items-center justify-center gap-1.5 rounded-full px-2 sm:px-3 py-1.5 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-saffron shrink-0 ${
         active
-          ? "bg-ink text-paper"
+          ? "bg-ink text-paper font-medium"
           : "text-muted hover:text-ink hover:bg-black/5"
       }`}
     >
       {icon}
-      <span className="hidden sm:inline">{label}</span>
+      <span className="hidden md:inline text-xs sm:text-sm">{label}</span>
     </Link>
   );
 }
@@ -63,32 +65,34 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <header
         role="banner"
-        className="print-hidden sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur-md"
+        className="print-hidden sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur-md"
       >
-        <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-3 px-4 md:px-6">
+        <div className="mx-auto flex h-14 sm:h-16 max-w-[1200px] items-center justify-between gap-1.5 sm:gap-3 px-3 sm:px-4 md:px-6">
+          {/* Brand Logo */}
           <Link
             href="/"
             aria-label="SarkariScript Home"
-            className="group flex items-center gap-2.5 focus-visible:outline-2 focus-visible:outline-saffron"
+            className="group flex items-center gap-2 shrink-0 focus-visible:outline-2 focus-visible:outline-saffron"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-saffron text-white shadow-[inset_0_-2px_0_rgba(0,0,0,0.18)]">
-              <Stamp size={20} weight="duotone" />
+            <span className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg bg-saffron text-white shadow-[inset_0_-2px_0_rgba(0,0,0,0.18)] shrink-0">
+              <Stamp size={18} weight="duotone" className="sm:w-5 sm:h-5" />
             </span>
             <span className="leading-none">
-              <span className="block text-[15px] font-semibold tracking-tight">
+              <span className="block text-[13.5px] sm:text-[15px] font-semibold tracking-tight text-ink">
                 SarkariScript
               </span>
-              <span className="block font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
+              <span className="hidden sm:block font-mono text-[9.5px] sm:text-[10px] uppercase tracking-[0.14em] text-faint">
                 citizen copilot
               </span>
             </span>
           </Link>
 
-          <div className="flex items-center gap-1 sm:gap-2">
+          {/* Navigation Links & Action Controls */}
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             <nav
               role="navigation"
               aria-label="Main Navigation"
-              className="flex items-center gap-1"
+              className="flex items-center gap-0.5 sm:gap-1"
             >
               <NavItem
                 href="/"
@@ -96,8 +100,9 @@ export function AppShell({ children }: { children: ReactNode }) {
                 active={pathname === "/"}
                 icon={
                   <GlobeHemisphereWest
-                    size={17}
+                    size={16}
                     weight={activeWeight(pathname, "/")}
+                    className="sm:w-[17px] sm:h-[17px]"
                   />
                 }
               />
@@ -107,8 +112,9 @@ export function AppShell({ children }: { children: ReactNode }) {
                 active={pathname === "/profile"}
                 icon={
                   <UserCircle
-                    size={17}
+                    size={16}
                     weight={activeWeight(pathname, "/profile")}
+                    className="sm:w-[17px] sm:h-[17px]"
                   />
                 }
               />
@@ -118,14 +124,15 @@ export function AppShell({ children }: { children: ReactNode }) {
                 active={pathname === "/rti"}
                 icon={
                   <FileText
-                    size={17}
+                    size={16}
                     weight={activeWeight(pathname, "/rti")}
+                    className="sm:w-[17px] sm:h-[17px]"
                   />
                 }
               />
             </nav>
 
-            <div className="flex items-center gap-1.5 pl-1 sm:pl-2 border-l border-line">
+            <div className="flex items-center gap-1 sm:gap-1.5 pl-1 sm:pl-2 border-l border-line shrink-0">
               <LanguageSelector />
               <A11yToolbar />
             </div>
@@ -133,7 +140,14 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
 
         {profileCompletionPct > 0 && profileCompletionPct < 100 && pathname !== "/profile" && (
-          <div className="h-0.5 w-full bg-line" role="progressbar" aria-valuenow={profileCompletionPct} aria-valuemin={0} aria-valuemax={100} aria-label="Profile completion progress">
+          <div
+            className="h-0.5 w-full bg-line"
+            role="progressbar"
+            aria-valuenow={profileCompletionPct}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label="Profile completion progress"
+          >
             <div
               className="h-full bg-saffron transition-all duration-500"
               style={{ width: `${profileCompletionPct}%` }}

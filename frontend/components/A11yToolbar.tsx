@@ -74,13 +74,13 @@ export function A11yToolbar() {
         aria-expanded={open}
         aria-label={t(lang, "a11y.button_label")}
         title={t(lang, "a11y.button_label")}
-        className={`relative inline-flex h-9 w-9 items-center justify-center rounded-full border transition-all active:scale-[0.96] focus-visible:outline-2 focus-visible:outline-saffron ${
+        className={`relative inline-flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-full border transition-all active:scale-[0.96] focus-visible:outline-2 focus-visible:outline-saffron ${
           open || hasCustomSettings
             ? "border-saffron bg-saffron-soft text-saffron-deep font-bold"
             : "border-line bg-surface text-muted hover:border-ink hover:text-ink"
         }`}
       >
-        <Eye size={18} weight={hasCustomSettings ? "fill" : "bold"} />
+        <Eye size={16} weight={hasCustomSettings ? "fill" : "bold"} className="sm:w-[18px] sm:h-[18px]" />
         {hasCustomSettings && (
           <span className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-saffron ring-2 ring-surface" />
         )}
