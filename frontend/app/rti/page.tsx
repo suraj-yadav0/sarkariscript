@@ -130,18 +130,18 @@ export default function RtiPage() {
   }
 
   return (
-    <div className="mx-auto max-w-[1000px] px-4 pb-24 pt-10 md:px-6">
+    <div className="mx-auto max-w-[1000px] px-3.5 sm:px-4 pb-24 pt-6 sm:pt-10 md:px-6">
       <header className="rise">
-        <h1 className="max-w-[24ch] text-3xl font-semibold tracking-tight md:text-4xl text-ink">
+        <h1 className="max-w-[24ch] text-2xl sm:text-3xl font-semibold tracking-tight md:text-4xl text-ink">
           {t(lang, "rti.title")}
         </h1>
-        <p className="mt-2 max-w-[62ch] leading-relaxed text-muted">
+        <p className="mt-1.5 sm:mt-2 max-w-[62ch] text-xs sm:text-sm leading-relaxed text-muted">
           {t(lang, "rti.sub")}
         </p>
       </header>
 
-      <div className="mt-8 grid gap-10 lg:grid-cols-[380px_1fr]">
-        <section className="print-hidden space-y-4 rounded-2xl border border-line bg-surface p-5">
+      <div className="mt-6 sm:mt-8 grid gap-6 sm:gap-10 lg:grid-cols-[380px_1fr]">
+        <section className="print-hidden space-y-3.5 sm:space-y-4 rounded-2xl border border-line bg-surface p-3.5 sm:p-5">
           <Field label={t(lang, "rti.department")}>
             <select
               value={form.department}
@@ -164,7 +164,7 @@ export default function RtiPage() {
             />
           </Field>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 xs:grid-cols-2 gap-3">
             <Field label={t(lang, "rti.filed_on")}>
               <input
                 type="date"

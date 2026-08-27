@@ -14,36 +14,36 @@ export default function ProfilePage() {
     useApp();
 
   return (
-    <div className="mx-auto max-w-[1000px] px-4 pb-24 pt-10 md:px-6">
-      <header className="rise flex flex-wrap items-end justify-between gap-4">
+    <div className="mx-auto max-w-[1000px] px-3.5 sm:px-4 pb-24 pt-6 sm:pt-10 md:px-6">
+      <header className="rise flex flex-wrap items-end justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight md:text-4xl text-ink">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-ink">
             {t(lang, "profile.title")}
           </h1>
-          <p className="mt-2 max-w-[60ch] leading-relaxed text-muted">
+          <p className="mt-1.5 sm:mt-2 max-w-[60ch] text-xs sm:text-sm leading-relaxed text-muted">
             {t(lang, "profile.sub")}
           </p>
         </div>
         <div className="text-right">
-          <span className="font-mono text-3xl font-semibold text-saffron-deep tabular-nums">
+          <span className="font-mono text-2xl sm:text-3xl font-semibold text-saffron-deep tabular-nums">
             {profileCompletionPct}%
           </span>
-          <p className="font-mono text-[11px] uppercase tracking-wide text-faint">
+          <p className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wide text-faint">
             {t(lang, "profile.completion", { n: profileCompletionPct })}
           </p>
         </div>
       </header>
 
       <p
-        className="rise mt-5 inline-flex items-start gap-2 rounded-xl border border-leaf/30 bg-leaf-soft px-3.5 py-2.5 text-sm text-leaf"
+        className="rise mt-4 sm:mt-5 inline-flex items-start gap-2 rounded-xl border border-leaf/30 bg-leaf-soft px-3 py-2 sm:px-3.5 sm:py-2.5 text-xs sm:text-sm text-leaf leading-relaxed"
         style={{ animationDelay: "80ms" }}
       >
-        <ShieldCheck size={17} weight="fill" className="mt-0.5 shrink-0" />
+        <ShieldCheck size={16} weight="fill" className="mt-0.5 shrink-0" />
         {t(lang, "profile.privacy")}
       </p>
 
       <div
-        className={`mt-8 space-y-8 transition-opacity ${
+        className={`mt-6 sm:mt-8 space-y-6 sm:space-y-8 transition-opacity ${
           hydrated ? "opacity-100" : "opacity-0"
         }`}
       >
@@ -55,14 +55,14 @@ export default function ProfilePage() {
           return (
             <section key={section}>
               <div className="mb-3 flex items-baseline justify-between border-b border-line pb-2">
-                <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
+                <h2 className="text-xs sm:text-sm font-semibold uppercase tracking-wide text-muted">
                   {t(lang, `profile.section.${section}`)}
                 </h2>
-                <span className="font-mono text-[11px] text-faint">
+                <span className="font-mono text-[10px] sm:text-[11px] text-faint">
                   {filled}/{fields.length}
                 </span>
               </div>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {fields.map((f) => {
                   const labelText = getProfileFieldLabel(f, lang);
                   return (

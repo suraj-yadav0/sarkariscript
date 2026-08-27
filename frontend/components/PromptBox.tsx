@@ -224,8 +224,8 @@ export function PromptBox() {
           )}
         </div>
 
-        <div className="flex items-center justify-between gap-3 px-1 pt-1 pb-0.5 border-t border-line/60">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2 px-1 pt-1 pb-0.5 border-t border-line/60">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {/* Voice Input Button */}
             <button
               type="button"
@@ -250,7 +250,7 @@ export function PromptBox() {
                   ? t(lang, "voice.connecting")
                   : t(lang, "voice.start")
               }
-              className={`relative inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-all active:scale-[0.96] ${
+              className={`relative inline-flex items-center gap-1 sm:gap-1.5 rounded-full px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition-all active:scale-[0.96] ${
                 isListening || isConnecting
                   ? "bg-saffron text-white shadow-md animate-pulse"
                   : "bg-paper text-muted hover:bg-black/5 hover:text-ink border border-line"
@@ -258,7 +258,7 @@ export function PromptBox() {
             >
               {isListening ? (
                 <>
-                  <Waveform size={15} weight="bold" className="animate-spin" />
+                  <Waveform size={14} weight="bold" className="animate-spin" />
                   <span className="hidden sm:inline">{t(lang, "voice.stop")}</span>
                 </>
               ) : isConnecting ? (
@@ -270,7 +270,7 @@ export function PromptBox() {
                 </>
               ) : (
                 <>
-                  <Microphone size={15} weight="duotone" className="text-saffron-deep" />
+                  <Microphone size={14} weight="duotone" className="text-saffron-deep" />
                   <span className="hidden sm:inline">Voice (Alt+V)</span>
                 </>
               )}
@@ -289,7 +289,7 @@ export function PromptBox() {
           <button
             type="submit"
             disabled={loading || !query.trim()}
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition-all hover:bg-saffron-deep active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-ink focus-visible:outline-2 focus-visible:outline-saffron"
+            className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-ink px-3.5 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-paper transition-all hover:bg-saffron-deep active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-ink focus-visible:outline-2 focus-visible:outline-saffron shrink-0"
           >
             {loading ? (
               <PaperPlaneRight size={16} className="animate-pulse" />

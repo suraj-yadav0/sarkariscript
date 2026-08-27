@@ -11,14 +11,14 @@ export function HomeCopy() {
         {t(lang, "hero.eyebrow")}
       </p>
       <h1
-        className="rise mt-4 max-w-[13ch] text-4xl font-semibold leading-[1.06] tracking-tighter md:text-5xl lg:text-[3.4rem]"
+        className="rise mt-4 max-w-[13ch] text-3xl sm:text-4xl font-semibold leading-[1.08] tracking-tight sm:tracking-tighter md:text-5xl lg:text-[3.4rem] break-words"
         style={{ animationDelay: "60ms" }}
       >
         {t(lang, "hero.h1a")}{" "}
         <span className="text-saffron-deep">{t(lang, "hero.h1b")}</span>
       </h1>
       <p
-        className="rise mt-5 max-w-[52ch] text-[15px] leading-relaxed text-muted md:text-base"
+        className="rise mt-4 sm:mt-5 max-w-[52ch] text-sm sm:text-[15px] leading-relaxed text-muted md:text-base"
         style={{ animationDelay: "120ms" }}
       >
         {t(lang, "hero.sub")}

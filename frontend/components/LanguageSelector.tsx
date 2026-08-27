@@ -46,10 +46,10 @@ export function LanguageSelector() {
         aria-expanded={open}
         aria-haspopup="listbox"
         aria-label={`${t(lang, "nav.lang")}: ${current.nativeLabel}`}
-        className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full border border-line bg-surface px-2 sm:px-3 py-1 sm:py-1.5 text-xs font-medium text-muted transition-all hover:border-ink hover:text-ink active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-saffron"
+        className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full border border-line bg-surface px-1.5 xs:px-2 sm:px-3 py-1 sm:py-1.5 text-xs font-medium text-muted transition-all hover:border-ink hover:text-ink active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-saffron"
       >
         <Globe size={14} weight="duotone" className="text-saffron-deep shrink-0 sm:w-[15px] sm:h-[15px]" />
-        <span className="font-semibold text-ink text-[11.5px] sm:text-xs truncate max-w-[55px] xs:max-w-[70px] sm:max-w-none">
+        <span className="font-semibold text-ink text-[11px] sm:text-xs truncate max-w-[36px] xs:max-w-[60px] sm:max-w-none">
           {current.nativeLabel}
         </span>
         <CaretDown

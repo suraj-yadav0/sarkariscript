@@ -239,26 +239,26 @@ export function RoadmapView({ eventId }: { eventId: string }) {
   });
 
   return (
-    <div className="mx-auto max-w-[1000px] px-4 pb-24 pt-6 md:pt-10 md:px-6">
+    <div className="mx-auto max-w-[1000px] px-3 sm:px-4 pb-24 pt-4 sm:pt-6 md:pt-10 md:px-6 overflow-x-hidden">
       {/* Screen Navigation Bar (Hidden in Print) */}
-      <div className="flex flex-wrap items-center justify-between gap-3 print-hidden">
+      <div className="flex flex-wrap items-center justify-between gap-2 print-hidden">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-sm text-faint transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-saffron"
+          className="inline-flex items-center gap-1 text-xs sm:text-sm text-faint transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-saffron"
         >
-          <ArrowLeft size={14} /> {t(lang, "nav.home")}
+          <ArrowLeft size={13} /> {t(lang, "nav.home")}
         </Link>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           {/* Printable PDF Generator Button */}
           <button
             onClick={() => window.print()}
             aria-label={t(lang, "roadmap.print_pdf")}
             title={t(lang, "roadmap.print_pdf")}
-            className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 sm:px-3.5 py-1.5 text-xs font-medium text-muted transition-all hover:border-ink hover:text-ink active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-saffron shadow-sm"
+            className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full border border-line bg-surface px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-xs font-medium text-muted transition-all hover:border-ink hover:text-ink active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-saffron shadow-sm"
           >
-            <Printer size={15} weight="duotone" className="text-saffron-deep" />
-            <span className="font-semibold text-ink">
+            <Printer size={14} weight="duotone" className="text-saffron-deep shrink-0" />
+            <span className="font-semibold text-ink text-[11px] sm:text-xs">
               {t(lang, "roadmap.print_pdf")}
             </span>
           </button>
@@ -272,7 +272,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                   ? t(lang, "audio.stop")
                   : t(lang, "audio.listen_all")
               }
-              className={`inline-flex items-center gap-1.5 rounded-full px-3 sm:px-3.5 py-1.5 text-xs font-medium transition-all focus-visible:outline-2 focus-visible:outline-saffron ${
+              className={`inline-flex items-center gap-1 sm:gap-1.5 rounded-full px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-xs font-medium transition-all focus-visible:outline-2 focus-visible:outline-saffron ${
                 isSpeaking && speakingId === "overview"
                   ? "bg-saffron text-white shadow-sm animate-pulse"
                   : "border border-line bg-surface text-muted hover:border-ink hover:text-ink"
@@ -288,9 +288,9 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                   <SpeakerHigh
                     size={14}
                     weight="duotone"
-                    className="text-saffron-deep"
+                    className="text-saffron-deep shrink-0"
                   />
-                  <span className="hidden xs:inline">
+                  <span className="hidden xs:inline text-[11px] sm:text-xs">
                     {t(lang, "audio.listen_all")}
                   </span>
                 </>
@@ -408,17 +408,17 @@ export function RoadmapView({ eventId }: { eventId: string }) {
         </p>
 
         {/* Progress & Reusable Documents bar */}
-        <div className="mt-6 flex flex-col gap-3 rounded-2xl border border-line bg-surface p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-5 sm:mt-6 flex flex-col gap-3 rounded-2xl border border-line bg-surface p-3.5 sm:p-4">
           <div className="flex items-center gap-3">
-            <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-leaf-soft text-leaf font-mono text-xs font-semibold">
+            <div className="relative flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full bg-leaf-soft text-leaf font-mono text-xs font-semibold">
               {doneCount}/{total}
             </div>
-            <div>
-              <p className="text-sm font-semibold text-ink">
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm font-semibold text-ink truncate">
                 {doneCount} {t(lang, "events.of")} {total}{" "}
                 {t(lang, "events.steps")} {t(lang, "roadmap.progress")}
               </p>
-              <p className="font-mono text-xs text-faint">
+              <p className="font-mono text-[11px] sm:text-xs text-faint">
                 {total - doneCount} {t(lang, "roadmap.remaining")} · ~
                 {visibleSteps
                   .filter((s) => !doneMap[s.id])
@@ -429,14 +429,16 @@ export function RoadmapView({ eventId }: { eventId: string }) {
           </div>
 
           {roadmap.reusable_docs && roadmap.reusable_docs.length > 0 && (
-            <div className="flex items-center gap-2 rounded-xl bg-saffron-soft/70 px-3 py-2 text-xs text-saffron-deep">
-              <SealCheck size={16} weight="fill" className="shrink-0" />
-              <span>
-                <strong>{t(lang, "roadmap.reused_title")}:</strong>{" "}
-                {roadmap.reusable_docs
-                  .map((d) => `${d.doc_id.replace(/_/g, " ")} ×${d.used_in_steps}`)
-                  .join(" · ")}
-              </span>
+            <div className="flex items-start gap-2 rounded-xl bg-saffron-soft/70 p-2.5 sm:p-3 text-xs text-saffron-deep break-words">
+              <SealCheck size={16} weight="fill" className="shrink-0 mt-0.5" />
+              <div className="leading-snug">
+                <span className="font-semibold">{t(lang, "roadmap.reused_title")}: </span>
+                <span className="text-[11px] sm:text-xs opacity-90">
+                  {roadmap.reusable_docs
+                    .map((d) => `${d.doc_id.replace(/_/g, " ")} ×${d.used_in_steps}`)
+                    .join(" · ")}
+                </span>
+              </div>
             </div>
           )}
         </div>
@@ -444,7 +446,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
 
       {/* Steps List */}
       <ol
-        className="mt-8 space-y-4 md:space-y-6"
+        className="mt-6 sm:mt-8 space-y-3 sm:space-y-4 md:space-y-6"
         aria-label="Roadmap steps"
       >
         {visibleSteps.map((step, idx) => {
@@ -463,36 +465,36 @@ export function RoadmapView({ eventId }: { eventId: string }) {
             >
               {/* Step Card Container */}
               <article
-                className={`mb-4 md:mb-6 rounded-2xl border bg-surface transition-all print:border-black print:bg-white print:shadow-none ${
+                className={`mb-3 sm:mb-4 md:mb-6 rounded-2xl border bg-surface transition-all print:border-black print:bg-white print:shadow-none ${
                   ready || isDone ? "border-line" : "border-line/70 opacity-90"
                 } ${isCurrentSpeaking ? "ring-2 ring-saffron" : ""}`}
               >
-                <div className="p-4 md:p-5">
-                  <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between sm:gap-2">
+                <div className="p-3.5 sm:p-5">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between sm:gap-2">
                     <div className="min-w-0 flex-1">
                       {/* Badge Row */}
-                      <div className="flex flex-wrap items-center gap-2">
+                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                         <span className="font-mono text-xs font-bold text-black border border-black rounded px-1.5 py-0.5 print-only">
                           STEP {idx + 1}
                         </span>
                         <span
-                          className="rounded-md px-2 py-0.5 font-mono text-[11px] font-medium text-white print:text-black print:border print:border-black print:bg-white"
+                          className="rounded-md px-2 py-0.5 font-mono text-[10.5px] sm:text-[11px] font-medium text-white print:text-black print:border print:border-black print:bg-white"
                           style={{ backgroundColor: portalColor }}
                         >
                           {step.portal_info?.short ?? step.portal}
                         </span>
                         {!isDone && !ready && (
-                          <span className="inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-wide text-faint print-hidden">
+                          <span className="inline-flex items-center gap-1 font-mono text-[10.5px] sm:text-[11px] uppercase tracking-wide text-faint print-hidden">
                             <Lock size={11} /> {t(lang, "roadmap.locked")}
                           </span>
                         )}
                         {!isDone && ready && (
-                          <span className="rounded-full bg-leaf-soft px-2 py-0.5 text-[11px] font-medium text-leaf print-hidden">
+                          <span className="rounded-full bg-leaf-soft px-2 py-0.5 text-[10.5px] sm:text-[11px] font-medium text-leaf print-hidden">
                             {t(lang, "roadmap.ready")}
                           </span>
                         )}
                         {isDone && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-leaf px-2 py-0.5 text-[11px] font-medium text-white print-hidden">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-leaf px-2 py-0.5 text-[10.5px] sm:text-[11px] font-medium text-white print-hidden">
                             <CheckCircle size={11} weight="fill" />{" "}
                             {t(lang, "roadmap.done")}
                           </span>
@@ -508,7 +510,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                                 ? t(lang, "audio.stop")
                                 : t(lang, "audio.listen_step")
                             }
-                            className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] transition-colors focus-visible:outline-2 focus-visible:outline-saffron print-hidden ${
+                            className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10.5px] sm:text-[11px] transition-colors focus-visible:outline-2 focus-visible:outline-saffron print-hidden ${
                               isCurrentSpeaking
                                 ? "bg-saffron text-white font-semibold animate-pulse"
                                 : "text-faint hover:text-ink hover:bg-black/5"
@@ -531,7 +533,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
 
                       {/* Dependencies */}
                       {step.depends_on.length > 0 && (
-                        <p className="mt-1 font-mono text-[11px] text-faint print:text-black">
+                        <p className="mt-1 font-mono text-[10.5px] sm:text-[11px] text-faint print:text-black">
                           <span className="font-semibold">
                             {t(lang, "roadmap.dependsOn")}:
                           </span>{" "}
@@ -542,13 +544,13 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                         </p>
                       )}
 
-                      <h2 className="mt-2 text-[16.5px] sm:text-[17px] font-semibold leading-snug tracking-tight text-ink">
+                      <h2 className="mt-2 text-[15.5px] sm:text-[17px] font-semibold leading-snug tracking-tight text-ink break-words">
                         {idx + 1}. {title}
                       </h2>
-                      <p className="mt-1 max-w-[62ch] text-sm leading-relaxed text-muted print:text-black">
+                      <p className="mt-1 max-w-[62ch] text-xs sm:text-sm leading-relaxed text-muted print:text-black">
                         {why}
                       </p>
-                      <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-faint print:text-black">
+                      <p className="mt-2 flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-1 font-mono text-[10.5px] sm:text-[11px] text-faint print:text-black">
                         <span className="inline-flex items-center gap-1">
                           <Clock size={12} />
                           {t(lang, "roadmap.esttime", {
@@ -568,7 +570,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                     </div>
 
                     {/* Action Controls (Hidden in Print) */}
-                    <div className="flex flex-row items-center justify-between gap-2 sm:flex-col sm:items-end sm:justify-start sm:shrink-0 print-hidden">
+                    <div className="flex flex-wrap items-center justify-between gap-2 pt-2 sm:border-0 sm:pt-0 sm:flex-col sm:items-end sm:justify-start sm:shrink-0 print-hidden">
                       <a
                         href={step.url}
                         target="_blank"
@@ -576,7 +578,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                         onClick={(e) => {
                           if (!isDone && !ready) e.preventDefault();
                         }}
-                        className={`inline-flex flex-1 items-center justify-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors active:scale-[0.98] sm:flex-none focus-visible:outline-2 focus-visible:outline-saffron ${
+                        className={`inline-flex items-center justify-center gap-1.5 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium transition-colors active:scale-[0.98] sm:flex-none focus-visible:outline-2 focus-visible:outline-saffron ${
                           ready && !isDone
                             ? "bg-ink text-paper hover:bg-saffron-deep"
                             : "pointer-events-none cursor-not-allowed bg-black/6 text-faint"
@@ -590,7 +592,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                         {t(lang, "roadmap.openform")}
                         <ArrowSquareOut size={13} weight="bold" />
                       </a>
-                      <div className="flex flex-1 items-center justify-end gap-2">
+                      <div className="flex items-center justify-end gap-1.5 sm:gap-2">
                         <button
                           onClick={() => {
                             markStepDone(eventId, step.id, !isDone);
@@ -601,7 +603,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                             );
                           }}
                           disabled={!ready && !isDone}
-                          className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium transition-colors focus-visible:outline-2 focus-visible:outline-saffron ${
+                          className={`inline-flex items-center gap-1 rounded-full px-2.5 sm:px-3 py-1 text-xs font-medium transition-colors focus-visible:outline-2 focus-visible:outline-saffron ${
                             isDone
                               ? "bg-leaf-soft text-leaf hover:bg-leaf hover:text-white"
                               : ready
@@ -619,7 +621,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                           onClick={() => toggleOpen(step.id)}
                           aria-expanded={isOpen}
                           aria-label={t(lang, "roadmap.details")}
-                          className="rounded-full p-1.5 text-muted hover:bg-black/5 hover:text-ink transition-colors focus-visible:outline-2 focus-visible:outline-saffron"
+                          className="rounded-full p-1 sm:p-1.5 text-muted hover:bg-black/5 hover:text-ink transition-colors focus-visible:outline-2 focus-visible:outline-saffron"
                         >
                           <CaretDown
                             size={16}
@@ -638,7 +640,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                 <div
                   className={`${
                     isOpen ? "block" : "hidden print:block"
-                  } border-t border-line/60 bg-paper/60 px-4 py-4 md:px-5 print:bg-white print:px-5 print:py-3`}
+                  } border-t border-line/60 bg-paper/60 px-3.5 py-3 sm:px-5 sm:py-4 print:bg-white print:px-5 print:py-3`}
                 >
                   <div className="grid gap-6 md:grid-cols-2 print:grid-cols-2">
                     {/* Required Documents Section */}

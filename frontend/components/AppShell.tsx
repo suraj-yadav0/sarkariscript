@@ -30,7 +30,7 @@ function NavItem({
       href={href}
       aria-label={label}
       title={label}
-      className={`inline-flex items-center justify-center gap-1.5 rounded-full px-2 sm:px-3 py-1.5 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-saffron shrink-0 ${
+      className={`inline-flex items-center justify-center gap-1 sm:gap-1.5 rounded-full p-1.5 xs:px-2 sm:px-3 py-1.5 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-saffron shrink-0 ${
         active
           ? "bg-ink text-paper font-medium"
           : "text-muted hover:text-ink hover:bg-black/5"
@@ -47,7 +47,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <div className="flex min-h-[100dvh] flex-col">
+    <div className="flex min-h-[100dvh] flex-col overflow-x-hidden">
       {/* Skip Link for Screen Readers & Keyboard Navigation */}
       <a href="#main-content" className="skip-link">
         {t(lang, "nav.skip")}
@@ -67,18 +67,18 @@ export function AppShell({ children }: { children: ReactNode }) {
         role="banner"
         className="print-hidden sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur-md"
       >
-        <div className="mx-auto flex h-14 sm:h-16 max-w-[1200px] items-center justify-between gap-1.5 sm:gap-3 px-3 sm:px-4 md:px-6">
+        <div className="mx-auto flex h-14 sm:h-16 max-w-[1200px] items-center justify-between gap-1 sm:gap-3 px-2.5 sm:px-4 md:px-6">
           {/* Brand Logo */}
           <Link
             href="/"
             aria-label="SarkariScript Home"
-            className="group flex items-center gap-2 shrink-0 focus-visible:outline-2 focus-visible:outline-saffron"
+            className="group flex items-center gap-1.5 sm:gap-2 shrink-0 focus-visible:outline-2 focus-visible:outline-saffron"
           >
-            <span className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg bg-saffron text-white shadow-[inset_0_-2px_0_rgba(0,0,0,0.18)] shrink-0">
-              <Stamp size={18} weight="duotone" className="sm:w-5 sm:h-5" />
+            <span className="flex h-7.5 w-7.5 sm:h-9 sm:w-9 items-center justify-center rounded-lg bg-saffron text-white shadow-[inset_0_-2px_0_rgba(0,0,0,0.18)] shrink-0">
+              <Stamp size={17} weight="duotone" className="sm:w-5 sm:h-5" />
             </span>
             <span className="leading-none">
-              <span className="block text-[13.5px] sm:text-[15px] font-semibold tracking-tight text-ink">
+              <span className="block text-[13px] sm:text-[15px] font-semibold tracking-tight text-ink">
                 SarkariScript
               </span>
               <span className="hidden sm:block font-mono text-[9.5px] sm:text-[10px] uppercase tracking-[0.14em] text-faint">
@@ -88,7 +88,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Link>
 
           {/* Navigation Links & Action Controls */}
-          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+          <div className="flex items-center gap-0.5 sm:gap-2 shrink-0">
             <nav
               role="navigation"
               aria-label="Main Navigation"
