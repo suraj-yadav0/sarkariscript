@@ -16,21 +16,38 @@ import {
   Lock,
   PlusCircle,
   SealCheck,
+  SpeakerHigh,
+  SpeakerSimpleSlash,
+  Waveform,
 } from "@phosphor-icons/react";
 import { apiGet, apiPost } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useApp } from "@/lib/store";
 import { isStepReady, topoSortSteps } from "@/lib/dag";
-import type { LifeEventMeta, RoadmapResponse, Step } from "@/lib/types";
+import { useSpeechSynthesis } from "@/lib/useSpeechSynthesis";
+import type { Lang, LifeEventMeta, RoadmapResponse, Step } from "@/lib/types";
 
 export function RoadmapView({ eventId }: { eventId: string }) {
-  const { lang, hydrated, lastNav, stepDone, markStepDone, profile, docsUploaded, toggleDoc } =
-    useApp();
+  const {
+    lang,
+    hydrated,
+    lastNav,
+    stepDone,
+    markStepDone,
+    profile,
+    docsUploaded,
+    toggleDoc,
+    announce,
+  } = useApp();
+
   const [fetched, setFetched] = useState<RoadmapResponse | null>(null);
   const [error, setError] = useState(false);
   const [openSteps, setOpenSteps] = useState<Set<string>>(new Set());
   const [addedSteps, setAddedSteps] = useState<Set<string>>(new Set());
   const [copied, setCopied] = useState<string | null>(null);
+
+  const { speak, stop, isSpeaking, speakingId, isSupported: speechSupported } =
+    useSpeechSynthesis();
 
   const stored =
     hydrated && lastNav && lastNav.event.id === eventId ? lastNav : null;
@@ -90,18 +107,57 @@ export function RoadmapView({ eventId }: { eventId: string }) {
     });
   }, []);
 
-  const copyJson = useCallback(async (step: Step) => {
-    const payload = Object.fromEntries(
-      step.fields
-        .filter((f) => f.profile_key)
-        .map((f) => [f.label_en, profile[f.profile_key as string] ?? ""])
-    );
-    payload["form"] = step.form_name;
-    payload["portal"] = step.portal_info?.name_en ?? step.portal;
-    await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
-    setCopied(step.id);
-    setTimeout(() => setCopied(null), 1600);
-  }, [profile]);
+  const copyJson = useCallback(
+    async (step: Step) => {
+      const payload = Object.fromEntries(
+        step.fields
+          .filter((f) => f.profile_key)
+          .map((f) => [f.label_en, profile[f.profile_key as string] ?? ""])
+      );
+      payload["form"] = step.form_name;
+      payload["portal"] = step.portal_info?.name_en ?? step.portal;
+      await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
+      setCopied(step.id);
+      announce(t(lang, "roadmap.copied"));
+      setTimeout(() => setCopied(null), 1600);
+    },
+    [profile, announce, lang]
+  );
+
+  const readOverview = useCallback(() => {
+    if (!roadmap) return;
+    if (isSpeaking && speakingId === "overview") {
+      stop();
+      return;
+    }
+    const eventName = getStepText(roadmap.event, "name", lang);
+    const summary = getStepText(roadmap.event, "summary", lang);
+    const textToRead = `${eventName}. ${summary}. Total steps: ${visibleSteps.length}.`;
+    speak(textToRead, "overview");
+  }, [roadmap, isSpeaking, speakingId, stop, speak, lang, visibleSteps.length]);
+
+  const readStep = useCallback(
+    (step: Step, idx: number) => {
+      if (isSpeaking && speakingId === step.id) {
+        stop();
+        return;
+      }
+      const title = getStepText(step, "title", lang);
+      const why = getStepText(step, "why", lang);
+      const portal = step.portal_info?.name_en ?? step.portal;
+      const timeEst = `Estimated time: ${step.est_time_min} minutes.`;
+      const docsCount = step.docs_resolved.length;
+      const docsText =
+        docsCount > 0
+          ? `Documents required: ${step.docs_resolved
+              .map((d) => getStepText(d, "name", lang))
+              .join(", ")}.`
+          : "";
+      const textToRead = `Step ${idx + 1}: ${title}. Portal: ${portal}. ${why}. ${timeEst} ${docsText}`;
+      speak(textToRead, step.id);
+    },
+    [isSpeaking, speakingId, stop, speak, lang]
+  );
 
   if (error) {
     return (
@@ -109,7 +165,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
         <p className="text-muted">{t(lang, "roadmap.notfound")}</p>
         <Link
           href="/"
-          className="mt-4 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm text-paper hover:bg-saffron-deep"
+          className="mt-4 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm text-paper hover:bg-saffron-deep focus-visible:outline-2 focus-visible:outline-saffron"
         >
           <ArrowLeft size={15} /> {t(lang, "nav.home")}
         </Link>
@@ -124,7 +180,10 @@ export function RoadmapView({ eventId }: { eventId: string }) {
         <div className="mt-3 h-4 w-96 animate-pulse rounded bg-line" />
         <ul className="mt-10 space-y-5">
           {Array.from({ length: 4 }).map((_, i) => (
-            <li key={i} className="h-28 animate-pulse rounded-xl border border-line bg-surface opacity-70" />
+            <li
+              key={i}
+              className="h-28 animate-pulse rounded-xl border border-line bg-surface opacity-70"
+            />
           ))}
         </ul>
       </div>
@@ -134,20 +193,55 @@ export function RoadmapView({ eventId }: { eventId: string }) {
   const total = visibleSteps.length;
   const doneCount = visibleSteps.filter((s) => doneMap[s.id]).length;
   const intent = roadmap.intent;
+  const eventName = getStepText(roadmap.event, "name", lang);
+  const eventSummary = getStepText(roadmap.event, "summary", lang);
 
   return (
     <div className="mx-auto max-w-[1000px] px-4 pb-24 pt-10 md:px-6">
-      <Link
-        href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-faint transition-colors hover:text-ink"
-      >
-        <ArrowLeft size={14} /> {t(lang, "nav.home")}
-      </Link>
+      <div className="flex items-center justify-between gap-4">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm text-faint transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-saffron"
+        >
+          <ArrowLeft size={14} /> {t(lang, "nav.home")}
+        </Link>
+
+        {/* Audio Reader for Roadmap Overview */}
+        {speechSupported && (
+          <button
+            onClick={readOverview}
+            aria-label={
+              isSpeaking && speakingId === "overview"
+                ? t(lang, "audio.stop")
+                : t(lang, "audio.listen_all")
+            }
+            className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all focus-visible:outline-2 focus-visible:outline-saffron ${
+              isSpeaking && speakingId === "overview"
+                ? "bg-saffron text-white shadow-sm animate-pulse"
+                : "border border-line bg-surface text-muted hover:border-ink hover:text-ink"
+            }`}
+          >
+            {isSpeaking && speakingId === "overview" ? (
+              <>
+                <Waveform size={14} weight="bold" className="animate-spin" />
+                <span>{t(lang, "audio.stop")}</span>
+              </>
+            ) : (
+              <>
+                <SpeakerHigh size={14} weight="duotone" className="text-saffron-deep" />
+                <span>{t(lang, "audio.listen_all")}</span>
+              </>
+            )}
+          </button>
+        )}
+      </div>
 
       <header className="rise mt-5">
         <div className="flex flex-wrap items-center gap-2">
           <span className="rounded-full bg-leaf-soft px-2.5 py-1 font-mono text-[11px] font-medium text-leaf">
-            {t(lang, "roadmap.confidence", { n: Math.round(intent.confidence * 100) })}
+            {t(lang, "roadmap.confidence", {
+              n: Math.round(intent.confidence * 100),
+            })}
           </span>
           <span className="rounded-full border border-line px-2.5 py-1 font-mono text-[11px] uppercase tracking-wide text-faint">
             {intent.engine === "gemini" ? "gemini ai" : "on-device rules"}
@@ -161,18 +255,28 @@ export function RoadmapView({ eventId }: { eventId: string }) {
             {intent.detected_language}
           </span>
         </div>
-        <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
-          {lang === "hi" ? roadmap.event.name_hi : roadmap.event.name_en}
+
+        <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl text-ink">
+          {eventName}
         </h1>
         <p className="mt-2 max-w-[65ch] leading-relaxed text-muted">
-          {lang === "hi" ? roadmap.event.summary_hi : roadmap.event.summary_en}
+          {eventSummary}
         </p>
 
         <div className="mt-6 flex items-center gap-3">
-          <div className="h-2 flex-1 overflow-hidden rounded-full bg-line">
+          <div
+            className="h-2 flex-1 overflow-hidden rounded-full bg-line"
+            role="progressbar"
+            aria-valuenow={total === 0 ? 0 : Math.round((doneCount / total) * 100)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label="Roadmap progress"
+          >
             <div
               className="h-full rounded-full bg-leaf transition-all duration-500"
-              style={{ width: total === 0 ? 0 : `${(doneCount / total) * 100}%` }}
+              style={{
+                width: total === 0 ? 0 : `${(doneCount / total) * 100}%`,
+              }}
             />
           </div>
           <span className="font-mono text-xs text-muted whitespace-nowrap">
@@ -186,47 +290,70 @@ export function RoadmapView({ eventId }: { eventId: string }) {
             <span>
               Upload once, reused across forms:{" "}
               <span className="font-mono text-muted">
-                {roadmap.reusable_docs.map((r) => `${r.doc_id.replace(/_/g, " ")} ×${r.used_in_steps}`).join(" · ")}
+                {roadmap.reusable_docs
+                  .map(
+                    (r) =>
+                      `${r.doc_id.replace(/_/g, " ")} ×${r.used_in_steps}`
+                  )
+                  .join(" · ")}
               </span>
             </span>
           </div>
         )}
       </header>
 
-      <ol className="mt-12 space-y-0">
+      <ol className="mt-12 space-y-0" role="list">
         {visibleSteps.map((step, idx) => {
           const isDone = !!doneMap[step.id];
           const ready = isStepReady(step, doneMap);
           const isOpen = openSteps.has(step.id);
+          const isCurrentSpeaking = isSpeaking && speakingId === step.id;
           const portalColor = step.portal_info?.line_color ?? "#888";
+          const title = getStepText(step, "title", lang);
+          const why = getStepText(step, "why", lang);
 
           return (
-            <li key={step.id} className="relative grid grid-cols-[36px_1fr] gap-x-4 md:grid-cols-[48px_1fr]">
+            <li
+              key={step.id}
+              role="listitem"
+              className="relative grid grid-cols-[36px_1fr] gap-x-4 md:grid-cols-[48px_1fr]"
+            >
               <div className="flex flex-col items-center">
                 <span
                   className={`z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 font-mono text-xs transition-colors ${
                     isDone
                       ? "border-leaf bg-leaf text-white"
                       : ready
-                        ? "border-saffron bg-paper text-saffron-deep"
-                        : "border-line bg-paper text-faint"
+                      ? "border-saffron bg-paper text-saffron-deep font-bold"
+                      : "border-line bg-paper text-faint"
                   }`}
-                  style={ready && !isDone ? { boxShadow: "0 0 0 4px rgba(194,102,29,0.12)" } : undefined}
+                  style={
+                    ready && !isDone
+                      ? { boxShadow: "0 0 0 4px rgba(194,102,29,0.12)" }
+                      : undefined
+                  }
                 >
-                  {isDone ? <Check size={16} weight="bold" /> : String(idx + 1).padStart(2, "0")}
+                  {isDone ? (
+                    <Check size={16} weight="bold" />
+                  ) : (
+                    String(idx + 1).padStart(2, "0")
+                  )}
                 </span>
                 {idx < visibleSteps.length - 1 && (
                   <span
                     className="w-0.5 grow rounded-full"
-                    style={{ backgroundColor: isDone ? "#2c7a57" : `${portalColor}55`, minHeight: "100%" }}
+                    style={{
+                      backgroundColor: isDone ? "#2c7a57" : `${portalColor}55`,
+                      minHeight: "100%",
+                    }}
                   />
                 )}
               </div>
 
               <article
-                className={`mb-6 rounded-xl border bg-surface transition-all ${
+                className={`mb-6 rounded-2xl border bg-surface transition-all ${
                   ready || isDone ? "border-line" : "border-line/70 opacity-80"
-                }`}
+                } ${isCurrentSpeaking ? "ring-2 ring-saffron" : ""}`}
               >
                 <div className="p-4 md:p-5">
                   <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between sm:gap-2">
@@ -250,10 +377,42 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                         )}
                         {isDone && (
                           <span className="inline-flex items-center gap-1 rounded-full bg-leaf px-2 py-0.5 text-[11px] font-medium text-white">
-                            <CheckCircle size={11} weight="fill" /> {t(lang, "roadmap.done")}
+                            <CheckCircle size={11} weight="fill" />{" "}
+                            {t(lang, "roadmap.done")}
                           </span>
                         )}
+
+                        {/* Read Aloud Button for Individual Step */}
+                        {speechSupported && (
+                          <button
+                            type="button"
+                            onClick={() => readStep(step, idx)}
+                            aria-label={
+                              isCurrentSpeaking
+                                ? t(lang, "audio.stop")
+                                : t(lang, "audio.listen_step")
+                            }
+                            className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] transition-colors focus-visible:outline-2 focus-visible:outline-saffron ${
+                              isCurrentSpeaking
+                                ? "bg-saffron text-white font-semibold animate-pulse"
+                                : "text-faint hover:text-ink hover:bg-black/5"
+                            }`}
+                          >
+                            {isCurrentSpeaking ? (
+                              <>
+                                <SpeakerSimpleSlash size={12} />
+                                <span>{t(lang, "audio.stop")}</span>
+                              </>
+                            ) : (
+                              <>
+                                <SpeakerHigh size={12} />
+                                <span>Listen</span>
+                              </>
+                            )}
+                          </button>
+                        )}
                       </div>
+
                       {step.depends_on.length > 0 && (
                         <p className="mt-1 font-mono text-[11px] text-faint">
                           {t(lang, "roadmap.dependsOn")}:{" "}
@@ -263,20 +422,25 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                             .join(", ")}
                         </p>
                       )}
-                      <h2 className="mt-2 text-[17px] font-semibold leading-snug tracking-tight">
-                        {lang === "hi" ? step.title_hi : step.title_en}
+
+                      <h2 className="mt-2 text-[17px] font-semibold leading-snug tracking-tight text-ink">
+                        {title}
                       </h2>
                       <p className="mt-1 max-w-[62ch] text-sm leading-relaxed text-muted">
-                        {lang === "hi" ? step.why_hi : step.why_en}
+                        {why}
                       </p>
                       <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-faint">
                         <span className="inline-flex items-center gap-1">
                           <Clock size={12} />
-                          {t(lang, "roadmap.esttime", { n: step.est_time_min })}
+                          {t(lang, "roadmap.esttime", {
+                            n: step.est_time_min,
+                          })}
                         </span>
                         <span className="inline-flex items-center gap-1">
                           <Coins size={12} />
-                          {lang === "hi" ? step.fee_note_hi : step.fee_note_en}
+                          {lang === "hi"
+                            ? step.fee_note_hi
+                            : step.fee_note_en}
                         </span>
                       </p>
                     </div>
@@ -289,42 +453,57 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                         onClick={(e) => {
                           if (!isDone && !ready) e.preventDefault();
                         }}
-                        className={`inline-flex flex-1 items-center justify-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors active:scale-[0.98] sm:flex-none ${
+                        className={`inline-flex flex-1 items-center justify-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors active:scale-[0.98] sm:flex-none focus-visible:outline-2 focus-visible:outline-saffron ${
                           ready && !isDone
                             ? "bg-ink text-paper hover:bg-saffron-deep"
                             : "pointer-events-none cursor-not-allowed bg-black/6 text-faint"
                         }`}
-                        title={ready && !isDone ? undefined : t(lang, "roadmap.locked")}
+                        title={
+                          ready && !isDone
+                            ? undefined
+                            : t(lang, "roadmap.locked")
+                        }
                       >
                         {t(lang, "roadmap.openform")}
                         <ArrowSquareOut size={13} weight="bold" />
                       </a>
                       <div className="flex flex-1 items-center justify-end gap-2">
                         <button
-                          onClick={() =>
-                            markStepDone(eventId, step.id, !isDone)
-                          }
+                          onClick={() => {
+                            markStepDone(eventId, step.id, !isDone);
+                            announce(
+                              !isDone
+                                ? t(lang, "a11y.announcement_step_done")
+                                : t(lang, "a11y.announcement_step_undone")
+                            );
+                          }}
                           disabled={!ready && !isDone}
-                          className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1.5 text-xs transition-colors ${
+                          className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1.5 text-xs transition-colors focus-visible:outline-2 focus-visible:outline-saffron ${
                             isDone
                               ? "text-leaf underline decoration-dotted underline-offset-4 hover:text-alert"
                               : ready
-                                ? "font-medium text-leaf hover:bg-leaf-soft"
-                                : "cursor-not-allowed text-faint"
+                              ? "font-medium text-leaf hover:bg-leaf-soft"
+                              : "cursor-not-allowed text-faint"
                           }`}
                         >
-                          {isDone ? t(lang, "roadmap.undone") : t(lang, "roadmap.markdone")}
+                          {isDone
+                            ? t(lang, "roadmap.undone")
+                            : t(lang, "roadmap.markdone")}
                         </button>
-                        {(step.fields.length > 0 || step.docs_resolved.length > 0) && (
+                        {(step.fields.length > 0 ||
+                          step.docs_resolved.length > 0) && (
                           <button
                             onClick={() => toggleOpen(step.id)}
                             aria-expanded={isOpen}
-                            className="inline-flex shrink-0 items-center gap-1 rounded-full px-3 py-1.5 text-xs text-muted hover:bg-black/4 hover:text-ink"
+                            aria-label={`${t(lang, "roadmap.details")} for ${title}`}
+                            className="inline-flex shrink-0 items-center gap-1 rounded-full px-3 py-1.5 text-xs text-muted hover:bg-black/4 hover:text-ink focus-visible:outline-2 focus-visible:outline-saffron"
                           >
                             {t(lang, "roadmap.details")}
                             <CaretDown
                               size={12}
-                              className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
+                              className={`transition-transform ${
+                                isOpen ? "rotate-180" : ""
+                              }`}
                             />
                           </button>
                         )}
@@ -340,28 +519,41 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                             {t(lang, "roadmap.fields")}
                             <button
                               onClick={() => copyJson(step)}
-                              className="inline-flex items-center gap-1 rounded-md border border-line px-2 py-1 font-mono text-[10px] normal-case tracking-normal text-muted transition-colors hover:border-ink hover:text-ink"
+                              className="inline-flex items-center gap-1 rounded-md border border-line px-2 py-1 font-mono text-[10px] normal-case tracking-normal text-muted transition-colors hover:border-ink hover:text-ink focus-visible:outline-2 focus-visible:outline-saffron"
                             >
                               {copied === step.id ? (
                                 <>
-                                  <Check size={11} weight="bold" /> {t(lang, "roadmap.copied")}
+                                  <Check size={11} weight="bold" />{" "}
+                                  {t(lang, "roadmap.copied")}
                                 </>
                               ) : (
                                 <>
-                                  <CopySimple size={11} /> {t(lang, "roadmap.copyjson")}
+                                  <CopySimple size={11} />{" "}
+                                  {t(lang, "roadmap.copyjson")}
                                 </>
                               )}
                             </button>
                           </h3>
                           <dl className="mt-3 divide-y divide-line/70 rounded-lg border border-line">
                             {step.fields.map((f, fi) => {
-                              const val = f.profile_key ? (profile[f.profile_key] ?? "") : "";
+                              const val = f.profile_key
+                                ? profile[f.profile_key] ?? ""
+                                : "";
+                              const fieldLabel =
+                                lang === "hi" ? f.label_hi : f.label_en;
                               return (
-                                <div key={fi} className="grid grid-cols-[1fr_auto] items-center gap-2 px-3 py-2">
+                                <div
+                                  key={fi}
+                                  className="grid grid-cols-[1fr_auto] items-center gap-2 px-3 py-2"
+                                >
                                   <dt className="min-w-0">
-                                    <span className="block truncate text-sm">{lang === "hi" ? f.label_hi : f.label_en}</span>
-                                    {f.label_en !== (lang === "hi" ? f.label_hi : f.label_en) && (
-                                      <span className="block truncate font-mono text-[10px] text-faint">{f.label_en}</span>
+                                    <span className="block truncate text-sm text-ink">
+                                      {fieldLabel}
+                                    </span>
+                                    {f.label_en !== fieldLabel && (
+                                      <span className="block truncate font-mono text-[10px] text-faint">
+                                        {f.label_en}
+                                      </span>
                                     )}
                                   </dt>
                                   <dd className="justify-self-end">
@@ -371,13 +563,17 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                                       </span>
                                     ) : val ? (
                                       <span className="inline-flex max-w-[52vw] items-center gap-1 rounded bg-leaf-soft px-2 py-1 font-mono text-[11px] text-leaf sm:max-w-[220px]">
-                                        <Check size={10} weight="bold" className="shrink-0" />
+                                        <Check
+                                          size={10}
+                                          weight="bold"
+                                          className="shrink-0"
+                                        />
                                         <span className="truncate">{val}</span>
                                       </span>
                                     ) : (
                                       <Link
                                         href="/profile"
-                                        className="inline-flex items-center gap-1 rounded bg-wait-soft px-2 py-1 font-mono text-[11px] text-wait hover:underline"
+                                        className="inline-flex items-center gap-1 rounded bg-wait-soft px-2 py-1 font-mono text-[11px] text-wait hover:underline focus-visible:outline-2 focus-visible:outline-saffron"
                                       >
                                         <FilePlus size={10} />
                                         {t(lang, "roadmap.missing")}
@@ -389,9 +585,10 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                             })}
                           </dl>
                           {step.tips && step.tips.length > 0 && (
-                            <div className="mt-4 rounded-lg border border-saffron/25 bg-saffron-soft/60 p-3">
+                            <div className="mt-4 rounded-xl border border-saffron/25 bg-saffron-soft/60 p-3">
                               <h4 className="flex items-center gap-1.5 text-xs font-semibold text-saffron-deep">
-                                <Lightbulb size={13} weight="fill" /> {t(lang, "roadmap.tips")}
+                                <Lightbulb size={13} weight="fill" />{" "}
+                                {t(lang, "roadmap.tips")}
                               </h4>
                               <ol className="mt-1.5 list-inside list-decimal space-y-1 text-xs leading-relaxed text-muted">
                                 {step.tips.map((tip, ti) => (
@@ -411,28 +608,42 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                           <ul className="mt-3 space-y-1.5">
                             {step.docs_resolved.map((doc) => {
                               const uploaded = docsUploaded.includes(doc.id);
+                              const docName =
+                                lang === "hi" ? doc.name_hi : doc.name_en;
                               return (
                                 <li key={doc.id}>
                                   <label
                                     className={`flex cursor-pointer items-center gap-2.5 rounded-lg border px-3 py-2 transition-colors ${
-                                      uploaded ? "border-leaf/40 bg-leaf-soft/60" : "border-line bg-surface hover:border-ink/25"
+                                      uploaded
+                                        ? "border-leaf/40 bg-leaf-soft/60"
+                                        : "border-line bg-surface hover:border-ink/25"
                                     }`}
                                   >
                                     <input
                                       type="checkbox"
                                       checked={uploaded}
                                       onChange={() => toggleDoc(doc.id)}
-                                      className="h-4 w-4 shrink-0 rounded"
+                                      className="h-4 w-4 shrink-0 rounded accent-leaf focus-visible:outline-2 focus-visible:outline-saffron"
                                     />
-                                    <span className={`min-w-0 flex-1 text-sm ${uploaded ? "text-muted line-through decoration-leaf/50" : ""}`}>
-                                      {lang === "hi" ? doc.name_hi : doc.name_en}
+                                    <span
+                                      className={`min-w-0 flex-1 text-sm ${
+                                        uploaded
+                                          ? "text-muted line-through decoration-leaf/50"
+                                          : "text-ink"
+                                      }`}
+                                    >
+                                      {docName}
                                     </span>
                                     <span
                                       className={`shrink-0 rounded px-1.5 py-0.5 font-mono text-[10px] uppercase ${
-                                        doc.mandatory ? "bg-alert-soft text-alert" : "bg-black/5 text-faint"
+                                        doc.mandatory
+                                          ? "bg-alert-soft text-alert"
+                                          : "bg-black/5 text-faint"
                                       }`}
                                     >
-                                      {doc.mandatory ? t(lang, "roadmap.mandatory") : t(lang, "roadmap.optionalDoc")}
+                                      {doc.mandatory
+                                        ? t(lang, "roadmap.mandatory")
+                                        : t(lang, "roadmap.optionalDoc")}
                                     </span>
                                   </label>
                                 </li>
@@ -440,7 +651,11 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                             })}
                           </ul>
                           <p className="mt-2 flex items-center gap-1 font-mono text-[10px] uppercase tracking-wide text-faint">
-                            <SealCheck size={11} weight="fill" className="text-leaf" />
+                            <SealCheck
+                              size={11}
+                              weight="fill"
+                              className="text-leaf"
+                            />
                             {t(lang, "roadmap.uploaded")}
                           </p>
                         </section>
@@ -461,7 +676,10 @@ export function RoadmapView({ eventId }: { eventId: string }) {
           </h2>
           <ul className="mt-3 space-y-2">
             {remainingExcluded.map((s) => (
-              <li key={s.id} className="flex items-center justify-between gap-3">
+              <li
+                key={s.id}
+                className="flex items-center justify-between gap-3"
+              >
                 <div className="min-w-0">
                   <span className="block truncate text-sm text-muted">
                     {lang === "hi" ? s.title_hi : s.title_en}
@@ -471,8 +689,10 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                   </span>
                 </div>
                 <button
-                  onClick={() => setAddedSteps((prev) => new Set(prev).add(s.id))}
-                  className="inline-flex shrink-0 items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs font-medium text-muted transition-colors hover:border-leaf hover:text-leaf active:scale-[0.98]"
+                  onClick={() =>
+                    setAddedSteps((prev) => new Set(prev).add(s.id))
+                  }
+                  className="inline-flex shrink-0 items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs font-medium text-muted transition-colors hover:border-leaf hover:text-leaf active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-saffron"
                 >
                   <PlusCircle size={13} /> {t(lang, "roadmap.addstep")}
                 </button>
@@ -485,7 +705,20 @@ export function RoadmapView({ eventId }: { eventId: string }) {
   );
 }
 
-function findTitle(steps: Step[], id: string, lang: "en" | "hi"): string | null {
+function getStepText(
+  obj: unknown,
+  propPrefix: string,
+  lang: Lang
+): string {
+  if (!obj || typeof obj !== "object") return "";
+  const record = obj as Record<string, unknown>;
+  if (lang === "hi" && record[`${propPrefix}_hi`]) {
+    return String(record[`${propPrefix}_hi`]);
+  }
+  return String(record[`${propPrefix}_en`] || record[`${propPrefix}_hi`] || "");
+}
+
+function findTitle(steps: Step[], id: string, lang: Lang): string | null {
   const s = steps.find((st) => st.id === id);
   if (!s) return id.replace(/_/g, " ");
   return lang === "hi" ? s.title_hi : s.title_en;

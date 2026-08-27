@@ -26,7 +26,7 @@ const LABEL_CLS: Record<PortalHealth, string> = {
 };
 
 export function StatusBoard({ compact = false }: { compact?: boolean }) {
-  const { lang } = useApp();
+  const { lang, announce } = useApp();
   const [statuses, setStatuses] = useState<PortalStatus[] | null>(null);
   const [error, setError] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -48,12 +48,13 @@ export function StatusBoard({ compact = false }: { compact?: boolean }) {
   const retry = useCallback(() => {
     setError(false);
     setRefreshKey((k) => k + 1);
-  }, []);
+    announce("Portal statuses refreshed");
+  }, [announce]);
 
   return (
-    <section className="rounded-xl border border-line bg-surface">
+    <section className="rounded-2xl border border-line bg-surface overflow-hidden">
       <header className="flex items-center justify-between border-b border-line px-4 py-3">
-        <h2 className="flex items-center gap-2 text-sm font-semibold tracking-tight">
+        <h2 className="flex items-center gap-2 text-sm font-semibold tracking-tight text-ink">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-saffron opacity-60" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-saffron" />
@@ -66,7 +67,7 @@ export function StatusBoard({ compact = false }: { compact?: boolean }) {
         <button
           onClick={retry}
           aria-label="Refresh status"
-          className="rounded-md p-1 text-faint transition-colors hover:bg-black/4 hover:text-ink"
+          className="rounded-md p-1 text-faint transition-colors hover:bg-black/4 hover:text-ink focus-visible:outline-2 focus-visible:outline-saffron"
         >
           <ArrowsClockwise size={15} />
         </button>
@@ -107,33 +108,43 @@ export function StatusBoard({ compact = false }: { compact?: boolean }) {
 
       {!error && statuses !== null && (
         <ul className="divide-y divide-line/70">
-          {statuses.slice(0, compact ? 8 : statuses.length).map((p) => (
-            <li key={p.portal_id} className="flex items-center gap-2 px-3 py-2 sm:gap-3 sm:px-4">
-              <a
-                href={p.url}
-                target="_blank"
-                rel="noreferrer"
-                className="group flex min-w-0 flex-1 items-center gap-2 sm:gap-3"
+          {statuses.slice(0, compact ? 8 : statuses.length).map((p) => {
+            const portalName = lang === "hi" ? p.name_hi : p.name_en;
+            return (
+              <li
+                key={p.portal_id}
+                className="flex items-center gap-2 px-3 py-2 sm:gap-3 sm:px-4"
               >
-                <span className={`h-2 w-2 shrink-0 rounded-full ${DOT[p.status]}`} />
-                <span className="min-w-0 flex-1 truncate text-sm group-hover:underline">
-                  {lang === "hi" ? p.name_hi : p.name_en}
+                <a
+                  href={p.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex min-w-0 flex-1 items-center gap-2 sm:gap-3 focus-visible:outline-2 focus-visible:outline-saffron"
+                >
+                  <span
+                    className={`h-2 w-2 shrink-0 rounded-full ${DOT[p.status]}`}
+                  />
+                  <span className="min-w-0 flex-1 truncate text-sm group-hover:underline text-ink">
+                    {portalName}
+                  </span>
+                  <ArrowSquareOut
+                    size={12}
+                    className="shrink-0 text-transparent transition-colors group-hover:text-faint"
+                  />
+                </a>
+                <span className="hidden w-14 shrink-0 text-right font-mono text-[11px] text-faint sm:block">
+                  {p.avg_latency_ms}ms
                 </span>
-                <ArrowSquareOut
-                  size={12}
-                  className="shrink-0 text-transparent transition-colors group-hover:text-faint"
-                />
-              </a>
-              <span className="hidden w-14 shrink-0 text-right font-mono text-[11px] text-faint sm:block">
-                {p.avg_latency_ms}ms
-              </span>
-              <span
-                className={`w-14 shrink-0 text-right font-mono text-[11px] font-medium sm:w-16 ${LABEL_CLS[p.status]}`}
-              >
-                {t(lang, LABEL_KEY[p.status])}
-              </span>
-            </li>
-          ))}
+                <span
+                  className={`w-14 shrink-0 text-right font-mono text-[11px] font-medium sm:w-16 ${
+                    LABEL_CLS[p.status]
+                  }`}
+                >
+                  {t(lang, LABEL_KEY[p.status])}
+                </span>
+              </li>
+            );
+          })}
         </ul>
       )}
 
