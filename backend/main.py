@@ -66,8 +66,8 @@ async def navigate(payload: NavigateIn) -> dict:
 
 
 @app.get("/api/portals/status")
-def portals_status() -> dict:
-    return {"portals": portal_statuses()}
+async def portals_status(force: bool = False) -> dict:
+    return {"portals": await portal_statuses(force=force)}
 
 
 @app.post("/api/rti/draft")

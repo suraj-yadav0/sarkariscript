@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowSquareOut, ArrowsClockwise } from "@phosphor-icons/react";
 import { apiGet } from "@/lib/api";
 import { t } from "@/lib/i18n";
@@ -30,22 +30,36 @@ export function StatusBoard({ compact = false }: { compact?: boolean }) {
   const [statuses, setStatuses] = useState<PortalStatus[] | null>(null);
   const [error, setError] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const forceRef = useRef(false);
 
   useEffect(() => {
     let alive = true;
-    apiGet<{ portals: PortalStatus[] }>("/api/portals/status")
-      .then((data) => {
-        if (alive) setStatuses(data.portals);
-      })
-      .catch(() => {
-        if (alive) setError(true);
-      });
+    const load = (force = false) => {
+      const url = force
+        ? "/api/portals/status?force=1"
+        : "/api/portals/status";
+      return apiGet<{ portals: PortalStatus[] }>(url)
+        .then((data) => {
+          if (alive) {
+            setStatuses(data.portals);
+            setError(false);
+          }
+        })
+        .catch(() => {
+          if (alive) setError(true);
+        });
+    };
+    load(forceRef.current);
+    forceRef.current = false;
+    const interval = setInterval(() => load(false), 5 * 60 * 1000);
     return () => {
       alive = false;
+      clearInterval(interval);
     };
   }, [refreshKey]);
 
   const retry = useCallback(() => {
+    forceRef.current = true;
     setError(false);
     setRefreshKey((k) => k + 1);
     announce("Portal statuses refreshed");
