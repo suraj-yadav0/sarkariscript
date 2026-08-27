@@ -92,6 +92,7 @@ export function PromptBox() {
 
   const {
     isListening,
+    isConnecting,
     isProcessing,
     interimTranscript,
     isSupported,
@@ -150,7 +151,7 @@ export function PromptBox() {
   return (
     <div className="w-full">
       {/* Listening Banner */}
-      {(isListening || isProcessing) && (
+      {(isListening || isConnecting || isProcessing) && (
         <div
           role="status"
           aria-live="assertive"
@@ -162,17 +163,19 @@ export function PromptBox() {
               <span className="relative inline-flex rounded-full h-3 w-3 bg-saffron-deep" />
             </span>
             <span className="font-semibold">
-              {isProcessing
+              {isConnecting
+                ? t(lang, "voice.connecting")
+                : isProcessing
                 ? t(lang, "voice.processing")
                 : t(lang, "voice.listening")}
             </span>
-            {!isProcessing && interimTranscript && (
+            {!isProcessing && !isConnecting && interimTranscript && (
               <span className="italic opacity-85 truncate max-w-[200px] sm:max-w-[320px]">
                 &ldquo;{interimTranscript}&rdquo;
               </span>
             )}
           </div>
-          {!isProcessing && (
+          {!isProcessing && !isConnecting && (
             <button
               type="button"
               onClick={stopListening}
@@ -227,7 +230,7 @@ export function PromptBox() {
             <button
               type="button"
               onClick={() => {
-                if (isListening) {
+                if (isListening || isConnecting) {
                   stopListening();
                 } else {
                   startListening();
@@ -236,15 +239,19 @@ export function PromptBox() {
               aria-label={
                 isListening
                   ? t(lang, "voice.stop")
+                  : isConnecting
+                  ? t(lang, "voice.connecting")
                   : t(lang, "voice.start")
               }
               title={
                 isListening
                   ? t(lang, "voice.stop")
+                  : isConnecting
+                  ? t(lang, "voice.connecting")
                   : t(lang, "voice.start")
               }
               className={`relative inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-all active:scale-[0.96] ${
-                isListening
+                isListening || isConnecting
                   ? "bg-saffron text-white shadow-md animate-pulse"
                   : "bg-paper text-muted hover:bg-black/5 hover:text-ink border border-line"
               }`}
@@ -253,6 +260,13 @@ export function PromptBox() {
                 <>
                   <Waveform size={15} weight="bold" className="animate-spin" />
                   <span className="hidden sm:inline">{t(lang, "voice.stop")}</span>
+                </>
+              ) : isConnecting ? (
+                <>
+                  <Waveform size={15} weight="bold" className="animate-spin" />
+                  <span className="hidden sm:inline">
+                    {t(lang, "voice.connecting")}
+                  </span>
                 </>
               ) : (
                 <>

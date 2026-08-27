@@ -43,9 +43,18 @@ declare global {
   }
 }
 
+// Brave exposes webkitSpeechRecognition but silently blocks it (fires a
+// misleading "network" error), so route it to the backend Whisper fallback.
 function isBrave(): boolean {
-  return typeof window !== "undefined" && Boolean((window as { brave?: unknown }).brave);
+  return (
+    typeof window !== "undefined" &&
+    Boolean((window as { brave?: unknown }).brave)
+  );
 }
+
+// Keep the "Connecting… please wait" state visible for at least this long so
+// the brief path-decision step doesn't cause the UI to flicker.
+const MIN_CONNECTING_MS = 650;
 
 export function useSpeechRecognition({
   onFinalTranscript,
@@ -54,35 +63,40 @@ export function useSpeechRecognition({
 } = {}) {
   const { lang, announce } = useApp();
   const [isListening, setIsListening] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [interimTranscript, setInterimTranscript] = useState("");
   const [isSupported] = useState<boolean>(() => {
     if (typeof window === "undefined") return true;
-    // Voice input is available if native Web Speech works or we can fall back
-    // to the backend Whisper endpoint via MediaRecorder (covers Brave).
-    const hasNative = Boolean(
-      window.SpeechRecognition || window.webkitSpeechRecognition
+    return Boolean(
+      window.SpeechRecognition ||
+        window.webkitSpeechRecognition ||
+        typeof MediaRecorder !== "undefined"
     );
-    const hasRecorder = typeof MediaRecorder !== "undefined";
-    return hasNative || hasRecorder;
   });
   const [error, setError] = useState<string | null>(null);
   const [permission, setPermission] = useState<MicPermission>("prompt");
   const [requestingPermission, setRequestingPermission] = useState(false);
-  const [mode, setMode] = useState<SpeechMode>(() => {
-    if (typeof window === "undefined") return "native";
-    const hasNative = Boolean(
-      window.SpeechRecognition || window.webkitSpeechRecognition
-    );
-    return isBrave() || !hasNative ? "backend" : "native";
-  });
+  const [mode, setMode] = useState<SpeechMode>(() =>
+    typeof window === "undefined" ? "native" : isBrave() ? "backend" : "native"
+  );
 
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
   const recorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const startRef = useRef<(lang?: string) => void>(() => {});
+  // Stable decision: backend for Brave (and browsers without native speech).
+  // Mutating this only happens once on a genuine native network failure, and
+  // never flips back, so the UI won't bounce between paths.
+  const backendRef = useRef<boolean>(
+    typeof window === "undefined"
+      ? false
+      : isBrave() ||
+          !(window.SpeechRecognition || window.webkitSpeechRecognition)
+  );
+  const connectingAtRef = useRef(0);
   const langOption = getLanguageOption(lang);
 
   const stopRecorder = useCallback(() => {
@@ -96,7 +110,8 @@ export function useSpeechRecognition({
   }, []);
 
   const stopListening = useCallback(() => {
-    if (mode === "backend") {
+    setIsConnecting(false);
+    if (backendRef.current) {
       stopRecorder();
     } else if (recognitionRef.current) {
       try {
@@ -106,7 +121,7 @@ export function useSpeechRecognition({
       }
     }
     setIsListening(false);
-  }, [mode, stopRecorder]);
+  }, [stopRecorder]);
 
   const requestPermission = useCallback(async (): Promise<boolean> => {
     if (typeof window === "undefined") return true;
@@ -175,6 +190,18 @@ export function useSpeechRecognition({
     [announce, langOption.bcp47, onFinalTranscript]
   );
 
+  // Resolve the connecting state only after the minimum visible duration AND
+  // the real listening/processing begins.
+  const finishConnecting = useCallback(() => {
+    const elapsed = Date.now() - connectingAtRef.current;
+    const remaining = Math.max(0, MIN_CONNECTING_MS - elapsed);
+    if (remaining > 0) {
+      window.setTimeout(() => setIsConnecting(false), remaining);
+    } else {
+      setIsConnecting(false);
+    }
+  }, []);
+
   const startListening = useCallback(
     async (customLang?: string) => {
       if (typeof window === "undefined") return;
@@ -183,9 +210,15 @@ export function useSpeechRecognition({
       setTranscript("");
       setInterimTranscript("");
 
+      setIsListening(false);
+      stopListening();
+      connectingAtRef.current = Date.now();
+      setIsConnecting(true);
+
       // Request microphone permission first so the in-page prompt shows.
       const granted = await requestPermission();
       if (!granted) {
+        setIsConnecting(false);
         setError("permission_denied");
         setIsListening(false);
         return;
@@ -193,29 +226,33 @@ export function useSpeechRecognition({
 
       const stream = streamRef.current;
       if (!stream) {
+        setIsConnecting(false);
         setError("permission_denied");
         setIsListening(false);
         return;
       }
 
-      if (mode === "backend") {
+      if (backendRef.current) {
         // Use MediaRecorder + backend local Whisper fallback (e.g. Brave).
         const supported = [
           "audio/webm;codecs=opus",
           "audio/webm",
           "audio/mp4",
           "audio/ogg;codecs=opus",
-        ].find((t) => typeof MediaRecorder !== "undefined" && MediaRecorder.isTypeSupported(t));
+        ].find(
+          (t) =>
+            typeof MediaRecorder !== "undefined" &&
+            MediaRecorder.isTypeSupported(t)
+        );
         if (!supported) {
+          setIsConnecting(false);
           setError("unsupported");
           setIsListening(false);
           return;
         }
         try {
           chunksRef.current = [];
-          const recorder = new MediaRecorder(stream, {
-            mimeType: supported,
-          });
+          const recorder = new MediaRecorder(stream, { mimeType: supported });
           recorder.ondataavailable = (e) => {
             if (e.data && e.data.size > 0) chunksRef.current.push(e.data);
           };
@@ -228,8 +265,10 @@ export function useSpeechRecognition({
           recorderRef.current = recorder;
           recorder.start();
           setIsListening(true);
+          finishConnecting();
           return;
         } catch {
+          setIsConnecting(false);
           setError("failed_to_start");
           setIsListening(false);
           return;
@@ -240,6 +279,7 @@ export function useSpeechRecognition({
       const SpeechRecognition =
         window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
+        setIsConnecting(false);
         setError("unsupported");
         setPermission("unsupported");
         return;
@@ -262,6 +302,7 @@ export function useSpeechRecognition({
         recognition.onstart = () => {
           setIsListening(true);
           announce("Microphone listening. Please speak.");
+          finishConnecting();
         };
 
         recognition.onresult = (event: SpeechRecognitionEvent) => {
@@ -291,8 +332,9 @@ export function useSpeechRecognition({
 
         recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
           if (event.error === "network") {
-            // Native speech service unreachable (e.g. Brave). Fall back to the
-            // backend Whisper endpoint instead of showing a dead-end message.
+            // Native speech service unreachable (e.g. Brave fallback). Route to
+            // the backend Whisper endpoint instead of showing a dead-end.
+            backendRef.current = true;
             setMode("backend");
             setError(null);
             setIsListening(false);
@@ -318,21 +360,32 @@ export function useSpeechRecognition({
           } else {
             setError(event.error);
           }
+          setIsConnecting(false);
           setIsListening(false);
         };
 
         recognition.onend = () => {
+          setIsConnecting(false);
           setIsListening(false);
         };
 
         recognitionRef.current = recognition;
         recognition.start();
       } catch {
+        setIsConnecting(false);
         setError("failed_to_start");
         setIsListening(false);
       }
     },
-    [langOption.bcp47, announce, onFinalTranscript, mode, requestPermission, transcribeWithBackend]
+    [
+      langOption.bcp47,
+      announce,
+      onFinalTranscript,
+      requestPermission,
+      stopListening,
+      transcribeWithBackend,
+      finishConnecting,
+    ]
   );
 
   useEffect(() => {
@@ -362,6 +415,7 @@ export function useSpeechRecognition({
 
   return {
     isListening,
+    isConnecting,
     isProcessing,
     transcript,
     interimTranscript,
