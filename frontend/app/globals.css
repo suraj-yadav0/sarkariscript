@@ -208,12 +208,35 @@ input[type="checkbox"] {
   accent-color: var(--color-leaf);
 }
 
+@media screen {
+  .print-only {
+    display: none !important;
+  }
+}
+
 @media print {
   .print-hidden {
     display: none !important;
   }
+  .print-only {
+    display: block !important;
+  }
   body {
     background: #fff !important;
     color: #000 !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+  }
+  .print-break-avoid {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+  .print-page-break {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
 }
