@@ -46,7 +46,11 @@ export default function RtiPage() {
 
   const {
     isListening: isDictating,
+    isProcessing: dictationProcessing,
     error: dictationError,
+    permission: dictationPermission,
+    requestingPermission: permissionRequesting,
+    requestPermission: requestDictationPermission,
     startListening: startDictation,
     stopListening: stopDictation,
   } = useSpeechRecognition({
@@ -195,13 +199,19 @@ export default function RtiPage() {
                 title={t(lang, "rti.dictate")}
                 aria-label={t(lang, "rti.dictate")}
                 className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium transition-colors ${
-                  isDictating
+                  isDictating || dictationProcessing
                     ? "bg-saffron text-white animate-pulse"
                     : "text-muted hover:text-ink hover:bg-black/5"
                 }`}
               >
                 <Microphone size={13} weight={isDictating ? "fill" : "bold"} />
-                <span>{isDictating ? "Listening..." : "Dictate"}</span>
+                <span>
+                  {dictationProcessing
+                    ? t(lang, "voice.processing")
+                    : isDictating
+                    ? "Listening..."
+                    : "Dictate"}
+                </span>
               </button>
             }
           >
@@ -221,6 +231,21 @@ export default function RtiPage() {
                   : `Dictation error: ${dictationError}`}
               </p>
             )}
+            {!dictationError &&
+              !isDictating &&
+              dictationPermission === "denied" && (
+                <button
+                  type="button"
+                  onClick={requestDictationPermission}
+                  disabled={permissionRequesting}
+                  className="mt-1.5 inline-flex items-center gap-1 rounded-full border border-alert/30 bg-alert-soft px-2.5 py-0.5 text-[11px] font-medium text-alert transition-colors hover:bg-alert hover:text-white disabled:opacity-60"
+                >
+                  <Microphone size={11} />
+                  {permissionRequesting
+                    ? t(lang, "voice.requesting")
+                    : t(lang, "voice.allow")}
+                </button>
+              )}
           </Field>
 
           <p className="text-xs leading-relaxed text-faint">

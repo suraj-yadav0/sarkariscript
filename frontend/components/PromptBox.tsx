@@ -92,9 +92,13 @@ export function PromptBox() {
 
   const {
     isListening,
+    isProcessing,
     interimTranscript,
     isSupported,
     error: voiceError,
+    permission,
+    requestingPermission,
+    requestPermission,
     startListening,
     stopListening,
   } = useSpeechRecognition({
@@ -146,7 +150,7 @@ export function PromptBox() {
   return (
     <div className="w-full">
       {/* Listening Banner */}
-      {isListening && (
+      {(isListening || isProcessing) && (
         <div
           role="status"
           aria-live="assertive"
@@ -157,20 +161,26 @@ export function PromptBox() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-saffron opacity-75" />
               <span className="relative inline-flex rounded-full h-3 w-3 bg-saffron-deep" />
             </span>
-            <span className="font-semibold">{t(lang, "voice.listening")}</span>
-            {interimTranscript && (
+            <span className="font-semibold">
+              {isProcessing
+                ? t(lang, "voice.processing")
+                : t(lang, "voice.listening")}
+            </span>
+            {!isProcessing && interimTranscript && (
               <span className="italic opacity-85 truncate max-w-[200px] sm:max-w-[320px]">
                 &ldquo;{interimTranscript}&rdquo;
               </span>
             )}
           </div>
-          <button
-            type="button"
-            onClick={stopListening}
-            className="rounded-full bg-saffron-deep text-white px-3 py-1 font-semibold text-[11px] hover:bg-ink transition-colors"
-          >
-            {t(lang, "voice.stop")}
-          </button>
+          {!isProcessing && (
+            <button
+              type="button"
+              onClick={stopListening}
+              className="rounded-full bg-saffron-deep text-white px-3 py-1 font-semibold text-[11px] hover:bg-ink transition-colors"
+            >
+              {t(lang, "voice.stop")}
+            </button>
+          )}
         </div>
       )}
 
@@ -278,7 +288,7 @@ export function PromptBox() {
       </form>
 
       {/* Voice or Backend Error Alert */}
-      {voiceError && (
+      {voiceError && !isListening && (
         <div
           role="alert"
           className="mt-2.5 flex items-center justify-between gap-2 rounded-xl bg-alert-soft px-3.5 py-2 text-xs text-alert border border-alert/20"
@@ -292,16 +302,47 @@ export function PromptBox() {
               ? t(lang, "voice.unsupported")
               : `Voice error: ${voiceError}`}
           </span>
-          {voiceError === "network" && (
+          {(voiceError === "network" || voiceError === "permission_denied") && (
             <button
               type="button"
               onClick={() => startListening()}
               className="shrink-0 rounded-full bg-alert text-white px-2.5 py-0.5 text-[11px] font-semibold hover:opacity-90 transition-opacity"
             >
-              Retry
+              {t(lang, "voice.retry")}
             </button>
           )}
         </div>
+      )}
+
+      {/* Microphone permission prompt shown inside the page */}
+      {!isSupported ? (
+        <div
+          role="alert"
+          className="mt-2.5 flex items-center justify-between gap-2 rounded-xl bg-wait-soft px-3.5 py-2 text-xs text-wait border border-wait/20"
+        >
+          <span>{t(lang, "voice.unsupported")}</span>
+        </div>
+      ) : (
+        permission === "denied" && (
+          <div
+            role="alert"
+            className="mt-2.5 flex items-center justify-between gap-2 rounded-xl bg-alert-soft px-3.5 py-2 text-xs text-alert border border-alert/20"
+          >
+            <span>
+              {t(lang, "voice.allow_hint")} {t(lang, "voice.permission_denied")}
+            </span>
+            <button
+              type="button"
+              onClick={requestPermission}
+              disabled={requestingPermission}
+              className="shrink-0 rounded-full bg-alert text-white px-2.5 py-0.5 text-[11px] font-semibold hover:opacity-90 transition-opacity disabled:opacity-60"
+            >
+              {requestingPermission
+                ? t(lang, "voice.requesting")
+                : t(lang, "voice.allow")}
+            </button>
+          </div>
+        )
       )}
 
       {error && (

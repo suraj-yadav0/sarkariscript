@@ -1,10 +1,12 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile
+from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from services.intent import build_roadmap, get_event, get_life_events, parse_intent
 from services.portals import portal_statuses
 from services.rti import draft_rti
+from services import stt as stt_service
 
 app = FastAPI(title="SarkariScript API", version="1.0.0")
 
@@ -73,3 +75,24 @@ async def portals_status(force: bool = False) -> dict:
 @app.post("/api/rti/draft")
 def rti_draft(payload: RtiDraftIn) -> dict:
     return draft_rti(payload.model_dump())
+
+
+@app.get("/api/stt/config")
+async def stt_config() -> dict:
+    return {"available": await run_in_threadpool(stt_service.is_available)}
+
+
+@app.post("/api/stt/transcribe")
+async def stt_transcribe(
+    audio: UploadFile,
+    language: str = "und",
+) -> dict:
+    data = await audio.read()
+    if not data:
+        raise HTTPException(status_code=400, detail="Empty audio")
+    try:
+        return await run_in_threadpool(
+            stt_service.transcribe, data, language or "und"
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"STT failed: {exc}")
