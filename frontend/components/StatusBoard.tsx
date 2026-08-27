@@ -150,7 +150,7 @@ export function StatusBoard({ compact = false }: { compact?: boolean }) {
                   {p.avg_latency_ms}ms
                 </span>
                 <span
-                  className={`w-14 shrink-0 text-right font-mono text-[11px] font-medium sm:w-16 ${
+                  className={`shrink-0 text-right font-mono text-[11px] font-medium ${
                     LABEL_CLS[p.status]
                   }`}
                 >

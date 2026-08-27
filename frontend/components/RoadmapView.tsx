@@ -414,7 +414,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
               {doneCount}/{total}
             </div>
             <div className="min-w-0">
-              <p className="text-xs sm:text-sm font-semibold text-ink truncate">
+              <p className="text-xs sm:text-sm font-semibold text-ink leading-snug">
                 {doneCount} {t(lang, "events.of")} {total}{" "}
                 {t(lang, "events.steps")} {t(lang, "roadmap.progress")}
               </p>

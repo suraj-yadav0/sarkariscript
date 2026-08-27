@@ -224,8 +224,8 @@ export function PromptBox() {
           )}
         </div>
 
-        <div className="flex items-center justify-between gap-1.5 sm:gap-2 px-1 pt-1.5 pb-0.5 border-t border-line/60">
-          <div className="flex items-center gap-1 sm:gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 px-1 pt-1.5 pb-0.5 border-t border-line/60">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {/* Voice Input Button */}
             <button
               type="button"
@@ -259,7 +259,7 @@ export function PromptBox() {
               {isListening ? (
                 <>
                   <Waveform size={14} weight="bold" className="animate-spin" />
-                  <span className="hidden sm:inline">{t(lang, "voice.stop")}</span>
+                  <span className="hidden xs:inline">{t(lang, "voice.stop")}</span>
                 </>
               ) : isConnecting ? (
                 <>
@@ -271,7 +271,7 @@ export function PromptBox() {
               ) : (
                 <>
                   <Microphone size={14} weight="duotone" className="text-saffron-deep" />
-                  <span className="hidden sm:inline">Voice (Alt+V)</span>
+                  <span className="hidden xs:inline">Voice (Alt+V)</span>
                 </>
               )}
             </button>
@@ -289,14 +289,14 @@ export function PromptBox() {
           <button
             type="submit"
             disabled={loading || !query.trim()}
-            className="inline-flex items-center gap-1 sm:gap-2 rounded-full bg-ink px-3.5 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-paper transition-all hover:bg-saffron-deep active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-ink focus-visible:outline-2 focus-visible:outline-saffron shrink-0"
+            className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-ink px-3 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-paper transition-all hover:bg-saffron-deep active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-ink focus-visible:outline-2 focus-visible:outline-saffron ml-auto shrink-0"
           >
             {loading ? (
               <PaperPlaneRight size={15} className="animate-pulse" />
             ) : (
               <PaperPlaneRight size={15} weight="fill" />
             )}
-            {t(lang, "hero.navigate")}
+            <span>{t(lang, "hero.navigate")}</span>
           </button>
         </div>
       </form>
