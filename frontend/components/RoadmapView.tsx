@@ -36,6 +36,8 @@ export function RoadmapView({ eventId }: { eventId: string }) {
     lastNav,
     stepDone,
     markStepDone,
+    addedSteps: storeAddedSteps,
+    addStepToJourney,
     profile,
     docsUploaded,
     toggleDoc,
@@ -46,7 +48,6 @@ export function RoadmapView({ eventId }: { eventId: string }) {
   const [error, setError] = useState(false);
   const [openSteps, setOpenSteps] = useState<Set<string>>(new Set());
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [addedSteps, setAddedSteps] = useState<Set<string>>(new Set());
 
   // Text-to-speech hook
   const {
@@ -94,15 +95,16 @@ export function RoadmapView({ eventId }: { eventId: string }) {
   const visibleSteps = useMemo(() => {
     if (!roadmap) return [];
     const base = roadmap.steps.slice();
+    const currentAdded = storeAddedSteps[eventId] || [];
     if (roadmap.excluded_steps) {
       for (const s of roadmap.excluded_steps) {
-        if (addedSteps.has(s.id) && !base.some((b) => b.id === s.id)) {
+        if (currentAdded.includes(s.id) && !base.some((b) => b.id === s.id)) {
           base.push(s);
         }
       }
     }
     return topoSortSteps(base);
-  }, [roadmap, addedSteps]);
+  }, [roadmap, storeAddedSteps, eventId]);
 
   const toggleOpen = useCallback((id: string) => {
     setOpenSteps((prev) => {
@@ -863,9 +865,10 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                   </p>
                 </div>
                 <button
-                  onClick={() =>
-                    setAddedSteps((prev) => new Set(prev).add(s.id))
-                  }
+                  onClick={() => {
+                    addStepToJourney(eventId, s.id);
+                    announce("Added step to journey");
+                  }}
                   className="inline-flex shrink-0 items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs font-medium text-muted transition-colors hover:border-leaf hover:text-leaf active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-saffron"
                 >
                   <PlusCircle size={13} /> {t(lang, "roadmap.addstep")}

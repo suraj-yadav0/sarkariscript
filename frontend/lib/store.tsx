@@ -18,7 +18,8 @@ interface PersistedState {
   lang: Lang;
   profile: Record<string, string>;
   docsUploaded: string[];
-  stepDone: Record<string, boolean>;
+  stepDone: Record<string, Record<string, boolean>>;
+  addedSteps: Record<string, string[]>;
   lastNav: RoadmapResponse | null;
   fontSize: FontSize;
   contrast: ContrastMode;
@@ -31,6 +32,7 @@ const defaults: PersistedState = {
   profile: {},
   docsUploaded: [],
   stepDone: {},
+  addedSteps: {},
   lastNav: null,
   fontSize: "normal",
   contrast: "default",
@@ -43,7 +45,15 @@ function loadState(): PersistedState {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return defaults;
-    return { ...defaults, ...(JSON.parse(raw) as Partial<PersistedState>) };
+    const parsed = JSON.parse(raw);
+    return {
+      ...defaults,
+      ...parsed,
+      profile: parsed.profile || {},
+      docsUploaded: Array.isArray(parsed.docsUploaded) ? parsed.docsUploaded : [],
+      stepDone: parsed.stepDone || {},
+      addedSteps: parsed.addedSteps || {},
+    };
   } catch {
     return defaults;
   }
@@ -54,7 +64,8 @@ interface AppContextValue {
   hydrated: boolean;
   profile: Record<string, string>;
   docsUploaded: string[];
-  stepDone: Record<string, boolean>;
+  stepDone: Record<string, Record<string, boolean>>;
+  addedSteps: Record<string, string[]>;
   lastNav: RoadmapResponse | null;
   fontSize: FontSize;
   contrast: ContrastMode;
@@ -65,6 +76,7 @@ interface AppContextValue {
   setProfileField: (key: string, value: string) => void;
   toggleDoc: (docId: string) => void;
   markStepDone: (eventId: string, stepId: string, done: boolean) => void;
+  addStepToJourney: (eventId: string, stepId: string) => void;
   setLastNav: (nav: RoadmapResponse) => void;
   clearLastNav: () => void;
   setFontSize: (size: FontSize) => void;
@@ -133,11 +145,31 @@ export function AppProvider({ children }: { children: ReactNode }) {
     (eventId: string, stepId: string, done: boolean) => {
       setState((s) => ({
         ...s,
-        stepDone: { ...s.stepDone, [`${eventId}:${stepId}`]: done },
+        stepDone: {
+          ...s.stepDone,
+          [eventId]: {
+            ...(s.stepDone[eventId] || {}),
+            [stepId]: done,
+          },
+        },
       }));
     },
     []
   );
+
+  const addStepToJourney = useCallback((eventId: string, stepId: string) => {
+    setState((s) => {
+      const current = s.addedSteps[eventId] || [];
+      if (current.includes(stepId)) return s;
+      return {
+        ...s,
+        addedSteps: {
+          ...s.addedSteps,
+          [eventId]: [...current, stepId],
+        },
+      };
+    });
+  }, []);
 
   const setLastNav = useCallback((nav: RoadmapResponse) => {
     setState((s) => ({ ...s, lastNav: nav }));
@@ -191,6 +223,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     profile: state.profile,
     docsUploaded: state.docsUploaded,
     stepDone: state.stepDone,
+    addedSteps: state.addedSteps,
     lastNav: state.lastNav,
     fontSize: state.fontSize,
     contrast: state.contrast,
@@ -201,6 +234,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setProfileField,
     toggleDoc,
     markStepDone,
+    addStepToJourney,
     setLastNav,
     clearLastNav,
     setFontSize,
