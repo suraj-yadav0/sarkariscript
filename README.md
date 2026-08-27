@@ -71,8 +71,8 @@ Set `NEXT_PUBLIC_API_URL` if the backend runs elsewhere.
    GST fields show green "pre-filled" chips; only unique fields remain manual.
 3. Tick a document once (e.g. Aadhaar) — it flips to uploaded in every step
    that needs it ("reused across forms" summary under the header).
-4. Portal status board shows MCA degraded/down (simulated) — explains why the
-   roadmap suggests starting elsewhere first.
+4. Portal status board shows live uptime (real HTTP pings + response time,
+   refreshed every 5 min) for all 14 portals.
 5. Go to *RTI tool*: paste a CPGRAMS number pending 45 days → one click
    generates a print-ready Section 6(1) application.
 
@@ -83,8 +83,31 @@ Set `NEXT_PUBLIC_API_URL` if the backend runs elsewhere.
 | GET | `/api/health` | liveness |
 | GET | `/api/life-events[/{id}]` | knowledge base listing |
 | POST | `/api/navigate` | `{query}` → intent + ordered roadmap |
-| GET | `/api/portals/status` | simulated uptime board |
+| GET | `/api/portals/status` | live uptime board (real HTTP pings + response time, refreshed every 5 min) |
 | POST | `/api/rti/draft` | complaint details → RTI letter |
+| GET | `/api/stt/config` | whether the local speech-to-text engine is available |
+| POST | `/api/stt/transcribe` | audio upload (webm/mp4/ogg) → text (multipart: `audio`, `language`) |
+
+### Speech-to-text fallback
+
+When the browser's native Web Speech API is unavailable or blocked (e.g.
+Brave), the frontend records audio with `MediaRecorder` and sends it to
+`POST /api/stt/transcribe`, which runs **local** [faster-whisper](https://github.com/SYSTRAN/faster-whisper)
+— fully offline, no API key. The Whisper `base` model (~75 MB) is downloaded
+from Hugging Face on first request.
+
+Configure it with environment variables (optional):
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `SARKARISCRIPT_STT_MODEL` | `base` | Whisper model size (e.g. `tiny`, `base`, `small`) |
+| `SARKARISCRIPT_STT_DEVICE` | `auto` | `cpu`, `cuda`, or `auto` |
+| `SARKARISCRIPT_STT_COMPUTE` | `auto` | compute type override |
+| `SARKARISCRIPT_STT_MODEL_DIR` | `~/.cache/huggingface/hub` | where the model is stored |
+
+Speech-to-text (and live portal checks) depend on the environment that runs the
+backend: the speech model caches on disk, and portal checks are cached in
+process for 5 minutes.
 
 > Disclaimer: demo/hackathon project. Not affiliated with the Government of
 > India. Links point to official portals; always verify documents on the
