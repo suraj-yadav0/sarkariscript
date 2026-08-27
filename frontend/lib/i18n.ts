@@ -210,6 +210,16 @@ export const strings: Dict = {
     gu: "અવાજ પ્રોસેસ થઈ રહ્યો છે…",
     kn: "ಧ್ವನಿ ಸಂಸ್ಕರಿಸಲಾಗುತ್ತಿದೆ…",
   },
+  "voice.connecting": {
+    en: "Connecting… please wait",
+    hi: "कनेक्ट हो रहा है… कृपया प्रतीक्षा करें",
+    bn: "সংযোগ হচ্ছে… অপেক্ষা করুন",
+    mr: "कनेक्ट होत आहे… कृपया थांबा",
+    ta: "இணைக்கிறது… தயவுசெய்து காத்திருக்கவும்",
+    te: "కనెక్ట్ అవుతోంది… దయచేసి వేచి ఉండండి",
+    gu: "કનેક્ટ થઈ રહ્યું છે… કૃપા કરીને રાહ જુઓ",
+    kn: "ಸಂಪರ್ಕಿಸುತ್ತಿದೆ… ದಯವಿಟ್ಟು ನಿರೀಕ್ಷಿಸಿ",
+  },
   "voice.unsupported": {
     en: "Voice search is not supported in this browser. Please use Chrome, Edge, or Safari.",
     hi: "इस ब्राउज़र में वॉइस सर्च उपलब्ध नहीं है। कृपया Chrome, Edge या Safari उपयोग करें।",

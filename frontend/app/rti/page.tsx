@@ -46,6 +46,7 @@ export default function RtiPage() {
 
   const {
     isListening: isDictating,
+    isConnecting: dictationConnecting,
     isProcessing: dictationProcessing,
     error: dictationError,
     permission: dictationPermission,
@@ -190,7 +191,7 @@ export default function RtiPage() {
               <button
                 type="button"
                 onClick={() => {
-                  if (isDictating) {
+                  if (isDictating || dictationConnecting) {
                     stopDictation();
                   } else {
                     startDictation();
@@ -199,14 +200,16 @@ export default function RtiPage() {
                 title={t(lang, "rti.dictate")}
                 aria-label={t(lang, "rti.dictate")}
                 className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium transition-colors ${
-                  isDictating || dictationProcessing
+                  isDictating || dictationProcessing || dictationConnecting
                     ? "bg-saffron text-white animate-pulse"
                     : "text-muted hover:text-ink hover:bg-black/5"
                 }`}
               >
                 <Microphone size={13} weight={isDictating ? "fill" : "bold"} />
                 <span>
-                  {dictationProcessing
+                  {dictationConnecting
+                    ? t(lang, "voice.connecting")
+                    : dictationProcessing
                     ? t(lang, "voice.processing")
                     : isDictating
                     ? "Listening..."
