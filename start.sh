@@ -18,6 +18,10 @@ free_port 3000
 if [ ! -d "$ROOT/backend/.venv" ]; then
   echo "[sarkariscript] creating backend venv…"
   python3 -m venv "$ROOT/backend/.venv"
+fi
+
+if [ ! -x "$ROOT/backend/.venv/bin/uvicorn" ] || ! "$ROOT/backend/.venv/bin/pip" check -r "$ROOT/backend/requirements.txt" >/dev/null 2>&1; then
+  echo "[sarkariscript] installing backend dependencies…"
   "$ROOT/backend/.venv/bin/pip" install -q -r "$ROOT/backend/requirements.txt"
 fi
 
@@ -33,6 +37,10 @@ echo "[sarkariscript] starting API on :8000 (log: /tmp/sarkariscript-api.log)"
 echo "[sarkariscript] starting web on :3000 (log: /tmp/sarkariscript-web.log)"
 (
   cd "$ROOT/frontend"
+  if [ ! -d node_modules ]; then
+    echo "[sarkariscript] installing frontend dependencies…"
+    npm install
+  fi
   if [ ! -d .next ]; then
     echo "[sarkariscript] building frontend once…"
     npm run build
