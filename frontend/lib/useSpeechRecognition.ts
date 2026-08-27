@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { getLanguageOption } from "./i18n";
 import { useApp } from "./store";
 
-// TypeScript declarations for Web Speech API
 interface SpeechRecognitionEvent extends Event {
   results: SpeechRecognitionResultList;
   resultIndex: number;
@@ -70,75 +69,97 @@ export function useSpeechRecognition({
     setIsListening(false);
   }, []);
 
-  const startListening = useCallback(() => {
-    if (typeof window === "undefined") return;
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
+  const startListening = useCallback(
+    (customLang?: string) => {
+      if (typeof window === "undefined") return;
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
 
-    if (!SpeechRecognition) {
-      setError("unsupported");
-      return;
-    }
+      if (!SpeechRecognition) {
+        setError("unsupported");
+        return;
+      }
 
-    setError(null);
-    setTranscript("");
-    setInterimTranscript("");
+      setError(null);
+      setTranscript("");
+      setInterimTranscript("");
 
-    try {
-      const recognition = new SpeechRecognition();
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.lang = langOption.bcp47;
-
-      recognition.onstart = () => {
-        setIsListening(true);
-        announce("Microphone listening. Please speak.");
-      };
-
-      recognition.onresult = (event: SpeechRecognitionEvent) => {
-        let currentInterim = "";
-        let currentFinal = "";
-
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-          const res = event.results[i];
-          if (res.isFinal) {
-            currentFinal += res[0].transcript;
-          } else {
-            currentInterim += res[0].transcript;
+      try {
+        if (recognitionRef.current) {
+          try {
+            recognitionRef.current.abort();
+          } catch {
+            // ignore
           }
         }
 
-        if (currentFinal) {
-          setTranscript((prev) => {
-            const next = prev ? `${prev} ${currentFinal.trim()}` : currentFinal.trim();
-            if (onFinalTranscript) onFinalTranscript(next);
-            return next;
-          });
-        }
-        setInterimTranscript(currentInterim);
-      };
+        const recognition = new SpeechRecognition();
+        // Use non-continuous recognition for web input stability and to avoid socket timeout network drops
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.lang = customLang || langOption.bcp47;
 
-      recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-        if (event.error === "not-allowed" || event.error === "service-not-allowed") {
-          setError("permission_denied");
-          announce("Microphone permission was denied.");
-        } else if (event.error !== "no-speech") {
-          setError(event.error);
-        }
+        recognition.onstart = () => {
+          setIsListening(true);
+          announce("Microphone listening. Please speak.");
+        };
+
+        recognition.onresult = (event: SpeechRecognitionEvent) => {
+          let currentInterim = "";
+          let currentFinal = "";
+
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            const res = event.results[i];
+            if (res.isFinal) {
+              currentFinal += res[0].transcript;
+            } else {
+              currentInterim += res[0].transcript;
+            }
+          }
+
+          if (currentFinal) {
+            setTranscript((prev) => {
+              const next = prev
+                ? `${prev} ${currentFinal.trim()}`
+                : currentFinal.trim();
+              if (onFinalTranscript) onFinalTranscript(next);
+              return next;
+            });
+          }
+          setInterimTranscript(currentInterim);
+        };
+
+        recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+          if (
+            event.error === "not-allowed" ||
+            event.error === "service-not-allowed"
+          ) {
+            setError("permission_denied");
+            announce("Microphone permission was denied.");
+          } else if (event.error === "network") {
+            setError("network");
+            announce("Voice network error. Please verify speech connection.");
+          } else if (event.error === "no-speech" || event.error === "aborted") {
+            // User did not speak or manually stopped; no error needed
+          } else {
+            setError(event.error);
+          }
+          setIsListening(false);
+        };
+
+        recognition.onend = () => {
+          setIsListening(false);
+        };
+
+        recognitionRef.current = recognition;
+        recognition.start();
+      } catch {
+        setError("failed_to_start");
         setIsListening(false);
-      };
-
-      recognition.onend = () => {
-        setIsListening(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } catch {
-      setError("failed_to_start");
-      setIsListening(false);
-    }
-  }, [langOption.bcp47, announce, onFinalTranscript]);
+      }
+    },
+    [langOption.bcp47, announce, onFinalTranscript]
+  );
 
   const resetTranscript = useCallback(() => {
     setTranscript("");

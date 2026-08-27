@@ -46,6 +46,7 @@ export default function RtiPage() {
 
   const {
     isListening: isDictating,
+    error: dictationError,
     startListening: startDictation,
     stopListening: stopDictation,
   } = useSpeechRecognition({
@@ -184,7 +185,13 @@ export default function RtiPage() {
             extraAction={
               <button
                 type="button"
-                onClick={isDictating ? stopDictation : startDictation}
+                onClick={() => {
+                  if (isDictating) {
+                    stopDictation();
+                  } else {
+                    startDictation();
+                  }
+                }}
                 title={t(lang, "rti.dictate")}
                 aria-label={t(lang, "rti.dictate")}
                 className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium transition-colors ${
@@ -205,6 +212,15 @@ export default function RtiPage() {
               placeholder="e.g. Refund of cancelled train ticket not received after 45 days…"
               className="w-full resize-none rounded-lg border border-line bg-paper px-3 py-2 text-sm leading-relaxed outline-none placeholder:text-faint/70 focus:border-saffron focus:ring-2 focus:ring-saffron/20 focus-visible:outline-2 focus-visible:outline-saffron"
             />
+            {dictationError && (
+              <p className="mt-1 text-xs text-alert">
+                {dictationError === "permission_denied"
+                  ? t(lang, "voice.permission_denied")
+                  : dictationError === "network"
+                  ? t(lang, "voice.network")
+                  : `Dictation error: ${dictationError}`}
+              </p>
+            )}
           </Field>
 
           <p className="text-xs leading-relaxed text-faint">

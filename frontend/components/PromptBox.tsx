@@ -279,16 +279,29 @@ export function PromptBox() {
 
       {/* Voice or Backend Error Alert */}
       {voiceError && (
-        <p
+        <div
           role="alert"
-          className="mt-2.5 rounded-xl bg-alert-soft px-3.5 py-2 text-xs text-alert border border-alert/20"
+          className="mt-2.5 flex items-center justify-between gap-2 rounded-xl bg-alert-soft px-3.5 py-2 text-xs text-alert border border-alert/20"
         >
-          {voiceError === "permission_denied"
-            ? t(lang, "voice.permission_denied")
-            : !isSupported
-            ? t(lang, "voice.unsupported")
-            : `Voice error: ${voiceError}`}
-        </p>
+          <span>
+            {voiceError === "permission_denied"
+              ? t(lang, "voice.permission_denied")
+              : voiceError === "network"
+              ? t(lang, "voice.network")
+              : !isSupported
+              ? t(lang, "voice.unsupported")
+              : `Voice error: ${voiceError}`}
+          </span>
+          {voiceError === "network" && (
+            <button
+              type="button"
+              onClick={() => startListening()}
+              className="shrink-0 rounded-full bg-alert text-white px-2.5 py-0.5 text-[11px] font-semibold hover:opacity-90 transition-opacity"
+            >
+              Retry
+            </button>
+          )}
+        </div>
       )}
 
       {error && (
