@@ -46,14 +46,15 @@ export function LanguageSelector() {
         aria-expanded={open}
         aria-haspopup="listbox"
         aria-label={`${t(lang, "nav.lang")}: ${current.nativeLabel}`}
-        className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full border border-line bg-surface px-1.5 xs:px-2 sm:px-3 py-1 sm:py-1.5 text-xs font-medium text-muted transition-all hover:border-ink hover:text-ink active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-saffron"
+        className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full border border-line bg-surface px-2 sm:px-3 py-1 sm:py-1.5 text-xs font-medium text-muted transition-all hover:border-ink hover:text-ink active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-saffron shrink-0"
       >
         <Globe size={14} weight="duotone" className="text-saffron-deep shrink-0 sm:w-[15px] sm:h-[15px]" />
-        <span className="font-semibold text-ink text-[11px] sm:text-xs truncate max-w-[36px] xs:max-w-[60px] sm:max-w-none">
-          {current.nativeLabel}
+        <span className="font-semibold text-ink text-[11px] sm:text-xs">
+          <span className="sm:hidden">{current.code.toUpperCase()}</span>
+          <span className="hidden sm:inline">{current.nativeLabel}</span>
         </span>
         <CaretDown
-          size={10}
+          size={9}
           weight="bold"
           className={`text-faint transition-transform duration-200 shrink-0 sm:w-3 sm:h-3 ${
             open ? "rotate-180" : ""
@@ -65,7 +66,7 @@ export function LanguageSelector() {
         <div
           role="listbox"
           aria-label={t(lang, "nav.lang")}
-          className="absolute right-0 top-full z-50 mt-2 w-[210px] max-w-[calc(100vw-24px)] overflow-hidden rounded-2xl border border-line bg-surface p-1.5 shadow-[0_10px_36px_rgba(0,0,0,0.16)] backdrop-blur-md focus:outline-none"
+          className="fixed inset-x-3 top-16 sm:absolute sm:inset-auto sm:right-0 sm:top-full z-50 mt-1 max-h-[75vh] sm:w-[210px] overflow-hidden rounded-2xl border border-line bg-surface p-1.5 shadow-[0_10px_36px_rgba(0,0,0,0.16)] backdrop-blur-md focus:outline-none"
         >
           <div className="px-2.5 py-1 text-[10.5px] font-mono uppercase tracking-wider text-faint border-b border-line mb-1">
             {t(lang, "nav.lang")}

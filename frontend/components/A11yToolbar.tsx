@@ -91,7 +91,7 @@ export function A11yToolbar() {
           role="dialog"
           aria-modal="true"
           aria-label={t(lang, "a11y.title")}
-          className="absolute right-0 top-full z-50 mt-2 w-[340px] max-w-[calc(100vw-24px)] rounded-2xl border border-line bg-surface p-5 shadow-[0_12px_40px_rgba(0,0,0,0.18)] backdrop-blur-lg focus:outline-none"
+          className="fixed inset-x-3 top-16 sm:absolute sm:inset-auto sm:right-0 sm:top-full z-50 mt-1 max-h-[85vh] overflow-y-auto sm:w-[340px] rounded-2xl border border-line bg-surface p-4 sm:p-5 shadow-[0_12px_40px_rgba(0,0,0,0.18)] backdrop-blur-lg focus:outline-none"
         >
           {/* Header */}
           <div className="flex items-center justify-between border-b border-line pb-3">

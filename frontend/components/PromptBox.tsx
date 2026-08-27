@@ -192,7 +192,7 @@ export function PromptBox() {
           e.preventDefault();
           navigate(query);
         }}
-        className="relative rounded-2xl border border-line bg-surface p-2.5 shadow-[0_2px_4px_rgba(27,27,24,0.04),0_12px_32px_-12px_rgba(27,27,24,0.14)] transition-all focus-within:border-saffron focus-within:shadow-[0_2px_4px_rgba(27,27,24,0.04),0_14px_40px_-10px_rgba(194,102,29,0.25)]"
+        className="relative rounded-2xl border border-line bg-surface p-2 sm:p-2.5 shadow-[0_2px_4px_rgba(27,27,24,0.04),0_12px_32px_-12px_rgba(27,27,24,0.14)] transition-all focus-within:border-saffron focus-within:shadow-[0_2px_4px_rgba(27,27,24,0.04),0_14px_40px_-10px_rgba(194,102,29,0.25)]"
       >
         <label htmlFor="prompt" className="sr-only">
           {t(lang, "hero.sub")}
@@ -210,7 +210,7 @@ export function PromptBox() {
               }
             }}
             placeholder={t(lang, "hero.placeholder")}
-            className="w-full resize-none bg-transparent px-3 pt-2 text-[15px] leading-relaxed outline-none placeholder:text-faint pr-8"
+            className="w-full resize-none bg-transparent px-2.5 sm:px-3 pt-1.5 sm:pt-2 text-sm sm:text-[15px] leading-relaxed outline-none placeholder:text-faint pr-8"
           />
           {query && (
             <button
@@ -224,8 +224,8 @@ export function PromptBox() {
           )}
         </div>
 
-        <div className="flex items-center justify-between gap-2 px-1 pt-1 pb-0.5 border-t border-line/60">
-          <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="flex items-center justify-between gap-1.5 sm:gap-2 px-1 pt-1.5 pb-0.5 border-t border-line/60">
+          <div className="flex items-center gap-1 sm:gap-2">
             {/* Voice Input Button */}
             <button
               type="button"
@@ -277,7 +277,7 @@ export function PromptBox() {
             </button>
 
             <span
-              className={`font-mono text-[11px] uppercase tracking-[0.14em] transition-opacity ${
+              className={`font-mono text-[10.5px] sm:text-[11px] uppercase tracking-[0.12em] transition-opacity ${
                 loading ? "text-saffron opacity-100" : "text-transparent opacity-0"
               }`}
               aria-live="polite"
@@ -289,12 +289,12 @@ export function PromptBox() {
           <button
             type="submit"
             disabled={loading || !query.trim()}
-            className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-ink px-3.5 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-paper transition-all hover:bg-saffron-deep active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-ink focus-visible:outline-2 focus-visible:outline-saffron shrink-0"
+            className="inline-flex items-center gap-1 sm:gap-2 rounded-full bg-ink px-3.5 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-paper transition-all hover:bg-saffron-deep active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-ink focus-visible:outline-2 focus-visible:outline-saffron shrink-0"
           >
             {loading ? (
-              <PaperPlaneRight size={16} className="animate-pulse" />
+              <PaperPlaneRight size={15} className="animate-pulse" />
             ) : (
-              <PaperPlaneRight size={16} weight="fill" />
+              <PaperPlaneRight size={15} weight="fill" />
             )}
             {t(lang, "hero.navigate")}
           </button>
@@ -305,9 +305,9 @@ export function PromptBox() {
       {voiceError && !isListening && (
         <div
           role="alert"
-          className="mt-2.5 flex items-center justify-between gap-2 rounded-xl bg-alert-soft px-3.5 py-2 text-xs text-alert border border-alert/20"
+          className="mt-2.5 flex items-center justify-between gap-2 rounded-xl bg-alert-soft px-3 py-2 text-xs text-alert border border-alert/20"
         >
-          <span>
+          <span className="leading-snug">
             {voiceError === "permission_denied"
               ? t(lang, "voice.permission_denied")
               : voiceError === "network"
@@ -369,18 +369,18 @@ export function PromptBox() {
       )}
 
       {/* Multilingual Examples */}
-      <div className="mt-4 flex flex-wrap items-center gap-2">
-        <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
+      <div className="mt-3 sm:mt-4 flex flex-wrap items-center gap-1.5 sm:gap-2">
+        <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint shrink-0">
           {t(lang, "hero.examples")}
         </span>
-        {examples.slice(exampleIdx, exampleIdx + 2).map((ex) => (
+        {examples.slice(exampleIdx, exampleIdx + 1).map((ex) => (
           <button
             key={ex}
             onClick={() => {
               setQuery(ex);
               navigate(ex);
             }}
-            className="group inline-flex min-w-0 max-w-full items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-xs text-muted transition-colors hover:border-saffron hover:text-saffron-deep sm:max-w-[320px] focus-visible:outline-2 focus-visible:outline-saffron"
+            className="group inline-flex min-w-0 max-w-[calc(100vw-5.5rem)] sm:max-w-[340px] items-center gap-1.5 rounded-full border border-line bg-surface px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs text-muted transition-colors hover:border-saffron hover:text-saffron-deep focus-visible:outline-2 focus-visible:outline-saffron"
           >
             <span className="min-w-0 truncate">{ex}</span>
             <ArrowRight
@@ -391,8 +391,8 @@ export function PromptBox() {
           </button>
         ))}
         <button
-          onClick={() => setExampleIdx((i) => (i + 2) % examples.length)}
-          className="rounded-full px-2 py-1 font-mono text-[11px] text-faint underline decoration-dotted underline-offset-4 hover:text-ink focus-visible:outline-2 focus-visible:outline-saffron"
+          onClick={() => setExampleIdx((i) => (i + 1) % examples.length)}
+          className="rounded-full px-2 py-1 font-mono text-[11px] text-faint underline decoration-dotted underline-offset-4 hover:text-ink focus-visible:outline-2 focus-visible:outline-saffron shrink-0"
         >
           more →
         </button>
