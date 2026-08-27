@@ -13,7 +13,7 @@ import {
 import type { Icon } from "@phosphor-icons/react";
 import { t } from "@/lib/i18n";
 import { useApp } from "@/lib/store";
-import { EVENT_CARDS } from "@/lib/events-meta";
+import { EVENT_CARDS, getEventName, getEventSummary } from "@/lib/events-meta";
 import type { EventCardMeta } from "@/lib/events-meta";
 
 const ICONS: Record<EventCardMeta["icon"], Icon> = {
@@ -37,14 +37,17 @@ const SPANS = [
 export function EventsGrid() {
   const { lang } = useApp();
   return (
-    <div className="grid grid-cols-1 gap-3 md:grid-cols-6">
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-6" role="list">
       {EVENT_CARDS.map((ev, i) => {
         const Icon = ICONS[ev.icon];
+        const name = getEventName(ev, lang);
+        const summary = getEventSummary(ev, lang);
         return (
           <Link
             key={ev.id}
             href={`/roadmap/${ev.id}`}
-            className={`group relative flex flex-col justify-between overflow-hidden rounded-xl border border-line bg-surface p-5 transition-all hover:-translate-y-0.5 hover:border-ink/25 hover:shadow-[0_12px_32px_-16px_rgba(27,27,24,0.25)] ${SPANS[i]}`}
+            role="listitem"
+            className={`group relative flex flex-col justify-between overflow-hidden rounded-xl border border-line bg-surface p-5 transition-all hover:-translate-y-0.5 hover:border-ink/25 hover:shadow-[0_12px_32px_-16px_rgba(27,27,24,0.25)] focus-visible:outline-2 focus-visible:outline-saffron ${SPANS[i]}`}
           >
             <div className="flex items-start justify-between">
               <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-paper text-saffron-deep">
@@ -56,15 +59,15 @@ export function EventsGrid() {
               />
             </div>
             <div className="mt-8">
-              <h3 className="text-[15px] font-semibold tracking-tight">
-                {lang === "hi" ? ev.name_hi : ev.name_en}
+              <h3 className="text-[15px] font-semibold tracking-tight text-ink">
+                {name}
               </h3>
               <p
                 className={`mt-1 text-sm leading-relaxed text-muted ${
                   SPANS[i] === "md:col-span-2" ? "hidden lg:block" : ""
                 }`}
               >
-                {lang === "hi" ? ev.summary_hi : ev.summary_en}
+                {summary}
               </p>
               <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.12em] text-faint">
                 {ev.step_count} {t(lang, "events.steps")} · {ev.portals_en}

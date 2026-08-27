@@ -14,17 +14,8 @@ export function HomeCopy() {
         className="rise mt-4 max-w-[13ch] text-4xl font-semibold leading-[1.06] tracking-tighter md:text-5xl lg:text-[3.4rem]"
         style={{ animationDelay: "60ms" }}
       >
-        {lang === "hi" ? (
-          <>
-            {t(lang, "hero.h1a")}{" "}
-            <span className="text-saffron-deep">{t(lang, "hero.h1b")}</span>
-          </>
-        ) : (
-          <>
-            {t(lang, "hero.h1a")}{" "}
-            <span className="text-saffron-deep">{t(lang, "hero.h1b")}</span>
-          </>
-        )}
+        {t(lang, "hero.h1a")}{" "}
+        <span className="text-saffron-deep">{t(lang, "hero.h1b")}</span>
       </h1>
       <p
         className="rise mt-5 max-w-[52ch] text-[15px] leading-relaxed text-muted md:text-base"
