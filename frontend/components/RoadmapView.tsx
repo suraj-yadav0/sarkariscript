@@ -461,16 +461,6 @@ export function RoadmapView({ eventId }: { eventId: string }) {
               key={step.id}
               className="relative transition-all print-break-avoid"
             >
-              {/* Timeline Connector Line */}
-              {idx < visibleSteps.length - 1 && (
-                <div
-                  className={`absolute left-[19px] sm:left-[21px] top-12 bottom-[-16px] w-[2px] -translate-x-1/2 transition-colors print-hidden ${
-                    isDone ? "bg-leaf" : "bg-line"
-                  }`}
-                  aria-hidden="true"
-                />
-              )}
-
               {/* Step Card Container */}
               <article
                 className={`mb-4 md:mb-6 rounded-2xl border bg-surface transition-all print:border-black print:bg-white print:shadow-none ${
