@@ -33,6 +33,13 @@ export const metadata: Metadata = {
   },
   description:
     "Describe your goal in Hindi, English or Hinglish. Get a dependency-mapped roadmap across Indian government portals, with forms pre-filled from your citizen profile.",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icon" },
+    ],
+    apple: "/apple-icon",
+  },
 };
 
 export default function RootLayout({

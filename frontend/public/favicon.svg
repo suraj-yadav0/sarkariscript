@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="14" fill="#c2661d"/>
+  <rect x="2" y="2" width="60" height="60" rx="12" stroke="#e88538" stroke-width="1.5" stroke-opacity="0.4"/>
+  <!-- Stamp Handle / Grip -->
+  <path d="M26 14C26 11.7909 27.7909 10 30 10H34C36.2091 10 38 11.7909 38 14V22C38 23.1046 38.8954 24 40 24H44C45.6569 24 47 25.3431 47 27V32C47 33.1046 46.1046 34 45 34H19C17.8954 34 17 33.1046 17 32V27C17 25.3431 18.3431 24 20 24H24C25.1046 24 26 23.1046 26 22V14Z" fill="#ffffff" fill-opacity="0.95"/>
+  <!-- Stamp Base / Rubber Pad -->
+  <rect x="14" y="38" width="36" height="8" rx="2.5" fill="#ffffff"/>
+  <!-- Ink Impression Lines -->
+  <rect x="18" y="50" width="28" height="3" rx="1.5" fill="#ffd099"/>
+</svg>
