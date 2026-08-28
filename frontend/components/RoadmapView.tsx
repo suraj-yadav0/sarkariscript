@@ -111,6 +111,15 @@ export function RoadmapView({ eventId }: { eventId: string }) {
     return topoSortSteps(base);
   }, [roadmap, storeAddedSteps, eventId]);
 
+  const remainingExcludedSteps = useMemo(() => {
+    if (!roadmap?.excluded_steps) return [];
+    const currentAdded = storeAddedSteps[eventId] || [];
+    const visibleStepIds = new Set(visibleSteps.map((s) => s.id));
+    return roadmap.excluded_steps.filter(
+      (s) => !currentAdded.includes(s.id) && !visibleStepIds.has(s.id)
+    );
+  }, [roadmap, storeAddedSteps, eventId, visibleSteps]);
+
   const toggleOpen = useCallback((id: string) => {
     setOpenSteps((prev) => {
       const next = new Set(prev);
@@ -861,9 +870,9 @@ export function RoadmapView({ eventId }: { eventId: string }) {
       </div>
 
       {/* Optional Skipped Steps Section (Screen View) */}
-      {roadmap.excluded_steps && roadmap.excluded_steps.length > 0 && (
+      {remainingExcludedSteps.length > 0 && (
         <section
-          className="mt-12 rounded-2xl border border-line bg-surface p-5 print-hidden"
+          className="mt-12 rounded-2xl border border-line bg-surface p-5 print-hidden animate-in fade-in duration-200"
           aria-labelledby="optional-steps-title"
         >
           <h3
@@ -877,10 +886,10 @@ export function RoadmapView({ eventId }: { eventId: string }) {
           </p>
 
           <ul className="mt-4 divide-y divide-line/60">
-            {roadmap.excluded_steps.map((s) => (
+            {remainingExcludedSteps.map((s) => (
               <li
                 key={s.id}
-                className="flex items-center justify-between gap-4 py-3 text-xs"
+                className="flex items-center justify-between gap-4 py-3 text-xs transition-all"
               >
                 <div>
                   <p className="font-medium text-ink">
