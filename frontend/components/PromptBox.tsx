@@ -427,38 +427,49 @@ export function PromptBox() {
         </p>
       )}
 
-      {/* Multilingual Examples */}
-      <div className="mt-3.5 sm:mt-4.5 flex flex-wrap items-center gap-1.5 sm:gap-2">
-        <span className="font-mono text-[10.5px] sm:text-[11px] uppercase tracking-[0.14em] text-faint shrink-0">
-          {t(lang, "hero.examples")}
-        </span>
-        <div className="flex items-center gap-1.5 min-w-0 flex-1">
-          {examples.slice(exampleIdx, exampleIdx + 1).map((ex) => (
-            <button
-              key={ex}
-              onClick={() => {
-                setQuery(ex);
-                navigate(ex);
-              }}
-              className="group inline-flex min-w-0 flex-1 items-center justify-between gap-1.5 rounded-full border border-line bg-surface px-3 py-1 sm:py-1.5 text-xs text-muted transition-all hover:border-saffron hover:text-saffron-deep hover:shadow-xs focus-visible:outline-2 focus-visible:outline-saffron overflow-hidden"
-            >
-              <span className="truncate flex items-center gap-1">
-                <span className="text-[10px] font-mono text-saffron-deep font-semibold">⚡</span>
-                {ex}
-              </span>
-              <ArrowRight
-                size={11}
-                weight="bold"
-                className="shrink-0 opacity-40 group-hover:opacity-100 text-saffron-deep transition-transform group-hover:translate-x-0.5"
-              />
-            </button>
-          ))}
+      {/* Popular Citizen Query Prompts */}
+      <div className="mt-4 sm:mt-5">
+        <div className="flex items-center justify-between gap-2 mb-2 sm:mb-2.5">
+          <span className="font-mono text-[10.5px] sm:text-[11px] uppercase tracking-[0.14em] text-faint flex items-center gap-1.5">
+            <span className="text-saffron-deep">⚡</span>
+            {t(lang, "hero.examples")}
+          </span>
           <button
-            onClick={() => setExampleIdx((i) => (i + 1) % examples.length)}
-            className="rounded-full px-2 py-1 font-mono text-[11px] text-faint underline decoration-dotted underline-offset-4 hover:text-ink focus-visible:outline-2 focus-visible:outline-saffron shrink-0"
+            type="button"
+            onClick={() => setExampleIdx((i) => (i + 4) % examples.length)}
+            className="inline-flex items-center gap-1 font-mono text-[10.5px] text-faint hover:text-ink transition-colors underline decoration-dotted underline-offset-4"
           >
-            more →
+            <span>shuffle prompts</span>
+            <ArrowRight size={11} />
           </button>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {(() => {
+            const list: string[] = [];
+            for (let i = 0; i < 4; i++) {
+              const idx = (exampleIdx + i) % examples.length;
+              list.push(examples[idx]);
+            }
+            return list.map((ex) => (
+              <button
+                key={ex}
+                type="button"
+                onClick={() => {
+                  setQuery(ex);
+                  navigate(ex);
+                }}
+                className="group flex items-center justify-between gap-2 rounded-xl border border-line bg-surface p-2.5 sm:px-3 sm:py-2.5 text-left text-xs text-muted transition-all hover:border-saffron/60 hover:bg-paper/80 hover:text-ink hover:shadow-2xs active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-saffron min-w-0"
+              >
+                <span className="truncate leading-snug">{ex}</span>
+                <ArrowRight
+                  size={12}
+                  weight="bold"
+                  className="shrink-0 text-faint opacity-40 group-hover:text-saffron-deep group-hover:opacity-100 transition-all group-hover:translate-x-0.5"
+                />
+              </button>
+            ));
+          })()}
         </div>
       </div>
     </div>
