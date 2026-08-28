@@ -1,11 +1,11 @@
 # SarkariScript
 
-**AI-powered government paperwork copilot & auto-filler for Indian citizens.**  
+**AI-powered government paperwork copilot and auto-filler for Indian citizens.**  
 Type or speak your goal in Hindi, English, Hinglish, or 7 regional languages — get a dependency-mapped roadmap across every government portal involved, with forms pre-filled from a citizen profile you enter once. Built for the *"Build What Moves India"* theme.
 
 ---
 
-## ✨ What It Does
+## What It Does
 
 | Feature | Description | Where |
 |---|---|---|
@@ -16,9 +16,9 @@ Type or speak your goal in Hindi, English, Hinglish, or 7 regional languages —
 | **Printable PDF Roadmap Generator** | Generates official, clean printable documents with offline checklists, pre-filled field summaries, portal links, and a physical application tracking log. | `/roadmap/[eventId]` → **"Print / PDF Roadmap"** |
 | **Voice & Speech Copilot (Alt+V)** | Speak your goal directly in any language. Dual-engine: Native Web Speech API with automatic local Whisper STT fallback. | Global search bar + `/rti` |
 | **Audio Reader (Text-to-Speech)** | Listen to roadmaps and step-by-step instructions read aloud in regional voices. | Top action bar on roadmap views |
-| **Accessibility Suite (Alt+A)** | Full accessibility toolbar: 3 font scaling levels (100%, 115%, 130%), high-contrast themes (Natural, Light+, Dark+), OpenDyslexic mode, and screen-reader announcements. | Header Accessibility Eye button |
+| **Accessibility Suite (Alt+A)** | Full accessibility toolbar: 3 font scaling levels (100%, 115%, 130%), high-contrast themes (Natural, Light+, Dark+), OpenDyslexic mode, and screen-reader announcements. | Header Accessibility button |
 | **Live Portal Health Monitor** | Real-time HTTP uptime pings and latency metrics across all 14 government portals, cached for 5 min. | Home page status board |
-| **Grievance → RTI Escalation Engine** | Transforms delayed CPGRAMS / grievance reference numbers into formal Section 6(1) Right to Information (RTI) applications. | `/rti` |
+| **Grievance to RTI Escalation Engine** | Transforms delayed CPGRAMS / grievance reference numbers into formal Section 6(1) Right to Information (RTI) applications. | `/rti` |
 
 ### Supported Life Events Today
 1. **Start a Business** (MSME Udyam, GST REG-01, FSSAI Food Licence, Shop & Establishment)
@@ -32,25 +32,69 @@ Type or speak your goal in Hindi, English, Hinglish, or 7 regional languages —
 
 ---
 
-## 🌐 8 Supported Indian Languages
+## Architecture
 
-SarkariScript is fully localized across 8 Indian languages:
-- **English**
-- **हिन्दी** (Hindi)
-- **বাংলা** (Bengali)
-- **मराठी** (Marathi)
-- **தமிழ்** (Tamil)
-- **తెలుగు** (Telugu)
-- **ગુજરાતી** (Gujarati)
-- **ಕನ್ನಡ** (Kannada)
+```mermaid
+flowchart TD
+    subgraph Client ["Client Layer (Next.js 16 + React 19 + Tailwind CSS)"]
+        UI["Citizen Web App (8 Regional Languages)"]
+        A11Y["Accessibility Engine (Font Scaling, High Contrast, ARIA Live)"]
+        VoiceClient["Voice Controller (Web Speech API + MediaRecorder Fallback)"]
+        PDF["PDF Generator (@media print Engine + Offline Log)"]
+        Storage[("Local Storage (Profile, Documents, Step State)")]
+        
+        UI <--> Storage
+        UI <--> A11Y
+        UI <--> VoiceClient
+        UI <--> PDF
+    end
 
-Switch languages instantly using the language selector (`🌐 EN ▾`) in the navigation bar.
+    subgraph Server ["Backend API Layer (FastAPI + Python 3.12/3.14)"]
+        API["REST API Router"]
+        Intent["Intent Parser (Gemini 2.0 / Rule-based Matching Engine)"]
+        KB[("Knowledge Base (DAG Engine & Conditional Rules)")]
+        Whisper["Local STT Engine (faster-whisper / CTranslate2)"]
+        Monitor["Portal Uptime Monitor (Async HTTP Probing + 5-min Cache)"]
+        RTI["RTI Drafter (Section 6(1) Legal Template Engine)"]
+
+        API --> Intent
+        Intent --> KB
+        API --> Whisper
+        API --> Monitor
+        API --> RTI
+    end
+
+    subgraph External ["External Services & Portals"]
+        GeminiCloud["Google Gemini AI API (Optional)"]
+        GovPortals["Official Government Portals (GST, Parivahan, Passport Seva, etc.)"]
+    end
+
+    UI -- "JSON REST / Multipart Audio" --> API
+    Intent -. "Natural Language Parsing" .-> GeminiCloud
+    Monitor -- "HTTP / HTTPS Health Pings" --> GovPortals
+```
 
 ---
 
-## 🎙️ Cross-Browser Voice & Speech-to-Text Architecture
+## 8 Supported Indian Languages
 
-SarkariScript features a resilient **dual-engine voice architecture**:
+SarkariScript is fully localized across 8 Indian languages:
+- **English**
+- **Hindi** (हिन्दी)
+- **Bengali** (বাংলা)
+- **Marathi** (मराठी)
+- **Tamil** (தமிழ்)
+- **Telugu** (తెలుగు)
+- **Gujarati** (ગુજરાતી)
+- **Kannada** (ಕನ್ನಡ)
+
+Switch languages instantly using the language selector in the navigation bar.
+
+---
+
+## Cross-Browser Voice & Speech-to-Text Architecture
+
+SarkariScript features a resilient dual-engine voice architecture:
 
 1. **Native Web Speech API**: Uses browser-native speech recognition for zero-latency streaming on supported browsers (Chrome, Edge, Safari).
 2. **Offline Local Whisper Fallback**: If native Web Speech is blocked (e.g. Brave browser, mobile browsers without speech services, or offline environments), the frontend seamlessly streams recorded audio to `POST /api/stt/transcribe`.
@@ -66,7 +110,7 @@ SarkariScript features a resilient **dual-engine voice architecture**:
 
 ---
 
-## 📄 Printable PDF Roadmap Generator
+## Printable PDF Roadmap Generator
 
 The **Print / PDF Roadmap** feature transforms any interactive roadmap into a structured, multi-page printable document designed for offline use:
 - **Official Print Header**: Timestamp, applicant name, state/city, estimated total time, and step summary.
@@ -76,7 +120,7 @@ The **Print / PDF Roadmap** feature transforms any interactive roadmap into a st
 
 ---
 
-## ♿ Accessibility & Universal Design (WCAG 2.2 AA)
+## Accessibility & Universal Design (WCAG 2.2 AA)
 
 Built from the ground up to be accessible for every citizen:
 - **Font Scaling (`A`, `A+`, `A++`)**: 100%, 115%, and 130% scaling, engineered with fluid wraps for ultra-small mobile screens (e.g. iPhone SE 320px).
@@ -94,14 +138,14 @@ Built from the ground up to be accessible for every citizen:
 
 ---
 
-## 🔒 Privacy First
+## Privacy First
 
 - **Zero Cloud Storage for Personal Data**: Citizen profile data, uploaded document checklist states, and roadmap progress (`sarkariscript:v2`) are stored **exclusively in your browser's local storage**.
 - No personal Aadhaar, PAN, or profile data is stored on backend databases.
 
 ---
 
-## 🚀 Quickstart & Installation
+## Quickstart & Installation
 
 ### Option 1: One-Command Start (Recommended)
 
@@ -146,7 +190,7 @@ npm run dev # Starts development server at http://localhost:3000
 
 ---
 
-## 📡 API Reference
+## API Reference
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -161,7 +205,7 @@ npm run dev # Starts development server at http://localhost:3000
 
 ---
 
-## 🎬 2-Minute Demo Script
+## 2-Minute Demo Walkthrough
 
 1. **Voice or Text Search**:
    - Type or speak (press `Alt+V`): *"Mujhe Lucknow mein grocery store kholna hai"*.
