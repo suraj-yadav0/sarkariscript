@@ -17,19 +17,19 @@ import {
 export function HomeCopy() {
   const { lang } = useApp();
   return (
-    <div className="w-full max-w-full min-w-0">
-      <p className="rise font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.2em] text-saffron-deep font-semibold break-words">
+    <div>
+      <p className="rise font-mono text-[11px] uppercase tracking-[0.2em] text-saffron-deep">
         {t(lang, "hero.eyebrow")}
       </p>
       <h1
-        className="rise mt-2.5 sm:mt-4 w-full text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-bold sm:font-semibold leading-[1.18] sm:leading-[1.12] tracking-tight text-ink break-words"
+        className="rise mt-3 sm:mt-4 w-full text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-bold sm:font-semibold leading-[1.12] tracking-tight text-ink break-words"
         style={{ animationDelay: "60ms" }}
       >
         {t(lang, "hero.h1a")}{" "}
         <span className="text-saffron-deep">{t(lang, "hero.h1b")}</span>
       </h1>
       <p
-        className="rise mt-2.5 sm:mt-4 max-w-[52ch] text-xs sm:text-sm md:text-base leading-relaxed text-muted break-words"
+        className="rise mt-3 sm:mt-5 max-w-[52ch] text-xs sm:text-sm md:text-base leading-relaxed text-muted"
         style={{ animationDelay: "120ms" }}
       >
         {t(lang, "hero.sub")}

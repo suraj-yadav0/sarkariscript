@@ -66,24 +66,24 @@ export function StatusBoard({ compact = false }: { compact?: boolean }) {
   }, [announce]);
 
   return (
-    <section className="w-full min-w-0 rounded-2xl border border-line bg-surface overflow-hidden">
-      <header className="flex items-center justify-between border-b border-line px-3.5 sm:px-4 py-2.5 sm:py-3">
-        <h2 className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold tracking-tight text-ink min-w-0">
-          <span className="relative flex h-2 w-2 shrink-0">
+    <section className="rounded-2xl border border-line bg-surface overflow-hidden">
+      <header className="flex items-center justify-between border-b border-line px-4 py-3">
+        <h2 className="flex items-center gap-2 text-sm font-semibold tracking-tight text-ink">
+          <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-saffron opacity-60" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-saffron" />
           </span>
-          <span className="truncate">{t(lang, "status.title")}</span>
-          <span className="font-mono text-[9px] sm:text-[10px] font-normal uppercase tracking-[0.14em] text-faint shrink-0">
+          {t(lang, "status.title")}
+          <span className="font-mono text-[10px] font-normal uppercase tracking-[0.14em] text-faint">
             {t(lang, "status.live")}
           </span>
         </h2>
         <button
           onClick={retry}
           aria-label="Refresh status"
-          className="rounded-md p-1 text-faint transition-colors hover:bg-black/4 hover:text-ink focus-visible:outline-2 focus-visible:outline-saffron shrink-0"
+          className="rounded-md p-1 text-faint transition-colors hover:bg-black/4 hover:text-ink focus-visible:outline-2 focus-visible:outline-saffron"
         >
-          <ArrowsClockwise size={14} className="sm:w-[15px] sm:h-[15px]" />
+          <ArrowsClockwise size={15} />
         </button>
       </header>
 
@@ -107,14 +107,14 @@ export function StatusBoard({ compact = false }: { compact?: boolean }) {
       {!error && statuses === null && (
         <ul className="divide-y divide-line/70" aria-hidden>
           {Array.from({ length: compact ? 8 : 14 }).map((_, i) => (
-            <li key={i} className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2">
+            <li key={i} className="flex items-center gap-3 px-4 py-2">
               <span className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-line" />
               <span
                 className="h-3 flex-1 animate-pulse rounded bg-line"
                 style={{ maxWidth: `${45 + ((i * 13) % 40)}%` }}
               />
-              <span className="h-3 w-8 sm:w-10 shrink-0 animate-pulse rounded bg-line" />
-              <span className="h-3 w-10 sm:w-12 shrink-0 animate-pulse rounded bg-line" />
+              <span className="h-3 w-10 shrink-0 animate-pulse rounded bg-line" />
+              <span className="h-3 w-12 shrink-0 animate-pulse rounded bg-line" />
             </li>
           ))}
         </ul>
@@ -127,30 +127,30 @@ export function StatusBoard({ compact = false }: { compact?: boolean }) {
             return (
               <li
                 key={p.portal_id}
-                className="flex items-center justify-between gap-1.5 px-3 py-2 sm:gap-3 sm:px-4 min-w-0"
+                className="flex items-center gap-2 px-3 py-2 sm:gap-3 sm:px-4"
               >
                 <a
                   href={p.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="group flex min-w-0 flex-1 items-center gap-1.5 sm:gap-2.5 focus-visible:outline-2 focus-visible:outline-saffron"
+                  className="group flex min-w-0 flex-1 items-center gap-2 sm:gap-3 focus-visible:outline-2 focus-visible:outline-saffron"
                 >
                   <span
                     className={`h-2 w-2 shrink-0 rounded-full ${DOT[p.status]}`}
                   />
-                  <span className="min-w-0 flex-1 truncate text-xs sm:text-sm group-hover:underline text-ink">
+                  <span className="min-w-0 flex-1 truncate text-sm group-hover:underline text-ink">
                     {portalName}
                   </span>
                   <ArrowSquareOut
-                    size={11}
+                    size={12}
                     className="shrink-0 text-transparent transition-colors group-hover:text-faint"
                   />
                 </a>
-                <span className="hidden w-14 shrink-0 text-right font-mono text-[11px] text-faint md:block">
+                <span className="hidden w-14 shrink-0 text-right font-mono text-[11px] text-faint sm:block">
                   {p.avg_latency_ms}ms
                 </span>
                 <span
-                  className={`shrink-0 text-right font-mono text-[10px] sm:text-[11px] font-medium ${
+                  className={`shrink-0 text-right font-mono text-[11px] font-medium ${
                     LABEL_CLS[p.status]
                   }`}
                 >

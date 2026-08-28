@@ -5,27 +5,27 @@ import { HomeCopy, EventsGridTitle, HowItWorksBlock } from "@/components/HomeCop
 
 export default function HomePage() {
   return (
-    <div className="mx-auto max-w-[1200px] px-3 sm:px-4 md:px-6 w-full max-w-full overflow-x-hidden min-w-0">
-      <section className="grid gap-6 sm:gap-8 lg:gap-10 pb-10 sm:pb-16 pt-4 sm:pt-10 md:pt-14 lg:grid-cols-12 min-w-0 w-full">
-        <div className="lg:col-span-7 min-w-0 w-full">
+    <div className="mx-auto max-w-[1200px] px-3.5 sm:px-4 md:px-6 overflow-x-hidden">
+      <section className="grid gap-8 sm:gap-10 pb-12 sm:pb-16 pt-6 sm:pt-12 md:pt-16 lg:grid-cols-12 lg:gap-8">
+        <div className="lg:col-span-7">
           <HomeCopy />
-          <div className="mt-4 sm:mt-6 rise" style={{ animationDelay: "160ms" }}>
+          <div className="mt-5 sm:mt-7 rise" style={{ animationDelay: "160ms" }}>
             <PromptBox />
           </div>
         </div>
-        <aside className="lg:col-span-5 min-w-0 w-full">
+        <aside className="lg:col-span-5">
           <div className="rise lg:sticky lg:top-24" style={{ animationDelay: "240ms" }}>
             <StatusBoard />
           </div>
         </aside>
       </section>
 
-      <section className="border-t border-line py-10 sm:py-14 min-w-0 w-full">
+      <section className="border-t border-line py-14">
         <EventsGridTitle />
         <EventsGrid />
       </section>
 
-      <section className="border-t border-line py-10 sm:py-14 pb-16 sm:pb-20 min-w-0 w-full">
+      <section className="border-t border-line py-14 pb-20">
         <HowItWorksBlock />
       </section>
     </div>
