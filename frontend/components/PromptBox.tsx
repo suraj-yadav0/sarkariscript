@@ -251,7 +251,7 @@ export function PromptBox() {
                   : t(lang, "voice.start")
               }
               className={`relative inline-flex items-center gap-1 sm:gap-1.5 rounded-full px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition-all active:scale-[0.96] ${
-                isListening || isConnecting
+                isListening || isConnecting || isProcessing
                   ? "bg-saffron text-white shadow-md animate-pulse"
                   : "bg-paper text-muted hover:bg-black/5 hover:text-ink border border-line"
               }`}
@@ -263,10 +263,15 @@ export function PromptBox() {
                 </>
               ) : isConnecting ? (
                 <>
-                  <Waveform size={15} weight="bold" className="animate-spin" />
+                  <Waveform size={14} weight="bold" className="animate-spin" />
                   <span className="hidden sm:inline">
                     {t(lang, "voice.connecting")}
                   </span>
+                </>
+              ) : isProcessing ? (
+                <>
+                  <Waveform size={14} weight="bold" className="animate-spin" />
+                  <span className="hidden sm:inline">Transcribing…</span>
                 </>
               ) : (
                 <>

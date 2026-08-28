@@ -32,7 +32,7 @@ echo "[sarkariscript] starting API on :8000 (log: /tmp/sarkariscript-api.log)"
   if [ -f .env ]; then
     set -a; source .env; set +a
   fi
-  nohup ./.venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000 > /tmp/sarkariscript-api.log 2>&1 &
+  setsid ./.venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000 < /dev/null > /tmp/sarkariscript-api.log 2>&1 &
 )
 
 echo "[sarkariscript] starting web on :3000 (log: /tmp/sarkariscript-web.log)"
@@ -46,7 +46,7 @@ echo "[sarkariscript] starting web on :3000 (log: /tmp/sarkariscript-web.log)"
     echo "[sarkariscript] building frontend once…"
     npm run build
   fi
-  nohup npm run start -- -p 3000 > /tmp/sarkariscript-web.log 2>&1 &
+  setsid npm run start -- -p 3000 < /dev/null > /tmp/sarkariscript-web.log 2>&1 &
 )
 
 sleep 4
