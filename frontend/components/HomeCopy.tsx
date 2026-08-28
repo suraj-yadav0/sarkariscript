@@ -2,7 +2,18 @@
 
 import { t } from "@/lib/i18n";
 import { useApp } from "@/lib/store";
-import { ChatCircleDots, GitFork, CheckCircle } from "@phosphor-icons/react";
+import {
+  ChatCircleDots,
+  GitFork,
+  CheckCircle,
+  Microphone,
+  Translate,
+  TreeStructure,
+  HourglassHigh,
+  ShieldCheck,
+  FilePdf,
+  ArrowRight,
+} from "@phosphor-icons/react";
 
 export function HomeCopy() {
   const { lang } = useApp();
@@ -32,7 +43,7 @@ export function EventsGridTitle() {
   const { lang } = useApp();
   return (
     <div className="mb-6">
-      <h2 className="text-xl font-semibold tracking-tight md:text-2xl">
+      <h2 className="text-xl font-semibold tracking-tight md:text-2xl text-ink">
         {t(lang, "events.title")}
       </h2>
       <p className="mt-1 max-w-[60ch] text-sm text-muted">{t(lang, "events.sub")}</p>
@@ -48,48 +59,108 @@ export function HowItWorksBlock() {
       icon: ChatCircleDots,
       titleKey: "how.one.t",
       descKey: "how.one.d",
+      tags: [
+        { label: "Voice Search", icon: Microphone },
+        { label: "8 Languages", icon: Translate },
+      ],
     },
     {
       n: "02",
       icon: GitFork,
       titleKey: "how.two.t",
       descKey: "how.two.d",
+      tags: [
+        { label: "DAG Roadmap", icon: TreeStructure },
+        { label: "Est. Timeline", icon: HourglassHigh },
+      ],
     },
     {
       n: "03",
       icon: CheckCircle,
       titleKey: "how.three.t",
       descKey: "how.three.d",
+      tags: [
+        { label: "DigiLocker Sync", icon: ShieldCheck },
+        { label: "Printable PDF", icon: FilePdf },
+      ],
     },
   ];
+
   return (
-    <>
-      <h2 className="text-xl font-semibold tracking-tight md:text-2xl">
-        {t(lang, "how.title")}
-      </h2>
-      <ol className="mt-8 grid gap-8 border-t border-line pt-8 md:grid-cols-3 md:gap-0 md:divide-x md:divide-line">
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div>
+          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-saffron-deep font-semibold">
+            SIMPLE 3-STEP PROCESS
+          </p>
+          <h2 className="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-3xl">
+            {t(lang, "how.title")}
+          </h2>
+        </div>
+        <p className="max-w-[44ch] text-xs sm:text-sm text-muted leading-relaxed">
+          From voice query to verified government paperwork without intermediaries or data tracking.
+        </p>
+      </div>
+
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-3">
         {steps.map((s, i) => {
           const Icon = s.icon;
           return (
-            <li key={s.n} className={i > 0 ? "md:pl-8" : ""}>
-              <div className="flex items-center gap-2.5">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-saffron-soft text-saffron-deep">
-                  <Icon size={18} weight="duotone" />
-                </span>
-                <span className="font-mono text-xs font-semibold text-faint">
+            <div
+              key={s.n}
+              className="relative flex flex-col justify-between rounded-2xl border border-line bg-surface p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-saffron/40 transition-all group overflow-hidden"
+            >
+              {/* Giant Watermark Step Number in Background */}
+              <span className="pointer-events-none absolute right-4 top-2 font-mono text-5xl sm:text-6xl font-black text-line/60 select-none group-hover:text-saffron-soft/70 transition-colors">
+                {s.n}
+              </span>
+
+              <div>
+                {/* Header: Duotone Icon + Flow indicator */}
+                <div className="flex items-center justify-between relative z-10">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-saffron-soft text-saffron-deep border border-saffron/20 group-hover:scale-105 transition-transform shadow-xs">
+                    <Icon size={22} weight="duotone" />
+                  </div>
+                  {i < steps.length - 1 && (
+                    <div className="hidden md:flex items-center text-faint group-hover:text-saffron-deep transition-colors mr-1">
+                      <ArrowRight size={16} />
+                    </div>
+                  )}
+                </div>
+
+                {/* Step badge */}
+                <div className="mt-4 inline-flex items-center gap-1 font-mono text-[10px] font-semibold text-saffron-deep bg-saffron-soft/70 px-2 py-0.5 rounded-full border border-saffron/25">
                   STEP {s.n}
-                </span>
+                </div>
+
+                {/* Title and Description */}
+                <h3 className="mt-2.5 text-base sm:text-lg font-semibold tracking-tight text-ink leading-snug">
+                  {t(lang, s.titleKey)}
+                </h3>
+                <p className="mt-1.5 text-xs sm:text-sm text-muted leading-relaxed">
+                  {t(lang, s.descKey)}
+                </p>
               </div>
-              <h3 className="mt-3 text-[15px] font-semibold tracking-tight text-ink">
-                {t(lang, s.titleKey)}
-              </h3>
-              <p className="mt-1.5 max-w-[38ch] text-sm leading-relaxed text-muted">
-                {t(lang, s.descKey)}
-              </p>
-            </li>
+
+              {/* Bottom Feature Tags */}
+              <div className="mt-5 pt-4 border-t border-line/60 flex flex-wrap gap-1.5">
+                {s.tags.map((tag, ti) => {
+                  const TagIcon = tag.icon;
+                  return (
+                    <span
+                      key={ti}
+                      className="inline-flex items-center gap-1 rounded-md bg-paper px-2 py-0.5 text-[10px] sm:text-[11px] font-medium text-muted border border-line"
+                    >
+                      <TagIcon size={12} className="text-saffron-deep" />
+                      {tag.label}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
           );
         })}
-      </ol>
-    </>
+      </div>
+    </div>
   );
 }
