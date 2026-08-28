@@ -434,9 +434,13 @@ export function RoadmapView({ eventId }: { eventId: string }) {
             <button
               type="button"
               onClick={() => setIsDigiLockerOpen(true)}
-              className="ml-auto inline-flex items-center gap-1.5 rounded-xl border border-[#0b3b60]/30 bg-[#0b3b60]/10 px-3 py-1.5 text-xs font-semibold text-[#0b3b60] dark:text-[#38bdf8] hover:bg-[#0b3b60]/20 transition-all shrink-0 print-hidden"
+              className={`ml-auto inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition-all shrink-0 print-hidden ${
+                digilockerLinked
+                  ? "border-leaf/30 bg-leaf-soft text-leaf hover:bg-leaf-soft/80"
+                  : "border-saffron/30 bg-saffron-soft text-saffron-deep hover:bg-saffron-soft/80"
+              }`}
             >
-              <ShieldCheck size={16} weight="fill" className="text-[#0b3b60] dark:text-[#38bdf8]" />
+              <ShieldCheck size={16} weight="fill" />
               {digilockerLinked ? "✓ DigiLocker Synced" : "Fetch from DigiLocker"}
             </button>
           </div>
@@ -688,7 +692,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                                   </span>
                                 </label>
                                 {isUploaded && digilockerLinked && (
-                                  <span className="inline-flex items-center gap-1 font-mono text-[9px] font-semibold text-[#0b3b60] dark:text-[#38bdf8] bg-[#0b3b60]/10 px-1.5 py-0.5 rounded shrink-0">
+                                  <span className="inline-flex items-center gap-1 font-mono text-[9px] font-semibold text-leaf bg-leaf-soft border border-leaf/30 px-1.5 py-0.5 rounded shrink-0">
                                     <ShieldCheck size={11} weight="fill" />
                                     DIGILOCKER
                                   </span>

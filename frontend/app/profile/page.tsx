@@ -51,13 +51,23 @@ export default function ProfilePage() {
 
       {/* DigiLocker Sync Card */}
       <div
-        className="rise mt-4 sm:mt-5 overflow-hidden rounded-2xl border border-[#0b3b60]/20 bg-gradient-to-r from-[#0b3b60]/10 via-[#0077b6]/5 to-transparent p-4 sm:p-5"
+        className={`rise mt-4 sm:mt-5 overflow-hidden rounded-2xl border p-4 sm:p-5 shadow-sm transition-all ${
+          digilockerLinked
+            ? "border-leaf/30 bg-leaf-soft/35"
+            : "border-line bg-surface"
+        }`}
         style={{ animationDelay: "60ms" }}
       >
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-start gap-3 min-w-0">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0b3b60] text-white">
-              <ShieldCheck size={24} weight="fill" className="text-[#38bdf8]" />
+            <div
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors ${
+                digilockerLinked
+                  ? "bg-leaf-soft text-leaf border border-leaf/30"
+                  : "bg-saffron-soft text-saffron-deep border border-saffron/20"
+              }`}
+            >
+              <ShieldCheck size={22} weight="fill" />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -65,11 +75,11 @@ export default function ProfilePage() {
                   DigiLocker Integration
                 </h2>
                 {digilockerLinked ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-leaf-soft px-2 py-0.5 font-mono text-[10px] font-semibold text-leaf">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-leaf-soft border border-leaf/30 px-2 py-0.5 font-mono text-[10px] font-semibold text-leaf">
                     <CheckCircle size={12} weight="fill" /> CONNECTED & VERIFIED
                   </span>
                 ) : (
-                  <span className="rounded-full bg-saffron-soft px-2 py-0.5 font-mono text-[10px] font-semibold text-saffron-deep">
+                  <span className="rounded-full bg-saffron-soft border border-saffron/25 px-2 py-0.5 font-mono text-[10px] font-semibold text-saffron-deep">
                     INDIA STACK
                   </span>
                 )}
@@ -95,7 +105,7 @@ export default function ProfilePage() {
                 <button
                   type="button"
                   onClick={unlinkDigiLocker}
-                  className="rounded-xl border border-rose-200 bg-rose-50 dark:bg-rose-950/40 px-3 py-1.5 text-xs font-medium text-rose-700 dark:text-rose-300 hover:bg-rose-100 transition-all flex items-center gap-1.5"
+                  className="rounded-xl border border-alert/30 bg-alert-soft px-3 py-1.5 text-xs font-medium text-alert hover:bg-alert-soft/80 transition-all flex items-center gap-1.5"
                 >
                   <LinkBreak size={14} />
                   Disconnect
@@ -105,9 +115,9 @@ export default function ProfilePage() {
               <button
                 type="button"
                 onClick={() => setIsDigiLockerOpen(true)}
-                className="rounded-xl bg-[#0b3b60] hover:bg-[#082a46] px-4 py-2 text-xs font-semibold text-white shadow-sm transition-all flex items-center gap-2"
+                className="rounded-xl bg-saffron-deep hover:bg-saffron px-4 py-2 text-xs font-semibold text-white shadow-sm transition-all flex items-center gap-2"
               >
-                <Sparkle size={15} weight="fill" className="text-[#38bdf8]" />
+                <Sparkle size={15} weight="fill" className="text-saffron-soft" />
                 Fetch from DigiLocker
               </button>
             )}

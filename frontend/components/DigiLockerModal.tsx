@@ -76,22 +76,22 @@ export function DigiLockerModal({ isOpen, onClose }: DigiLockerModalProps) {
     >
       <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl animate-in fade-in zoom-in-95 duration-200">
         {/* DigiLocker Official Brand Header */}
-        <div className="bg-[#0b3b60] px-5 py-4 text-white">
+        <div className="bg-ink px-5 py-4 text-surface border-b border-line/20">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 text-white font-bold tracking-tight">
-                <ShieldCheck size={24} weight="fill" className="text-[#38bdf8]" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-saffron-soft text-saffron-deep font-bold tracking-tight">
+                <ShieldCheck size={22} weight="fill" />
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-bold tracking-wide text-sm sm:text-base">
+                  <span className="font-semibold tracking-wide text-sm sm:text-base text-surface">
                     DigiLocker
                   </span>
-                  <span className="rounded bg-[#38bdf8]/20 px-1.5 py-0.2 font-mono text-[9px] font-semibold text-[#38bdf8] uppercase">
+                  <span className="rounded bg-saffron-soft/20 border border-saffron/30 px-1.5 py-0.2 font-mono text-[9px] font-semibold text-saffron uppercase">
                     MeriPehchaan
                   </span>
                 </div>
-                <p className="text-[10px] text-white/70">
+                <p className="text-[10px] text-surface/70">
                   National e-Governance Division · Govt. of India
                 </p>
               </div>
@@ -99,7 +99,7 @@ export function DigiLockerModal({ isOpen, onClose }: DigiLockerModalProps) {
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg p-1.5 text-white/70 hover:bg-white/10 hover:text-white"
+              className="rounded-lg p-1.5 text-surface/70 hover:bg-surface/10 hover:text-surface transition-colors"
               aria-label="Close DigiLocker Dialog"
             >
               <X size={18} />
@@ -110,7 +110,7 @@ export function DigiLockerModal({ isOpen, onClose }: DigiLockerModalProps) {
         <div className="p-5">
           {isSuccess ? (
             <div className="py-8 text-center">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-leaf-soft text-leaf">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-leaf-soft text-leaf border border-leaf/30">
                 <Check size={32} weight="bold" />
               </div>
               <h3 className="mt-3 text-lg font-semibold text-ink">
@@ -125,7 +125,7 @@ export function DigiLockerModal({ isOpen, onClose }: DigiLockerModalProps) {
             <div className="py-10 text-center">
               <Spinner
                 size={36}
-                className="mx-auto animate-spin text-[#0b3b60] dark:text-[#38bdf8]"
+                className="mx-auto animate-spin text-saffron-deep"
               />
               <h3 className="mt-4 text-sm font-semibold text-ink">
                 DigiLocker Authentication in Progress
@@ -165,7 +165,7 @@ export function DigiLockerModal({ isOpen, onClose }: DigiLockerModalProps) {
                         onClick={() => handlePersonaChange(p)}
                         className={`flex flex-col items-start rounded-xl border p-2.5 text-left transition-all ${
                           active
-                            ? "border-[#0b3b60] bg-saffron-soft/20 text-ink ring-1 ring-[#0b3b60]"
+                            ? "border-saffron bg-saffron-soft text-ink ring-1 ring-saffron shadow-sm"
                             : "border-line bg-surface hover:border-ink/20 text-muted"
                         }`}
                       >
@@ -195,10 +195,10 @@ export function DigiLockerModal({ isOpen, onClose }: DigiLockerModalProps) {
                   {currentPersona.documents.map((doc) => (
                     <div
                       key={doc.id}
-                      className="flex items-center justify-between rounded-lg border border-line bg-paper/60 px-3 py-2 text-xs"
+                      className="flex items-center justify-between rounded-lg border border-line bg-paper px-3 py-2 text-xs"
                     >
                       <div className="flex items-center gap-2 min-w-0">
-                        <FileText size={16} className="text-[#0b3b60] dark:text-[#38bdf8] shrink-0" />
+                        <FileText size={16} className="text-saffron-deep shrink-0" />
                         <div className="truncate">
                           <p className="font-medium text-ink truncate">{doc.name}</p>
                           <p className="text-[10px] text-faint truncate font-mono">
@@ -206,7 +206,7 @@ export function DigiLockerModal({ isOpen, onClose }: DigiLockerModalProps) {
                           </p>
                         </div>
                       </div>
-                      <span className="rounded bg-leaf-soft px-1.5 py-0.5 font-mono text-[9px] font-semibold text-leaf shrink-0 ml-2">
+                      <span className="rounded bg-leaf-soft border border-leaf/30 px-1.5 py-0.5 font-mono text-[9px] font-semibold text-leaf shrink-0 ml-2">
                         VERIFIED
                       </span>
                     </div>
@@ -241,14 +241,14 @@ export function DigiLockerModal({ isOpen, onClose }: DigiLockerModalProps) {
                 <button
                   type="button"
                   onClick={onClose}
-                  className="flex-1 rounded-xl border border-line px-4 py-2.5 text-xs font-medium text-muted hover:bg-paper"
+                  className="flex-1 rounded-xl border border-line px-4 py-2.5 text-xs font-medium text-muted hover:bg-paper transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handleAuthorize}
-                  className="flex-[2] rounded-xl bg-[#0b3b60] hover:bg-[#082a46] px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition-all flex items-center justify-center gap-2"
+                  className="flex-[2] rounded-xl bg-saffron-deep hover:bg-saffron px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition-all flex items-center justify-center gap-2"
                 >
                   <ShieldCheck size={16} weight="fill" />
                   Approve & Import Records
