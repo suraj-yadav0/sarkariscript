@@ -171,6 +171,19 @@ body {
   border-radius: 4px;
 }
 
+/* Disallow inner focus rectangle on unified card inputs */
+textarea#prompt,
+textarea#prompt:focus,
+textarea#prompt:focus-visible,
+.no-focus-outline,
+.no-focus-outline:focus,
+.no-focus-outline:focus-visible {
+  outline: none !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
 /* Skip link */
 .skip-link {
   position: absolute;

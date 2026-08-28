@@ -259,7 +259,7 @@ export function PromptBox() {
               }
             }}
             placeholder={t(lang, "hero.placeholder")}
-            className="w-full resize-none bg-transparent px-1 pt-0.5 text-sm sm:text-base leading-relaxed outline-none placeholder:text-faint pr-8"
+            className="no-focus-outline w-full resize-none bg-transparent px-1 pt-0.5 text-sm sm:text-base leading-relaxed outline-none border-none ring-0 shadow-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 placeholder:text-faint pr-8"
           />
           {query && (
             <button
