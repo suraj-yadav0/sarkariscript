@@ -12,7 +12,6 @@ import {
   HourglassHigh,
   ShieldCheck,
   FilePdf,
-  ArrowRight,
 } from "@phosphor-icons/react";
 
 export function HomeCopy() {
@@ -103,7 +102,7 @@ export function HowItWorksBlock() {
       </div>
 
       <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-3">
-        {steps.map((s, i) => {
+        {steps.map((s) => {
           const Icon = s.icon;
           return (
             <div
@@ -116,16 +115,11 @@ export function HowItWorksBlock() {
               </span>
 
               <div>
-                {/* Header: Duotone Icon + Flow indicator */}
-                <div className="flex items-center justify-between relative z-10">
+                {/* Header: Duotone Icon */}
+                <div className="flex items-center relative z-10">
                   <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-saffron-soft text-saffron-deep border border-saffron/20 group-hover:scale-105 transition-transform shadow-xs">
                     <Icon size={22} weight="duotone" />
                   </div>
-                  {i < steps.length - 1 && (
-                    <div className="hidden md:flex items-center text-faint group-hover:text-saffron-deep transition-colors mr-1">
-                      <ArrowRight size={16} />
-                    </div>
-                  )}
                 </div>
 
                 {/* Step badge */}
