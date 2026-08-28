@@ -240,28 +240,13 @@ export function PromptBox() {
           e.preventDefault();
           navigate(query);
         }}
-        className="relative rounded-2xl border border-line bg-surface overflow-hidden shadow-[0_2px_4px_rgba(27,27,24,0.04),0_12px_32px_-12px_rgba(27,27,24,0.14)] transition-all focus-within:border-saffron focus-within:shadow-[0_2px_4px_rgba(27,27,24,0.04),0_14px_40px_-10px_rgba(194,102,29,0.25)]"
+        className="relative rounded-2xl border border-line bg-surface p-3 sm:p-4 shadow-[0_2px_8px_rgba(27,27,24,0.04),0_16px_36px_-12px_rgba(27,27,24,0.08)] transition-all focus-within:border-saffron focus-within:shadow-[0_2px_8px_rgba(27,27,24,0.04),0_18px_44px_-10px_rgba(194,102,29,0.18)]"
       >
-        {/* Option 2: DPI Copilot Header Strip */}
-        <div className="flex items-center justify-between border-b border-line/70 bg-paper/90 px-3.5 sm:px-4 py-2">
-          <div className="flex items-center gap-2">
-            <span className="flex h-4 w-4 items-center justify-center rounded bg-saffron text-[10px] text-white font-bold">
-              🇮🇳
-            </span>
-            <span className="font-mono text-[10.5px] sm:text-[11px] font-bold uppercase tracking-[0.12em] text-ink">
-              DPI COPILOT · REAL-TIME ROADMAP ENGINE
-            </span>
-          </div>
-          <span className="inline-flex items-center gap-1 font-mono text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-[0.12em] text-leaf">
-            <span className="h-1.5 w-1.5 rounded-full bg-leaf animate-pulse" />
-            12 PORTALS LIVE
-          </span>
-        </div>
-
         <label htmlFor="prompt" className="sr-only">
           {t(lang, "hero.sub")}
         </label>
-        <div className="relative p-1">
+        
+        <div className="relative">
           <textarea
             id="prompt"
             rows={2}
@@ -274,22 +259,23 @@ export function PromptBox() {
               }
             }}
             placeholder={t(lang, "hero.placeholder")}
-            className="w-full resize-none bg-transparent px-3 sm:px-3.5 pt-2 sm:pt-2.5 text-sm sm:text-[15px] leading-relaxed outline-none placeholder:text-faint pr-8"
+            className="w-full resize-none bg-transparent px-1 pt-0.5 text-sm sm:text-base leading-relaxed outline-none placeholder:text-faint pr-8"
           />
           {query && (
             <button
               type="button"
               onClick={() => setQuery("")}
               aria-label={t(lang, "voice.clear")}
-              className="absolute right-2.5 top-2.5 p-1 text-faint hover:text-ink transition-colors rounded-full hover:bg-black/5"
+              className="absolute right-1 top-0 p-1 text-faint hover:text-ink transition-colors rounded-full hover:bg-black/5"
             >
               <X size={15} />
             </button>
           )}
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 px-1 pt-1.5 pb-0.5 border-t border-line/60">
-          <div className="flex items-center gap-1.5 sm:gap-2">
+        {/* Bottom Actions Row - Seamless, no dividing borders */}
+        <div className="mt-2.5 flex items-center justify-between gap-2 pt-1">
+          <div className="flex items-center gap-2">
             {/* Voice Input Button */}
             <button
               type="button"
@@ -314,10 +300,10 @@ export function PromptBox() {
                   ? t(lang, "voice.connecting")
                   : t(lang, "voice.start")
               }
-              className={`relative inline-flex items-center gap-1 sm:gap-1.5 rounded-full px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition-all active:scale-[0.96] ${
+              className={`relative inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-all active:scale-[0.96] ${
                 isListening || isConnecting || isProcessing
                   ? "bg-saffron text-white shadow-md animate-pulse"
-                  : "bg-paper text-muted hover:bg-black/5 hover:text-ink border border-line"
+                  : "bg-paper text-muted hover:bg-black/5 hover:text-ink border border-line/80"
               }`}
             >
               {isListening ? (
@@ -339,26 +325,26 @@ export function PromptBox() {
                 </>
               ) : (
                 <>
-                  <Microphone size={14} weight="duotone" className="text-saffron-deep" />
+                  <Microphone size={15} weight="duotone" className="text-saffron-deep" />
                   <span className="hidden xs:inline">Voice (Alt+V)</span>
                 </>
               )}
             </button>
 
-            <span
-              className={`font-mono text-[10.5px] sm:text-[11px] uppercase tracking-[0.12em] transition-opacity ${
-                loading ? "text-saffron opacity-100" : "text-transparent opacity-0"
-              }`}
-              aria-live="polite"
-            >
-              {loading ? t(lang, "hero.thinking") : "…"}
-            </span>
+            {loading && (
+              <span
+                className="font-mono text-[10.5px] sm:text-[11px] uppercase tracking-[0.12em] text-saffron"
+                aria-live="polite"
+              >
+                {t(lang, "hero.thinking")}
+              </span>
+            )}
           </div>
 
           <button
             type="submit"
             disabled={loading || !query.trim()}
-            className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-ink px-3 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-paper transition-all hover:bg-saffron-deep active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-ink focus-visible:outline-2 focus-visible:outline-saffron ml-auto shrink-0"
+            className="inline-flex items-center gap-2 rounded-full bg-ink px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-paper transition-all hover:bg-saffron-deep active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-ink focus-visible:outline-2 focus-visible:outline-saffron ml-auto shrink-0 shadow-xs"
           >
             {loading ? (
               <PaperPlaneRight size={15} className="animate-pulse" />
