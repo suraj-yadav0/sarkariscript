@@ -17,6 +17,7 @@ import {
   PlusCircle,
   Printer,
   SealCheck,
+  ShieldCheck,
   SpeakerHigh,
   SpeakerSimpleSlash,
   Stamp,
@@ -25,6 +26,7 @@ import {
 import { apiGet, apiPost } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useApp } from "@/lib/store";
+import { DigiLockerModal } from "@/components/DigiLockerModal";
 import { isStepReady, topoSortSteps } from "@/lib/dag";
 import { useSpeechSynthesis } from "@/lib/useSpeechSynthesis";
 import type { Lang, LifeEventMeta, RoadmapResponse, Step } from "@/lib/types";
@@ -42,12 +44,14 @@ export function RoadmapView({ eventId }: { eventId: string }) {
     docsUploaded,
     toggleDoc,
     announce,
+    digilockerLinked,
   } = useApp();
 
   const [fetched, setFetched] = useState<RoadmapResponse | null>(null);
   const [error, setError] = useState(false);
   const [openSteps, setOpenSteps] = useState<Set<string>>(new Set());
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [isDigiLockerOpen, setIsDigiLockerOpen] = useState(false);
 
   // Text-to-speech hook
   const {
@@ -413,7 +417,7 @@ export function RoadmapView({ eventId }: { eventId: string }) {
             <div className="relative flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full bg-leaf-soft text-leaf font-mono text-xs font-semibold">
               {doneCount}/{total}
             </div>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="text-xs sm:text-sm font-semibold text-ink leading-snug">
                 {doneCount} {t(lang, "events.of")} {total}{" "}
                 {t(lang, "events.steps")} {t(lang, "roadmap.progress")}
@@ -426,6 +430,15 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                 {t(lang, "roadmap.min_est")}
               </p>
             </div>
+
+            <button
+              type="button"
+              onClick={() => setIsDigiLockerOpen(true)}
+              className="ml-auto inline-flex items-center gap-1.5 rounded-xl border border-[#0b3b60]/30 bg-[#0b3b60]/10 px-3 py-1.5 text-xs font-semibold text-[#0b3b60] dark:text-[#38bdf8] hover:bg-[#0b3b60]/20 transition-all shrink-0 print-hidden"
+            >
+              <ShieldCheck size={16} weight="fill" className="text-[#0b3b60] dark:text-[#38bdf8]" />
+              {digilockerLinked ? "✓ DigiLocker Synced" : "Fetch from DigiLocker"}
+            </button>
           </div>
 
           {roadmap.reusable_docs && roadmap.reusable_docs.length > 0 && (
@@ -674,6 +687,12 @@ export function RoadmapView({ eventId }: { eventId: string }) {
                                     {lang === "hi" ? doc.name_hi : doc.name_en}
                                   </span>
                                 </label>
+                                {isUploaded && digilockerLinked && (
+                                  <span className="inline-flex items-center gap-1 font-mono text-[9px] font-semibold text-[#0b3b60] dark:text-[#38bdf8] bg-[#0b3b60]/10 px-1.5 py-0.5 rounded shrink-0">
+                                    <ShieldCheck size={11} weight="fill" />
+                                    DIGILOCKER
+                                  </span>
+                                )}
                                 <span className="font-mono text-[10px] text-faint shrink-0 print:text-black">
                                   {doc.mandatory
                                     ? t(lang, "roadmap.mandatory")
@@ -870,6 +889,11 @@ export function RoadmapView({ eventId }: { eventId: string }) {
           </ul>
         </section>
       )}
+      {/* DigiLocker Modal */}
+      <DigiLockerModal
+        isOpen={isDigiLockerOpen}
+        onClose={() => setIsDigiLockerOpen(false)}
+      />
     </div>
   );
 }

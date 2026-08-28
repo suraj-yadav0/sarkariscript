@@ -1,0 +1,217 @@
+export interface DigiLockerDoc {
+  id: string;
+  doc_type: string;
+  name: string;
+  issuer: string;
+  issuer_code: string;
+  uri: string;
+  issue_date: string;
+  mapped_doc_ids: string[]; // maps to knowledge base document catalog IDs (aadhaar, pan_card, address_proof, dob_proof, id_proof, etc.)
+}
+
+export interface DigiLockerPersona {
+  id: string;
+  name: string;
+  role_en: string;
+  role_hi: string;
+  pin: string;
+  profile: Record<string, string>;
+  documents: DigiLockerDoc[];
+}
+
+export const DIGILOCKER_PERSONAS: DigiLockerPersona[] = [
+  {
+    id: "ramesh",
+    name: "Ramesh Kumar Sharma",
+    role_en: "Shop Owner / MSME Entrepreneur · Lucknow",
+    role_hi: "दुकानदार / उद्यमी · लखनऊ, उत्तर प्रदेश",
+    pin: "123456",
+    profile: {
+      full_name: "Ramesh Kumar Sharma",
+      father_name: "Kailash Chand Sharma",
+      dob: "1992-05-14",
+      gender: "Male",
+      mobile: "9876543210",
+      email: "ramesh.sharma92@gmail.com",
+      aadhaar: "5489 1234 9081",
+      pan: "ABCPS1234K",
+      address_line: "Shop No. 12, Main Market, Gomti Nagar",
+      city: "Lucknow",
+      state: "Uttar Pradesh",
+      pincode: "226010",
+      bank_account_no: "50100481928471",
+      bank_ifsc: "SBIN0001234",
+      business_name: "Sharma Kirana & General Store",
+    },
+    documents: [
+      {
+        id: "adhr-1",
+        doc_type: "Aadhaar Card",
+        name: "Aadhaar Card (UIDAI)",
+        issuer: "Unique Identification Authority of India",
+        issuer_code: "UIDAI",
+        uri: "in.gov.uidai-adhr-548912349081",
+        issue_date: "2018-09-12",
+        mapped_doc_ids: ["aadhaar", "id_proof", "address_proof"],
+      },
+      {
+        id: "pan-1",
+        doc_type: "PAN Card",
+        name: "PAN Verification Record",
+        issuer: "Income Tax Department / NSDL",
+        issuer_code: "ITD-NSDL",
+        uri: "in.gov.incometax-pan-ABCPS1234K",
+        issue_date: "2019-01-20",
+        mapped_doc_ids: ["pan_card", "id_proof"],
+      },
+      {
+        id: "cbse-1",
+        doc_type: "Class X Certificate",
+        name: "Class X Passing Certificate (DOB Proof)",
+        issuer: "Central Board of Secondary Education (CBSE)",
+        issuer_code: "CBSE",
+        uri: "in.gov.cbse-cert-2008491823",
+        issue_date: "2008-06-15",
+        mapped_doc_ids: ["dob_proof", "birth_certificate"],
+      },
+      {
+        id: "elec-1",
+        doc_type: "Electricity Bill",
+        name: "Electricity Consumer Bill (UPPCL)",
+        issuer: "Uttar Pradesh Power Corporation Ltd",
+        issuer_code: "UPPCL",
+        uri: "in.gov.uppcl-bill-2260109823",
+        issue_date: "2026-07-01",
+        mapped_doc_ids: ["address_proof"],
+      },
+      {
+        id: "rc-1",
+        doc_type: "Ration Card",
+        name: "NFSA Family Ration Card",
+        issuer: "Dept of Food & Civil Supplies, UP",
+        issuer_code: "NFSA-UP",
+        uri: "in.gov.nfsa-rc-UP226010091823",
+        issue_date: "2020-04-11",
+        mapped_doc_ids: ["ration_card", "address_proof"],
+      },
+    ],
+  },
+  {
+    id: "priya",
+    name: "Priya Nair",
+    role_en: "Student / First-time Elector · Bengaluru",
+    role_hi: "छात्रा / पहली बार मतदाता · बेंगलुरु, कर्नाटक",
+    pin: "112233",
+    profile: {
+      full_name: "Priya Nair",
+      father_name: "Gopala Krishna Nair",
+      dob: "2006-03-22",
+      gender: "Female",
+      mobile: "9811223344",
+      email: "priya.nair06@outlook.com",
+      aadhaar: "7812 3456 9012",
+      pan: "BWVPN5678L",
+      address_line: "Flat 304, Palm Meadows, Whitefield",
+      city: "Bengaluru",
+      state: "Karnataka",
+      pincode: "560066",
+      bank_account_no: "60291038471928",
+      bank_ifsc: "HDFC0000456",
+    },
+    documents: [
+      {
+        id: "adhr-2",
+        doc_type: "Aadhaar Card",
+        name: "Aadhaar Card (UIDAI)",
+        issuer: "Unique Identification Authority of India",
+        issuer_code: "UIDAI",
+        uri: "in.gov.uidai-adhr-781234569012",
+        issue_date: "2021-02-18",
+        mapped_doc_ids: ["aadhaar", "id_proof", "address_proof"],
+      },
+      {
+        id: "pan-2",
+        doc_type: "PAN Card",
+        name: "Instant e-PAN Record",
+        issuer: "Income Tax Department",
+        issuer_code: "ITD",
+        uri: "in.gov.incometax-pan-BWVPN5678L",
+        issue_date: "2024-04-02",
+        mapped_doc_ids: ["pan_card", "id_proof"],
+      },
+      {
+        id: "icse-2",
+        doc_type: "Class X Certificate",
+        name: "ICSE Secondary School Certificate",
+        issuer: "Council for the Indian School Certificate Exams (CISCE)",
+        issuer_code: "CISCE",
+        uri: "in.gov.icse-cert-2022948123",
+        issue_date: "2022-05-20",
+        mapped_doc_ids: ["dob_proof", "birth_certificate"],
+      },
+      {
+        id: "dl-2",
+        doc_type: "Driving Licence",
+        name: "Learner's Licence (Sarathi)",
+        issuer: "Ministry of Road Transport & Highways",
+        issuer_code: "MoRTH",
+        uri: "in.gov.morth-dl-KA0320250019283",
+        issue_date: "2025-08-10",
+        mapped_doc_ids: ["id_proof"],
+      },
+    ],
+  },
+  {
+    id: "sunita",
+    name: "Sunita Devi",
+    role_en: "Rural Household / SHG Member · Patna",
+    role_hi: "ग्रामीण परिवार / स्वयं सहायता समूह · पटना, बिहार",
+    pin: "998877",
+    profile: {
+      full_name: "Sunita Devi",
+      father_name: "Ram Prasad Yadav",
+      dob: "1988-11-10",
+      gender: "Female",
+      mobile: "9431098765",
+      aadhaar: "9012 3456 7890",
+      address_line: "Village Danapur, Post Khagaul",
+      city: "Patna",
+      state: "Bihar",
+      pincode: "801503",
+      bank_account_no: "30192837461",
+      bank_ifsc: "PUNB0007890",
+    },
+    documents: [
+      {
+        id: "adhr-3",
+        doc_type: "Aadhaar Card",
+        name: "Aadhaar Card (UIDAI)",
+        issuer: "Unique Identification Authority of India",
+        issuer_code: "UIDAI",
+        uri: "in.gov.uidai-adhr-901234567890",
+        issue_date: "2017-03-25",
+        mapped_doc_ids: ["aadhaar", "id_proof", "address_proof"],
+      },
+      {
+        id: "rc-3",
+        doc_type: "Ration Card",
+        name: "Antyodaya Anna Yojana (AAY) Ration Card",
+        issuer: "Food & Consumer Protection Dept, Bihar",
+        issuer_code: "NFSA-BR",
+        uri: "in.gov.nfsa-rc-BR8015039182",
+        issue_date: "2019-11-04",
+        mapped_doc_ids: ["ration_card", "address_proof"],
+      },
+      {
+        id: "pmjay-3",
+        doc_type: "Ayushman Card",
+        name: "Ayushman Bharat PM-JAY Golden Card",
+        issuer: "National Health Authority (NHA)",
+        issuer_code: "NHA",
+        uri: "in.gov.pmjay-abha-9188491928",
+        issue_date: "2021-09-15",
+        mapped_doc_ids: ["id_proof"],
+      },
+    ],
+  },
+];

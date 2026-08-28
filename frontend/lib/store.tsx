@@ -11,6 +11,7 @@ import {
 import type { ReactNode } from "react";
 import type { ContrastMode, FontSize, Lang, RoadmapResponse } from "./types";
 import { PROFILE_FIELDS } from "./profile-fields";
+import { DIGILOCKER_PERSONAS } from "./digilocker";
 
 const STORAGE_KEY = "sarkariscript:v2";
 
@@ -25,6 +26,10 @@ interface PersistedState {
   contrast: ContrastMode;
   dyslexiaFont: boolean;
   reduceMotion: boolean;
+  digilockerLinked?: boolean;
+  digilockerPersona?: string | null;
+  digilockerSyncedAt?: string | null;
+  digilockerDocs?: string[];
 }
 
 const defaults: PersistedState = {
@@ -38,6 +43,10 @@ const defaults: PersistedState = {
   contrast: "default",
   dyslexiaFont: false,
   reduceMotion: false,
+  digilockerLinked: false,
+  digilockerPersona: null,
+  digilockerSyncedAt: null,
+  digilockerDocs: [],
 };
 
 function loadState(): PersistedState {
@@ -53,6 +62,10 @@ function loadState(): PersistedState {
       docsUploaded: Array.isArray(parsed.docsUploaded) ? parsed.docsUploaded : [],
       stepDone: parsed.stepDone || {},
       addedSteps: parsed.addedSteps || {},
+      digilockerLinked: Boolean(parsed.digilockerLinked),
+      digilockerPersona: parsed.digilockerPersona || null,
+      digilockerSyncedAt: parsed.digilockerSyncedAt || null,
+      digilockerDocs: Array.isArray(parsed.digilockerDocs) ? parsed.digilockerDocs : [],
     };
   } catch {
     return defaults;
@@ -72,6 +85,10 @@ interface AppContextValue {
   dyslexiaFont: boolean;
   reduceMotion: boolean;
   announcement: string;
+  digilockerLinked: boolean;
+  digilockerPersona: string | null;
+  digilockerSyncedAt: string | null;
+  digilockerDocs: string[];
   setLang: (lang: Lang) => void;
   setProfileField: (key: string, value: string) => void;
   toggleDoc: (docId: string) => void;
@@ -85,6 +102,8 @@ interface AppContextValue {
   setReduceMotion: (val: boolean) => void;
   resetA11y: () => void;
   announce: (message: string) => void;
+  linkDigiLocker: (personaId: string) => void;
+  unlinkDigiLocker: () => void;
   profileCompletionPct: number;
 }
 
@@ -212,6 +231,45 @@ export function AppProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const linkDigiLocker = useCallback((personaId: string) => {
+    const persona =
+      DIGILOCKER_PERSONAS.find((p) => p.id === personaId) ||
+      DIGILOCKER_PERSONAS[0];
+    if (!persona) return;
+
+    // Collect all mapped doc IDs from this persona's issued documents
+    const docIds = new Set<string>();
+    persona.documents.forEach((d) => {
+      d.mapped_doc_ids.forEach((id) => docIds.add(id));
+    });
+
+    setState((s) => {
+      const mergedDocs = Array.from(new Set([...s.docsUploaded, ...docIds]));
+      return {
+        ...s,
+        profile: {
+          ...s.profile,
+          ...persona.profile,
+        },
+        docsUploaded: mergedDocs,
+        digilockerLinked: true,
+        digilockerPersona: persona.id,
+        digilockerSyncedAt: new Date().toISOString(),
+        digilockerDocs: persona.documents.map((d) => d.id),
+      };
+    });
+  }, []);
+
+  const unlinkDigiLocker = useCallback(() => {
+    setState((s) => ({
+      ...s,
+      digilockerLinked: false,
+      digilockerPersona: null,
+      digilockerSyncedAt: null,
+      digilockerDocs: [],
+    }));
+  }, []);
+
   const profileCompletionPct = useMemo(() => {
     const filled = PROFILE_FIELDS.filter((f) => (state.profile[f.key] ?? "").trim()).length;
     return Math.round((filled / PROFILE_FIELDS.length) * 100);
@@ -230,6 +288,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     dyslexiaFont: state.dyslexiaFont,
     reduceMotion: state.reduceMotion,
     announcement,
+    digilockerLinked: Boolean(state.digilockerLinked),
+    digilockerPersona: state.digilockerPersona ?? null,
+    digilockerSyncedAt: state.digilockerSyncedAt ?? null,
+    digilockerDocs: state.digilockerDocs ?? [],
     setLang,
     setProfileField,
     toggleDoc,
@@ -243,6 +305,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setReduceMotion,
     resetA11y,
     announce,
+    linkDigiLocker,
+    unlinkDigiLocker,
     profileCompletionPct,
   };
 
