@@ -242,18 +242,19 @@ export function PromptBox() {
         }}
         className="relative rounded-2xl border border-line bg-surface overflow-hidden shadow-[0_2px_4px_rgba(27,27,24,0.04),0_12px_32px_-12px_rgba(27,27,24,0.14)] transition-all focus-within:border-saffron focus-within:shadow-[0_2px_4px_rgba(27,27,24,0.04),0_14px_40px_-10px_rgba(194,102,29,0.25)]"
       >
-        {/* Modern Citizen Docket Header Strip */}
-        <div className="flex items-center justify-between border-b border-line/70 bg-paper/80 px-3.5 sm:px-4 py-2">
+        {/* Option 2: DPI Copilot Header Strip */}
+        <div className="flex items-center justify-between border-b border-line/70 bg-paper/90 px-3.5 sm:px-4 py-2">
           <div className="flex items-center gap-2">
             <span className="flex h-4 w-4 items-center justify-center rounded bg-saffron text-[10px] text-white font-bold">
               🇮🇳
             </span>
-            <span className="font-mono text-[10.5px] sm:text-[11px] font-semibold uppercase tracking-[0.12em] text-ink">
-              आवेदन याचिका · CITIZEN PETITION DOCKET
+            <span className="font-mono text-[10.5px] sm:text-[11px] font-bold uppercase tracking-[0.12em] text-ink">
+              DPI COPILOT · REAL-TIME ROADMAP ENGINE
             </span>
           </div>
-          <span className="font-mono text-[9.5px] sm:text-[10px] uppercase tracking-[0.14em] text-faint hidden xs:inline">
-            REF // BHARAT-2026
+          <span className="inline-flex items-center gap-1 font-mono text-[9.5px] sm:text-[10px] font-semibold uppercase tracking-[0.12em] text-leaf">
+            <span className="h-1.5 w-1.5 rounded-full bg-leaf animate-pulse" />
+            12 PORTALS LIVE
           </span>
         </div>
 
@@ -437,7 +438,7 @@ export function PromptBox() {
       )}
 
       {/* Multilingual Examples */}
-      <div className="mt-3 sm:mt-4 flex flex-wrap items-center gap-1.5 sm:gap-2">
+      <div className="mt-3.5 sm:mt-4.5 flex flex-wrap items-center gap-1.5 sm:gap-2">
         <span className="font-mono text-[10.5px] sm:text-[11px] uppercase tracking-[0.14em] text-faint shrink-0">
           {t(lang, "hero.examples")}
         </span>
@@ -449,13 +450,16 @@ export function PromptBox() {
                 setQuery(ex);
                 navigate(ex);
               }}
-              className="group inline-flex min-w-0 flex-1 items-center justify-between gap-1.5 rounded-full border border-line bg-surface px-3 py-1 sm:py-1.5 text-xs text-muted transition-colors hover:border-saffron hover:text-saffron-deep focus-visible:outline-2 focus-visible:outline-saffron overflow-hidden"
+              className="group inline-flex min-w-0 flex-1 items-center justify-between gap-1.5 rounded-full border border-line bg-surface px-3 py-1 sm:py-1.5 text-xs text-muted transition-all hover:border-saffron hover:text-saffron-deep hover:shadow-xs focus-visible:outline-2 focus-visible:outline-saffron overflow-hidden"
             >
-              <span className="truncate">〔 {ex} 〕</span>
+              <span className="truncate flex items-center gap-1">
+                <span className="text-[10px] font-mono text-saffron-deep font-semibold">⚡</span>
+                {ex}
+              </span>
               <ArrowRight
                 size={11}
                 weight="bold"
-                className="shrink-0 opacity-40 group-hover:opacity-100 text-saffron-deep"
+                className="shrink-0 opacity-40 group-hover:opacity-100 text-saffron-deep transition-transform group-hover:translate-x-0.5"
               />
             </button>
           ))}

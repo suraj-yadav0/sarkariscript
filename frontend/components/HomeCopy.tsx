@@ -18,19 +18,22 @@ export function HomeCopy() {
   const { lang } = useApp();
   return (
     <div className="relative">
-      {/* Official Citizen Docket Ribbon Badge */}
-      <div className="flex items-center gap-2 mb-2.5 sm:mb-3">
-        <span className="inline-flex items-center gap-1.5 rounded-md border border-saffron/30 bg-saffron-soft/70 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-saffron-deep">
-          <span>॥</span>
-          <span>नागरिक सेवा प्रपत्र</span>
-          <span>॥</span>
+      {/* Tiranga Micro-Accent Trim */}
+      <div className="flex items-center gap-2 mb-3">
+        <div className="h-1.5 w-16 rounded-full bg-gradient-to-r from-[#FF9933] via-white to-[#138808] border border-line/40 shadow-xs" />
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-surface border border-line px-2.5 py-0.5 font-mono text-[10px] font-semibold text-ink shadow-2xs">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-leaf opacity-75" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-leaf" />
+          </span>
+          INDIA STACK · DPI ENGINE
         </span>
-        <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint hidden xs:inline">
-          OFFICIAL CITIZEN COPILOT · INDIA STACK
+        <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint hidden sm:inline">
+          12 GOVT APIS CONNECTED
         </span>
       </div>
 
-      <p className="rise font-mono text-[11px] uppercase tracking-[0.18em] text-saffron-deep font-semibold">
+      <p className="rise font-mono text-[11px] uppercase tracking-[0.2em] text-saffron-deep font-bold">
         {t(lang, "hero.eyebrow")}
       </p>
       <h1
@@ -38,8 +41,9 @@ export function HomeCopy() {
         style={{ animationDelay: "60ms" }}
       >
         {t(lang, "hero.h1a")}{" "}
-        <span className="text-saffron-deep underline decoration-saffron/30 decoration-wavy decoration-1 underline-offset-4">
+        <span className="relative inline-block text-saffron-deep">
           {t(lang, "hero.h1b")}
+          <span className="absolute -bottom-0.5 left-0 right-0 h-1 bg-gradient-to-r from-saffron/80 via-saffron/40 to-leaf/80 rounded-full" />
         </span>
       </h1>
       <p
@@ -48,6 +52,20 @@ export function HomeCopy() {
       >
         {t(lang, "hero.sub")}
       </p>
+
+      {/* Live DPI Network Connectors Strip */}
+      <div className="mt-3.5 flex flex-wrap items-center gap-1.5 font-mono text-[10px] text-faint">
+        <span className="text-muted font-semibold mr-1">Direct Gateways:</span>
+        {["UIDAI", "GSTN", "MoRTH", "Passport Seva", "DigiLocker", "PM-JAY"].map((gw) => (
+          <span
+            key={gw}
+            className="inline-flex items-center gap-1 rounded-md bg-surface border border-line px-2 py-0.5 hover:border-saffron/40 hover:text-ink transition-colors"
+          >
+            <span className="h-1 w-1 rounded-full bg-leaf" />
+            {gw}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
