@@ -13,6 +13,7 @@ import { useApp } from "@/lib/store";
 import { t } from "@/lib/i18n";
 import { LanguageSelector } from "./LanguageSelector";
 import { A11yToolbar } from "./A11yToolbar";
+import { DemoPersonaSwitcher } from "./DemoPersonaSwitcher";
 
 function NavItem({
   href,
@@ -134,6 +135,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             </nav>
 
             <div className="flex items-center gap-1 sm:gap-1.5 pl-1 sm:pl-2 border-l border-line shrink-0">
+              <DemoPersonaSwitcher />
               <LanguageSelector />
               <A11yToolbar />
             </div>

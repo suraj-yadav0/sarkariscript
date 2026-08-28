@@ -1,7 +1,12 @@
 import { StatusBoard } from "@/components/StatusBoard";
 import { PromptBox } from "@/components/PromptBox";
 import { EventsGrid } from "@/components/EventsGrid";
-import { HomeCopy, EventsGridTitle, HowItWorksBlock } from "@/components/HomeCopy";
+import {
+  HomeCopy,
+  DemoPersonaQuickBar,
+  EventsGridTitle,
+  HowItWorksBlock,
+} from "@/components/HomeCopy";
 
 export default function HomePage() {
   return (
@@ -20,7 +25,8 @@ export default function HomePage() {
         </aside>
       </section>
 
-      <section className="border-t border-line py-14">
+      <section className="border-t border-line py-12">
+        <DemoPersonaQuickBar />
         <EventsGridTitle />
         <EventsGrid />
       </section>
