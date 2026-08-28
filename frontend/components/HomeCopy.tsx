@@ -17,19 +17,33 @@ import {
 export function HomeCopy() {
   const { lang } = useApp();
   return (
-    <div>
-      <p className="rise font-mono text-[11px] uppercase tracking-[0.2em] text-saffron-deep">
+    <div className="relative">
+      {/* Official Citizen Docket Ribbon Badge */}
+      <div className="flex items-center gap-2 mb-2.5 sm:mb-3">
+        <span className="inline-flex items-center gap-1.5 rounded-md border border-saffron/30 bg-saffron-soft/70 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-saffron-deep">
+          <span>॥</span>
+          <span>नागरिक सेवा प्रपत्र</span>
+          <span>॥</span>
+        </span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint hidden xs:inline">
+          OFFICIAL CITIZEN COPILOT · INDIA STACK
+        </span>
+      </div>
+
+      <p className="rise font-mono text-[11px] uppercase tracking-[0.18em] text-saffron-deep font-semibold">
         {t(lang, "hero.eyebrow")}
       </p>
       <h1
-        className="rise mt-3 sm:mt-4 w-full text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-bold sm:font-semibold leading-[1.12] tracking-tight text-ink break-words"
+        className="rise mt-2.5 sm:mt-3 w-full text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] font-bold sm:font-semibold leading-[1.12] tracking-tight text-ink break-words"
         style={{ animationDelay: "60ms" }}
       >
         {t(lang, "hero.h1a")}{" "}
-        <span className="text-saffron-deep">{t(lang, "hero.h1b")}</span>
+        <span className="text-saffron-deep underline decoration-saffron/30 decoration-wavy decoration-1 underline-offset-4">
+          {t(lang, "hero.h1b")}
+        </span>
       </h1>
       <p
-        className="rise mt-3 sm:mt-5 max-w-[52ch] text-xs sm:text-sm md:text-base leading-relaxed text-muted"
+        className="rise mt-3 sm:mt-4 max-w-[54ch] text-xs sm:text-sm md:text-base leading-relaxed text-muted"
         style={{ animationDelay: "120ms" }}
       >
         {t(lang, "hero.sub")}

@@ -66,16 +66,16 @@ export function StatusBoard({ compact = false }: { compact?: boolean }) {
   }, [announce]);
 
   return (
-    <section className="rounded-2xl border border-line bg-surface overflow-hidden">
-      <header className="flex items-center justify-between border-b border-line px-4 py-3">
-        <h2 className="flex items-center gap-2 text-sm font-semibold tracking-tight text-ink">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-saffron opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-saffron" />
+    <section className="rounded-2xl border border-line bg-surface overflow-hidden shadow-2xs">
+      <header className="flex items-center justify-between border-b border-line bg-paper/60 px-4 py-3">
+        <h2 className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-tight text-ink">
+          <span className="relative flex h-2 w-2 shrink-0">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-leaf opacity-70" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-leaf" />
           </span>
-          {t(lang, "status.title")}
-          <span className="font-mono text-[10px] font-normal uppercase tracking-[0.14em] text-faint">
-            {t(lang, "status.live")}
+          <span>{t(lang, "status.title")}</span>
+          <span className="rounded border border-line bg-surface px-1.5 py-0.5 font-mono text-[9px] sm:text-[9.5px] font-semibold uppercase tracking-[0.14em] text-faint">
+            NIC & DIRECT GATEWAYS
           </span>
         </h2>
         <button
