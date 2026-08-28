@@ -20,9 +20,10 @@ if [ ! -d "$ROOT/backend/.venv" ]; then
   python3 -m venv "$ROOT/backend/.venv"
 fi
 
-if [ ! -x "$ROOT/backend/.venv/bin/uvicorn" ] || ! "$ROOT/backend/.venv/bin/pip" check -r "$ROOT/backend/requirements.txt" >/dev/null 2>&1; then
+if [ ! -x "$ROOT/backend/.venv/bin/uvicorn" ] || [ ! -f "$ROOT/backend/.venv/.installed" ] || [ "$ROOT/backend/requirements.txt" -nt "$ROOT/backend/.venv/.installed" ]; then
   echo "[sarkariscript] installing backend dependencies…"
-  "$ROOT/backend/.venv/bin/pip" install -q -r "$ROOT/backend/requirements.txt"
+  "$ROOT/backend/.venv/bin/pip" install --retries 5 --timeout 60 -q -r "$ROOT/backend/requirements.txt"
+  touch "$ROOT/backend/.venv/.installed"
 fi
 
 echo "[sarkariscript] starting API on :8000 (log: /tmp/sarkariscript-api.log)"
