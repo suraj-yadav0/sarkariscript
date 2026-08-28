@@ -41,20 +41,20 @@ export function CostTimelineTracker({
       {/* 3-Card Financial & Turnaround Dashboard Banner */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {/* Metric 1: Official Govt Fees */}
-        <div className="flex flex-col justify-between rounded-2xl border border-line bg-surface p-4 shadow-xs hover:border-saffron/30 transition-colors">
+        <div className="flex flex-col justify-between rounded-2xl border border-line bg-surface p-4 sm:p-5 shadow-2xs hover:border-saffron/40 transition-colors">
           <div>
             <div className="flex items-center justify-between">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-saffron-soft text-saffron-deep">
+              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-saffron-soft text-saffron-deep">
                 <Coins size={18} weight="duotone" />
               </span>
-              <span className="rounded-full bg-saffron-soft px-2 py-0.5 font-mono text-[10px] font-semibold text-saffron-deep">
+              <span className="rounded-full bg-saffron-soft/80 border border-saffron/20 px-2.5 py-0.5 font-mono text-[10px] font-bold text-saffron-deep tracking-wider uppercase">
                 OFFICIAL FEES
               </span>
             </div>
-            <p className="mt-3 font-mono text-xl sm:text-2xl font-bold tracking-tight text-ink tabular-nums">
+            <p className="mt-3 text-lg sm:text-xl font-bold tracking-tight text-ink">
               {fin.feeRangeLabel}
             </p>
-            <p className="mt-1 text-xs text-muted leading-tight">
+            <p className="mt-1 text-xs text-muted leading-relaxed">
               {fin.paidStepsCount > 0
                 ? `${fin.paidStepsCount} paid step${fin.paidStepsCount > 1 ? "s" : ""}, ${fin.freeStepsCount} free`
                 : "100% free statutory citizen service"}
@@ -63,56 +63,56 @@ export function CostTimelineTracker({
           <button
             type="button"
             onClick={() => setIsBreakdownOpen(true)}
-            className="mt-3 inline-flex items-center gap-1 text-[11px] font-semibold text-saffron-deep hover:underline w-fit"
+            className="mt-3.5 inline-flex items-center gap-1.5 text-xs font-semibold text-saffron-deep hover:underline w-fit"
           >
-            <Receipt size={13} />
-            View itemized fee list
+            <Receipt size={14} weight="duotone" />
+            <span>View itemized fee list</span>
           </button>
         </div>
 
         {/* Metric 2: Estimated SLA Turnaround */}
-        <div className="flex flex-col justify-between rounded-2xl border border-line bg-surface p-4 shadow-xs hover:border-saffron/30 transition-colors">
+        <div className="flex flex-col justify-between rounded-2xl border border-line bg-surface p-4 sm:p-5 shadow-2xs hover:border-saffron/40 transition-colors">
           <div>
             <div className="flex items-center justify-between">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-saffron-soft text-saffron-deep">
+              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-saffron-soft text-saffron-deep">
                 <HourglassHigh size={18} weight="duotone" />
               </span>
-              <span className="rounded-full bg-paper border border-line px-2 py-0.5 font-mono text-[10px] font-semibold text-muted">
+              <span className="rounded-full bg-paper border border-line px-2.5 py-0.5 font-mono text-[10px] font-semibold text-muted tracking-wider uppercase">
                 STATUTORY SLA
               </span>
             </div>
-            <p className="mt-3 font-mono text-base sm:text-lg font-bold tracking-tight text-ink line-clamp-1">
-              {turnaroundLabel.split("(")[0]}
+            <p className="mt-3 text-lg sm:text-xl font-bold tracking-tight text-ink">
+              {turnaroundLabel.split("(")[0].trim()}
             </p>
-            <p className="mt-1 text-xs text-muted leading-tight">
+            <p className="mt-1 text-xs text-muted leading-relaxed">
               ~{fin.totalEstMinutes} mins total portal submission time
             </p>
           </div>
-          <p className="mt-3 text-[11px] font-mono text-faint">
+          <p className="mt-3.5 text-xs text-faint">
             Official Citizen Charter timeline
           </p>
         </div>
 
         {/* Metric 3: Anti-Broker Savings */}
-        <div className="flex flex-col justify-between rounded-2xl border border-leaf/30 bg-leaf-soft/30 p-4 shadow-xs">
+        <div className="flex flex-col justify-between rounded-2xl border border-line bg-surface p-4 sm:p-5 shadow-2xs hover:border-leaf/40 transition-colors">
           <div>
             <div className="flex items-center justify-between">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-leaf-soft text-leaf">
-                <ShieldCheck size={18} weight="fill" />
+              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-leaf-soft text-leaf">
+                <ShieldCheck size={18} weight="duotone" />
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-leaf-soft border border-leaf/30 px-2 py-0.5 font-mono text-[10px] font-semibold text-leaf">
+              <span className="inline-flex items-center gap-1 rounded-full bg-leaf-soft border border-leaf/30 px-2.5 py-0.5 font-mono text-[10px] font-bold text-leaf tracking-wider uppercase">
                 <Sparkle size={10} weight="fill" /> ZERO TOUTS
               </span>
             </div>
-            <p className="mt-3 font-mono text-xl sm:text-2xl font-bold tracking-tight text-leaf tabular-nums">
+            <p className="mt-3 text-lg sm:text-xl font-bold tracking-tight text-leaf">
               ~₹{fin.brokerSavingsEstimate.toLocaleString("en-IN")} Saved
             </p>
-            <p className="mt-1 text-xs text-muted leading-tight">
+            <p className="mt-1 text-xs text-muted leading-relaxed">
               By submitting directly on verified government portals
             </p>
           </div>
-          <p className="mt-3 text-[11px] font-medium text-leaf flex items-center gap-1">
-            <CheckCircle size={13} weight="fill" /> Direct BharatKosh / UPI Gateways
+          <p className="mt-3.5 text-xs font-medium text-leaf flex items-center gap-1.5">
+            <CheckCircle size={14} weight="fill" /> Direct BharatKosh / UPI Gateways
           </p>
         </div>
       </div>
