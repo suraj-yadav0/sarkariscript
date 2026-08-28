@@ -272,8 +272,8 @@ export function PromptBox() {
           )}
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 px-1 pt-1.5 pb-0.5 border-t border-line/60">
-          <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="flex items-center justify-between gap-1.5 xs:gap-2 px-2.5 sm:px-3 pt-2 pb-1.5 border-t border-line/60 bg-paper/60 rounded-b-2xl">
+          <div className="flex items-center gap-1 sm:gap-2 min-w-0">
             {/* Voice Input Button */}
             <button
               type="button"
@@ -298,58 +298,58 @@ export function PromptBox() {
                   ? t(lang, "voice.connecting")
                   : t(lang, "voice.start")
               }
-              className={`relative inline-flex items-center gap-1 sm:gap-1.5 rounded-full px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition-all active:scale-[0.96] ${
+              className={`relative inline-flex items-center gap-1 sm:gap-1.5 rounded-full px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition-all active:scale-[0.96] shrink-0 ${
                 isListening || isConnecting || isProcessing
                   ? "bg-saffron text-white shadow-md animate-pulse"
-                  : "bg-paper text-muted hover:bg-black/5 hover:text-ink border border-line"
+                  : "bg-surface text-muted hover:bg-black/5 hover:text-ink border border-line"
               }`}
             >
               {isListening ? (
                 <>
                   <Waveform size={14} weight="bold" className="animate-spin" />
-                  <span className="hidden xs:inline">{t(lang, "voice.stop")}</span>
+                  <span className="text-[11px] sm:text-xs">{t(lang, "voice.stop")}</span>
                 </>
               ) : isConnecting ? (
                 <>
                   <Waveform size={14} weight="bold" className="animate-spin" />
-                  <span className="hidden sm:inline">
+                  <span className="text-[11px] sm:text-xs">
                     {t(lang, "voice.connecting")}
                   </span>
                 </>
               ) : isProcessing ? (
                 <>
                   <Waveform size={14} weight="bold" className="animate-spin" />
-                  <span className="hidden sm:inline">Transcribing…</span>
+                  <span className="text-[11px] sm:text-xs">Transcribing…</span>
                 </>
               ) : (
                 <>
                   <Microphone size={14} weight="duotone" className="text-saffron-deep" />
-                  <span className="hidden xs:inline">Voice (Alt+V)</span>
+                  <span className="text-[11px] sm:text-xs">Voice</span>
                 </>
               )}
             </button>
 
-            <span
-              className={`font-mono text-[10.5px] sm:text-[11px] uppercase tracking-[0.12em] transition-opacity ${
-                loading ? "text-saffron opacity-100" : "text-transparent opacity-0"
-              }`}
-              aria-live="polite"
-            >
-              {loading ? t(lang, "hero.thinking") : "…"}
-            </span>
+            {loading && (
+              <span
+                className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.1em] text-saffron truncate"
+                aria-live="polite"
+              >
+                {t(lang, "hero.thinking")}
+              </span>
+            )}
           </div>
 
           <button
             type="submit"
             disabled={loading || !query.trim()}
-            className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-ink px-3 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-paper transition-all hover:bg-saffron-deep active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-ink focus-visible:outline-2 focus-visible:outline-saffron ml-auto shrink-0"
+            className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full bg-ink px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-paper transition-all hover:bg-saffron-deep active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-ink focus-visible:outline-2 focus-visible:outline-saffron ml-auto shrink-0"
           >
             {loading ? (
-              <PaperPlaneRight size={15} className="animate-pulse" />
+              <PaperPlaneRight size={14} className="animate-pulse" />
             ) : (
-              <PaperPlaneRight size={15} weight="fill" />
+              <PaperPlaneRight size={14} weight="fill" />
             )}
-            <span>{t(lang, "hero.navigate")}</span>
+            <span className="text-xs sm:text-sm">{t(lang, "hero.navigate")}</span>
           </button>
         </div>
       </form>
@@ -422,11 +422,11 @@ export function PromptBox() {
       )}
 
       {/* Multilingual Examples */}
-      <div className="mt-3 sm:mt-4 flex flex-wrap items-center gap-1.5 sm:gap-2">
-        <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint shrink-0">
+      <div className="mt-3 sm:mt-4 flex flex-col xs:flex-row xs:items-center gap-1.5 sm:gap-2 w-full min-w-0">
+        <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.14em] text-faint shrink-0">
           {t(lang, "hero.examples")}
         </span>
-        <div className="flex items-center gap-1.5 min-w-0 flex-1">
+        <div className="flex items-center gap-1.5 min-w-0 flex-1 w-full">
           {examples.slice(exampleIdx, exampleIdx + 1).map((ex) => (
             <button
               key={ex}
@@ -434,9 +434,9 @@ export function PromptBox() {
                 setQuery(ex);
                 navigate(ex);
               }}
-              className="group inline-flex min-w-0 flex-1 items-center justify-between gap-1.5 rounded-full border border-line bg-surface px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs text-muted transition-colors hover:border-saffron hover:text-saffron-deep focus-visible:outline-2 focus-visible:outline-saffron overflow-hidden"
+              className="group inline-flex min-w-0 flex-1 items-center justify-between gap-1.5 rounded-full border border-line bg-surface px-2.5 sm:px-3 py-1 sm:py-1.5 text-[11px] sm:text-xs text-muted transition-colors hover:border-saffron hover:text-saffron-deep focus-visible:outline-2 focus-visible:outline-saffron overflow-hidden"
             >
-              <span className="truncate">{ex}</span>
+              <span className="truncate text-left">{ex}</span>
               <ArrowRight
                 size={11}
                 weight="bold"
@@ -446,7 +446,7 @@ export function PromptBox() {
           ))}
           <button
             onClick={() => setExampleIdx((i) => (i + 1) % examples.length)}
-            className="rounded-full px-2 py-1 font-mono text-[11px] text-faint underline decoration-dotted underline-offset-4 hover:text-ink focus-visible:outline-2 focus-visible:outline-saffron shrink-0"
+            className="rounded-full px-1.5 py-0.5 font-mono text-[10px] sm:text-[11px] text-faint underline decoration-dotted underline-offset-4 hover:text-ink focus-visible:outline-2 focus-visible:outline-saffron shrink-0"
           >
             more →
           </button>
