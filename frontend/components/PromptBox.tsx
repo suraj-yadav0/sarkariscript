@@ -240,13 +240,14 @@ export function PromptBox() {
           e.preventDefault();
           navigate(query);
         }}
-        className="relative rounded-2xl border border-line bg-surface p-3 sm:p-4 shadow-[0_2px_8px_rgba(27,27,24,0.04),0_16px_36px_-12px_rgba(27,27,24,0.08)] transition-all focus-within:border-saffron focus-within:shadow-[0_2px_8px_rgba(27,27,24,0.04),0_18px_44px_-10px_rgba(194,102,29,0.18)]"
+        className="relative rounded-2xl border border-line bg-surface shadow-[0_2px_8px_rgba(27,27,24,0.04),0_16px_36px_-12px_rgba(27,27,24,0.08)] transition-all focus-within:border-saffron focus-within:shadow-[0_2px_8px_rgba(27,27,24,0.04),0_18px_44px_-10px_rgba(194,102,29,0.18)]"
       >
         <label htmlFor="prompt" className="sr-only">
           {t(lang, "hero.sub")}
         </label>
         
-        <div className="relative">
+        {/* Textarea Area */}
+        <div className="relative p-3.5 sm:p-4 pb-2.5">
           <textarea
             id="prompt"
             rows={2}
@@ -259,22 +260,25 @@ export function PromptBox() {
               }
             }}
             placeholder={t(lang, "hero.placeholder")}
-            className="no-focus-outline w-full resize-none bg-transparent px-1 pt-0.5 text-sm sm:text-base leading-relaxed outline-none border-none ring-0 shadow-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 placeholder:text-faint pr-8"
+            className="no-focus-outline w-full resize-none bg-transparent text-sm sm:text-base leading-relaxed outline-none border-none ring-0 shadow-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 placeholder:text-faint pr-8"
           />
           {query && (
             <button
               type="button"
               onClick={() => setQuery("")}
               aria-label={t(lang, "voice.clear")}
-              className="absolute right-1 top-0 p-1 text-faint hover:text-ink transition-colors rounded-full hover:bg-black/5"
+              className="absolute right-3.5 top-3.5 p-1 text-faint hover:text-ink transition-colors rounded-full hover:bg-black/5"
             >
               <X size={15} />
             </button>
           )}
         </div>
 
-        {/* Bottom Actions Row - Seamless, no dividing borders */}
-        <div className="mt-2.5 flex items-center justify-between gap-2 pt-1">
+        {/* Clean Hairline Divider */}
+        <div className="border-t border-line/60 mx-3.5 sm:mx-4" />
+
+        {/* Bottom Actions Row */}
+        <div className="flex items-center justify-between gap-2 px-3.5 sm:px-4 py-2.5 sm:py-3">
           <div className="flex items-center gap-2">
             {/* Voice Input Button */}
             <button
