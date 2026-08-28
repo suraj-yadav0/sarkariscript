@@ -151,12 +151,21 @@ export function CostTimelineTracker({
 
             {/* Modal Content */}
             <div className="p-5 max-h-[75vh] overflow-y-auto space-y-4">
+              {/* Statutory Authority Source Banner */}
+              <div className="flex items-start gap-2.5 rounded-xl border border-leaf/30 bg-leaf-soft/40 p-3 text-xs text-leaf">
+                <ShieldCheck size={18} weight="fill" className="shrink-0 mt-0.5" />
+                <div className="leading-relaxed">
+                  <span className="font-semibold">Official Statutory Authority: </span>
+                  {fin.statutorySource}. All charges are fixed under official Government of India rules.
+                </div>
+              </div>
+
               {/* Anti-Scam Advisory Alert */}
               <div className="flex items-start gap-2.5 rounded-xl border border-saffron/30 bg-saffron-soft/40 p-3 text-xs text-saffron-deep">
                 <WarningCircle size={18} weight="fill" className="shrink-0 mt-0.5" />
                 <div className="leading-relaxed">
-                  <span className="font-semibold">Official Govt Transparency Note: </span>
-                  All statutory fees listed below are paid <strong>directly</strong> on official <code>.gov.in</code> / <code>.nic.in</code> portals via BharatKosh, UPI, or netbanking. SarkariScript never collects any fees.
+                  <span className="font-semibold">Zero Broker Guarantee: </span>
+                  All statutory fees listed below are paid <strong>directly</strong> on official <code>.gov.in</code> / <code>.nic.in</code> portals via BharatKosh, UPI, or designated SBI gateways. SarkariScript never asks for or processes payments.
                 </div>
               </div>
 
@@ -210,7 +219,7 @@ export function CostTimelineTracker({
               {/* Summary Summary Row */}
               <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-paper p-3.5 text-xs">
                 <div>
-                  <p className="font-semibold text-ink">Total Official Financial Requirement:</p>
+                  <p className="font-semibold text-ink">Official Govt Fee Requirement:</p>
                   <p className="text-muted text-[11px]">
                     Expected Total Timeline: {turnaroundLabel}
                   </p>
@@ -220,20 +229,23 @@ export function CostTimelineTracker({
                     {fin.feeRangeLabel}
                   </span>
                   <p className="font-mono text-[10px] text-leaf font-semibold">
-                    ~₹{fin.brokerSavingsEstimate} saved vs unauthorized touts
+                    ~₹{fin.brokerSavingsEstimate.toLocaleString("en-IN")} saved vs unauthorized touts
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Modal Footer */}
-            <div className="flex items-center justify-end gap-2 border-t border-line bg-paper px-5 py-3">
+            <div className="flex items-center justify-between border-t border-line bg-paper px-5 py-3">
+              <span className="text-[11px] font-mono text-faint">
+                Citations: Official Gazette of India & Portal Charters
+              </span>
               <button
                 type="button"
                 onClick={() => setIsBreakdownOpen(false)}
                 className="rounded-xl bg-ink px-4 py-2 text-xs font-semibold text-paper hover:bg-ink/90 transition-colors"
               >
-                Done
+                Close
               </button>
             </div>
           </div>
