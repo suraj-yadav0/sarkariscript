@@ -17,16 +17,22 @@ Type or speak your goal in Hindi, English, Hinglish, or 7 regional languages —
 | **Voice & Speech Copilot (Alt+V)** | Speak your goal directly in any language. Dual-engine: Native Web Speech API with automatic local Whisper STT fallback. | Global search bar + `/rti` |
 | **Audio Reader (Text-to-Speech)** | Listen to roadmaps and step-by-step instructions read aloud in regional voices. | Top action bar on roadmap views |
 | **Accessibility Suite (Alt+A)** | Full accessibility toolbar: 3 font scaling levels (100%, 115%, 130%), high-contrast themes (Natural, Light+, Dark+), OpenDyslexic mode, and screen-reader announcements. | Header Accessibility button |
-| **Live Portal Health Monitor** | Real-time HTTP uptime pings and latency metrics across all 14 government portals, cached for 5 min. | Home page status board |
+| **Live Portal Health Monitor** | Real-time HTTP uptime pings and latency metrics across all 20 government portals, cached for 5 min. | Home page status board |
 | **Grievance to RTI Escalation Engine** | Transforms delayed CPGRAMS / grievance reference numbers into formal Section 6(1) Right to Information (RTI) applications. | `/rti` |
 
 ### Supported Life Events Today
-1. **Start a Business** (MSME Udyam, GST REG-01, FSSAI Food Licence, Shop & Establishment)
-2. **Buy a Vehicle** (Parivahan Vahan, Road Tax, HSRP, Fastag)
-3. **Driving Licence** (Sarathi Learner Licence, Driving Slot, Permanent DL)
-4. **File Income Tax Return (ITR)** (AIS/TIS, e-Filing Portal, e-Verification)
-5. **File a Grievance** (CPGRAMS Central Portal, State Grievance Portals)
-6. **Fresh Passport Application** (Passport Seva, Document Advisory, Appointment Booking)
+1. **Start a Business** (MSME Udyam, GST REG-01, FSSAI Food Licence, Shop & Establishment, EPFO, MCA)
+2. **New Aadhaar Card & Update** (UIDAI MyAadhaar, Seva Kendra Slot, Iris/Biometric Enrolment, e-Aadhaar)
+3. **Apply for PAN Card / e-PAN** (Instant Paperless e-PAN, NSDL Protean Form 49A, PAN-Aadhaar Linking)
+4. **Apply for Ration Card (NFSA)** (AAY/PHH Category Check, State Food RCMS, Inspector Verification, ONORC FPS)
+5. **Apply for Voter ID / EPIC Card** (ECI Voters Portal Form 6, BLO Physical Verification, Digital e-EPIC)
+6. **Ayushman Bharat Card (PM-JAY)** (NHA Beneficiary Search, Aadhaar e-KYC, ₹5 Lakh Free Cashless Health Cover)
+7. **Birth Certificate Registration** (Civil Registration System Form 1, Hospital Slip Verification, QR-Coded Seal)
+8. **Buy a Vehicle** (Parivahan Vahan, Road Tax, Permanent RC, HSRP, Fastag)
+9. **Driving Licence** (Sarathi Learner Licence, Driving Slot, Permanent DL)
+10. **File Income Tax Return (ITR)** (AIS/TIS, e-Filing Portal, Regime Selection, e-Verification)
+11. **File a Grievance** (CPGRAMS Central Portal, State Grievance Portals, Escalation Clock)
+12. **Fresh Passport Application** (Passport Seva, Fee Payment, PSK Slot, Police Verification)
 
 > Adding a new government journey requires **only one JSON entry** in `backend/kb/knowledge_base.json` — zero code changes.
 

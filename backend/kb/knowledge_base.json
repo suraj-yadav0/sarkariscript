@@ -112,6 +112,54 @@
       "short": "Insurance",
       "url": "https://bimabharosa.irdai.gov.in/",
       "line_color": "#6B4E16"
+    },
+    {
+      "id": "UIDAI",
+      "name_en": "Unique Identification Authority of India (UIDAI)",
+      "name_hi": "भारतीय विशिष्ट पहचान प्राधिकरण (यूआईडीएआई)",
+      "short": "UIDAI",
+      "url": "https://myaadhaar.uidai.gov.in/",
+      "line_color": "#C2410C"
+    },
+    {
+      "id": "NSDL",
+      "name_en": "Protean TIN-PAN (NSDL)",
+      "name_hi": "प्रोटीन टिन-पैन (एनएसडीएल)",
+      "short": "NSDL",
+      "url": "https://www.protean-tinpan.com/",
+      "line_color": "#1E40AF"
+    },
+    {
+      "id": "NFSA",
+      "name_en": "National Food Security Portal (NFSA)",
+      "name_hi": "राष्ट्रीय खाद्य सुरक्षा पोर्टल (एनएफएसए)",
+      "short": "NFSA",
+      "url": "https://nfsa.gov.in/",
+      "line_color": "#15803D"
+    },
+    {
+      "id": "ECI",
+      "name_en": "Election Commission of India (Voters Portal)",
+      "name_hi": "भारत निर्वाचन आयोग (मतदाता सेवा पोर्टल)",
+      "short": "Voters (ECI)",
+      "url": "https://voters.eci.gov.in/",
+      "line_color": "#6D28D9"
+    },
+    {
+      "id": "PMJAY",
+      "name_en": "National Health Authority (Ayushman PM-JAY)",
+      "name_hi": "राष्ट्रीय स्वास्थ्य प्राधिकरण (आयुष्मान भारत)",
+      "short": "PM-JAY",
+      "url": "https://beneficiary.nha.gov.in/",
+      "line_color": "#0D9488"
+    },
+    {
+      "id": "CRS",
+      "name_en": "Civil Registration System (ORGI)",
+      "name_hi": "सिविल रजिस्ट्रेशन सिस्टम (जन्म एवं मृत्यु)",
+      "short": "CRS",
+      "url": "https://crsorgi.gov.in/",
+      "line_color": "#4338CA"
     }
   ],
   "documents_catalog": [
@@ -214,6 +262,36 @@
       "id": "birth_certificate",
       "name_en": "Birth certificate",
       "name_hi": "जन्म प्रमाणपत्र"
+    },
+    {
+      "id": "dob_proof",
+      "name_en": "Proof of Date of Birth (Birth certificate / School TC / 10th mark sheet)",
+      "name_hi": "जन्म तिथि का प्रमाण (जन्म प्रमाणपत्र / स्कूल टीसी / 10वीं की अंकतालिका)"
+    },
+    {
+      "id": "income_certificate",
+      "name_en": "Income Certificate issued by Tehsildar / Revenue Authority",
+      "name_hi": "तहसीलदार द्वारा जारी आय प्रमाणपत्र"
+    },
+    {
+      "id": "caste_certificate",
+      "name_en": "Caste Certificate (SC / ST / OBC / EWS)",
+      "name_hi": "जाति प्रमाणपत्र (एससी / एसटी / ओबीसी / ईडब्ल्यूएस)"
+    },
+    {
+      "id": "hospital_discharge_slip",
+      "name_en": "Hospital Birth Discharge Summary / Slip",
+      "name_hi": "अस्पताल जन्म डिस्चार्ज पर्ची"
+    },
+    {
+      "id": "marriage_certificate",
+      "name_en": "Marriage Certificate",
+      "name_hi": "विवाह प्रमाणपत्र"
+    },
+    {
+      "id": "ration_card",
+      "name_en": "Ration Card (NFSA / BPL / AAY card)",
+      "name_hi": "राशन कार्ड (एनएफएसए / बीपीएल / अंत्योदय)"
     }
   ],
   "profile_fields_catalog": [
@@ -1903,6 +1981,1290 @@
           "tips": [
             "Track 'Police Verification Status' separately on the portal — it lags passport dispatch status.",
             "Keep a neighbour informed; missed PV visits need re-scheduling via the station, not the PSK."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aadhaar_card",
+      "name_en": "New Aadhaar Card & Update",
+      "name_hi": "नया आधार कार्ड व अपडेट",
+      "summary_en": "Book appointment online, visit Aadhaar Seva Kendra for iris/biometrics enrollment, and download digital e-Aadhaar.",
+      "summary_hi": "ऑनलाइन अपॉइंटमेंट बुक करें, आधार सेवा केंद्र पर बायोमेट्रिक्स नामांकन कराएं और ई-आधार डाउनलोड करें।",
+      "icon": "fingerprint",
+      "keywords": {
+        "en": [
+          "aadhaar",
+          "aadhar",
+          "uidai",
+          "myaadhaar",
+          "update aadhaar",
+          "new aadhaar",
+          "aadhaar card",
+          "biometrics",
+          "eaadhaar",
+          "e-aadhaar"
+        ],
+        "hi": [
+          "आधार",
+          "आधार कार्ड",
+          "नया आधार",
+          "आधार अपडेट",
+          "बायोमेट्रिक",
+          "ई आधार",
+          "आधार बनाना",
+          "आधार केंद्र"
+        ]
+      },
+      "steps": [
+        {
+          "id": "aadhaar_book_slot",
+          "portal": "UIDAI",
+          "form_name": "MyAadhaar Online Appointment Booking",
+          "title_en": "Book Aadhaar Seva Kendra appointment",
+          "title_hi": "आधार सेवा केंद्र अपॉइंटमेंट बुक करें",
+          "why_en": "Pre-enrolment and slot booking avoids long physical queues at enrollment centres.",
+          "why_hi": "प्री-नामांकन और स्लॉट बुकिंग से केंद्र पर लंबी कतारों से बचा जा सकता है।",
+          "url": "https://appointments.uidai.gov.in/bookappointment.aspx",
+          "est_time_min": 10,
+          "fee_note_en": "Free for new enrolment; ₹50 for demographic / ₹100 for biometric update",
+          "fee_note_hi": "नए नामांकन के लिए निःशुल्क; डेमोग्राफिक अपडेट ₹50, बायोमेट्रिक ₹100",
+          "depends_on": [],
+          "docs_required": [
+            {
+              "doc": "id_proof",
+              "mandatory": true
+            },
+            {
+              "doc": "address_proof",
+              "mandatory": true
+            },
+            {
+              "doc": "dob_proof",
+              "mandatory": true
+            }
+          ],
+          "fields": [
+            {
+              "label_en": "Full Name",
+              "label_hi": "पूरा नाम",
+              "profile_key": "full_name",
+              "required": true
+            },
+            {
+              "label_en": "Date of Birth",
+              "label_hi": "जन्म तिथि",
+              "profile_key": "dob",
+              "required": true
+            },
+            {
+              "label_en": "Gender",
+              "label_hi": "लिंग",
+              "profile_key": "gender",
+              "required": true
+            },
+            {
+              "label_en": "Mobile Number",
+              "label_hi": "मोबाइल नंबर",
+              "profile_key": "mobile",
+              "required": true
+            },
+            {
+              "label_en": "Email ID",
+              "label_hi": "ईमेल आईडी",
+              "profile_key": "email",
+              "required": false
+            },
+            {
+              "label_en": "Address",
+              "label_hi": "पता",
+              "profile_key": "address_line",
+              "required": true
+            },
+            {
+              "label_en": "PIN Code",
+              "label_hi": "पिन कोड",
+              "profile_key": "pincode",
+              "required": true
+            },
+            {
+              "label_en": "City",
+              "label_hi": "शहर",
+              "profile_key": "city",
+              "required": true
+            },
+            {
+              "label_en": "State",
+              "label_hi": "राज्य",
+              "profile_key": "state",
+              "required": true
+            }
+          ],
+          "tips": [
+            "Ensure spelling in ID proof matches exactly with Date of Birth proof.",
+            "Save and print the generated Appointment Slip bearing the Barcode and Application Reference Number (ARN)."
+          ]
+        },
+        {
+          "id": "aadhaar_biometric_enrollment",
+          "portal": "UIDAI",
+          "form_name": "In-Person Biometric & Demographic Capture",
+          "title_en": "In-person biometric & iris enrollment",
+          "title_hi": "बायोमेट्रिक, फिंगरप्रिंट व आईरिस स्कैन",
+          "why_en": "UIDAI requires physical capture of all 10 fingerprints, dual iris scans, and live photograph at an authorized centre.",
+          "why_hi": "यूआईडीएआई सभी 10 उंगलियों, आईरिस और लाइव फोटो का भौतिक सत्यापन अनिवार्य करता है।",
+          "url": "https://bhuvan-app3.nrsc.gov.in/aadhaar/",
+          "est_time_min": 20,
+          "fee_note_en": "Free (collect printed Enrolment Acknowledgment Slip with 28-digit EID)",
+          "fee_note_hi": "निःशुल्क (28 अंकों वाली ईआईडी नामांकन पर्ची प्राप्त करें)",
+          "depends_on": [
+            "aadhaar_book_slot"
+          ],
+          "docs_required": [
+            {
+              "doc": "id_proof",
+              "mandatory": true
+            },
+            {
+              "doc": "address_proof",
+              "mandatory": true
+            },
+            {
+              "doc": "dob_proof",
+              "mandatory": true
+            }
+          ],
+          "fields": [
+            {
+              "label_en": "Full Name",
+              "label_hi": "पूरा नाम",
+              "profile_key": "full_name",
+              "required": true
+            },
+            {
+              "label_en": "Date of Birth",
+              "label_hi": "जन्म तिथि",
+              "profile_key": "dob",
+              "required": true
+            },
+            {
+              "label_en": "Mobile Number",
+              "label_hi": "मोबाइल नंबर",
+              "profile_key": "mobile",
+              "required": true
+            }
+          ],
+          "tips": [
+            "Carry original documents for instant scanner verification at the counter.",
+            "Carefully check spelling on the operator preview screen before biometric submission.",
+            "Keep the 28-digit Enrolment ID (EID) safe on the acknowledgment slip."
+          ]
+        },
+        {
+          "id": "aadhaar_download_eaadhaar",
+          "portal": "UIDAI",
+          "form_name": "e-Aadhaar PDF Download with Digital Signature",
+          "title_en": "Track status & download e-Aadhaar",
+          "title_hi": "स्थिति जांचें व ई-आधार डाउनलोड करें",
+          "why_en": "Once generated (usually 5–15 days), e-Aadhaar is legally valid everywhere under the Aadhaar Act 2016.",
+          "why_hi": "जारी होने के बाद ई-आधार आधार अधिनियम 2016 के तहत पूरी तरह से मान्य है।",
+          "url": "https://myaadhaar.uidai.gov.in/gen-ae-id/",
+          "est_time_min": 5,
+          "fee_note_en": "Free download (password is first 4 letters of name in CAPITAL + birth year)",
+          "fee_note_hi": "निःशुल्क (पासवर्ड: नाम के पहले 4 अक्षर बड़े अक्षरों में + जन्म वर्ष)",
+          "depends_on": [
+            "aadhaar_biometric_enrollment"
+          ],
+          "docs_required": [],
+          "fields": [
+            {
+              "label_en": "Mobile Number",
+              "label_hi": "मोबाइल नंबर",
+              "profile_key": "mobile",
+              "required": true
+            },
+            {
+              "label_en": "PIN Code",
+              "label_hi": "पिन कोड",
+              "profile_key": "pincode",
+              "required": true
+            }
+          ],
+          "tips": [
+            "Track enrolment status with your 28-digit EID and date-time stamp.",
+            "PDF opening password is 8 characters: e.g. SURESH YADAV born 1995 -> SURE1995."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pan_card",
+      "name_en": "Apply for PAN Card / e-PAN",
+      "name_hi": "पैन कार्ड / ई-पैन आवेदन",
+      "summary_en": "Instant paperless e-PAN via Aadhaar e-KYC in 10 minutes, or physical plastic card delivery via NSDL Form 49A.",
+      "summary_hi": "आधार ई-केवाईसी द्वारा 10 मिनट में त्वरित ई-पैन, या एनएसडीएल फॉर्म 49A द्वारा प्लास्टिक पैन कार्ड डिलीवरी।",
+      "icon": "creditCard",
+      "keywords": {
+        "en": [
+          "pan",
+          "pan card",
+          "epan",
+          "e-pan",
+          "nsdl",
+          "utiitsl",
+          "income tax pan",
+          "apply pan",
+          "new pan",
+          "instant pan",
+          "pan aadhaar link"
+        ],
+        "hi": [
+          "पैन",
+          "पैन कार्ड",
+          "नया पैन",
+          "ई-पैन",
+          "पैन कार्ड बनाना",
+          "आयकर पैन",
+          "पैन आधार लिंक"
+        ]
+      },
+      "steps": [
+        {
+          "id": "pan_instant_epan",
+          "portal": "IT",
+          "form_name": "Instant e-PAN via Aadhaar e-KYC",
+          "title_en": "Instant digital e-PAN (paperless)",
+          "title_hi": "त्वरित डिजिटल ई-पैन (पेपरलेस)",
+          "why_en": "If your mobile is linked to Aadhaar, you can generate a valid PAN digitally within 10 minutes at zero cost.",
+          "why_hi": "यदि मोबाइल आधार से लिंक है, तो आप 10 मिनट में बिना किसी शुल्क के वैध डिजिटल पैन प्राप्त कर सकते हैं।",
+          "url": "https://eportal.incometax.gov.in/iec/foservices/#/pre-login/instant-e-pan",
+          "est_time_min": 10,
+          "fee_note_en": "Free of cost",
+          "fee_note_hi": "पूर्णतः निःशुल्क",
+          "depends_on": [],
+          "docs_required": [
+            {
+              "doc": "aadhaar",
+              "mandatory": true
+            }
+          ],
+          "fields": [
+            {
+              "label_en": "Aadhaar Number",
+              "label_hi": "आधार नंबर",
+              "profile_key": "aadhaar",
+              "required": true
+            },
+            {
+              "label_en": "Mobile Number",
+              "label_hi": "मोबाइल नंबर",
+              "profile_key": "mobile",
+              "required": true
+            }
+          ],
+          "tips": [
+            "Ensure your mobile number is active to receive the UIDAI OTP.",
+            "Instant e-PAN is 100% digitally valid for all banking and tax filing."
+          ]
+        },
+        {
+          "id": "pan_physical_form49a",
+          "portal": "NSDL",
+          "form_name": "Form 49A (Physical Card Application)",
+          "title_en": "Apply for physical plastic PAN card (Form 49A)",
+          "title_hi": "प्लास्टिक पैन कार्ड के लिए फॉर्म 49A भरें",
+          "why_en": "Needed if you want a physical laminated card delivered to your doorstep or for non-Aadhaar identity proofs.",
+          "why_hi": "घर के पते पर फिजिकल प्लास्टिक कार्ड डिलीवरी या गैर-आधार पहचान सत्यापन हेतु आवश्यक।",
+          "url": "https://www.onlineservices.nsdl.com/paam/endUserRegisterContact.html",
+          "est_time_min": 15,
+          "fee_note_en": "₹107 for dispatch within India / ₹1,017 for overseas",
+          "fee_note_hi": "भारत में डिलीवरी हेतु ₹107 शुल्क",
+          "depends_on": [],
+          "docs_required": [
+            {
+              "doc": "passport_photo",
+              "mandatory": true
+            },
+            {
+              "doc": "aadhaar",
+              "mandatory": true
+            },
+            {
+              "doc": "id_proof",
+              "mandatory": true
+            },
+            {
+              "doc": "address_proof",
+              "mandatory": true
+            },
+            {
+              "doc": "dob_proof",
+              "mandatory": true
+            }
+          ],
+          "fields": [
+            {
+              "label_en": "Full Name",
+              "label_hi": "पूरा नाम",
+              "profile_key": "full_name",
+              "required": true
+            },
+            {
+              "label_en": "Father's Name",
+              "label_hi": "पिता का नाम",
+              "profile_key": "father_name",
+              "required": true
+            },
+            {
+              "label_en": "Date of Birth",
+              "label_hi": "जन्म तिथि",
+              "profile_key": "dob",
+              "required": true
+            },
+            {
+              "label_en": "Gender",
+              "label_hi": "लिंग",
+              "profile_key": "gender",
+              "required": true
+            },
+            {
+              "label_en": "Mobile Number",
+              "label_hi": "मोबाइल नंबर",
+              "profile_key": "mobile",
+              "required": true
+            },
+            {
+              "label_en": "Email ID",
+              "label_hi": "ईमेल आईडी",
+              "profile_key": "email",
+              "required": true
+            },
+            {
+              "label_en": "Address",
+              "label_hi": "पता",
+              "profile_key": "address_line",
+              "required": true
+            },
+            {
+              "label_en": "PIN Code",
+              "label_hi": "पिन कोड",
+              "profile_key": "pincode",
+              "required": true
+            },
+            {
+              "label_en": "State",
+              "label_hi": "राज्य",
+              "profile_key": "state",
+              "required": true
+            },
+            {
+              "label_en": "City",
+              "label_hi": "शहर",
+              "profile_key": "city",
+              "required": true
+            }
+          ],
+          "tips": [
+            "Choose e-Sign mode to complete verification paperless without mailing physical documents to Pune NSDL office.",
+            "Track card delivery using the 15-digit acknowledgement number on the Protean tracking portal."
+          ]
+        },
+        {
+          "id": "pan_aadhaar_link",
+          "portal": "IT",
+          "form_name": "Link PAN with Aadhaar (Sec 139AA)",
+          "title_en": "Link & verify PAN-Aadhaar status",
+          "title_hi": "पैन-आधार लिंक करें व स्थिति जांचें",
+          "why_en": "Mandatory under Income Tax rules to prevent PAN inoperability and enable seamless ITR processing.",
+          "why_hi": "पैन को निष्क्रिय होने से बचाने और बैंक खातों के सुचारू संचालन हेतु अनिवार्य।",
+          "url": "https://eportal.incometax.gov.in/iec/foservices/#/pre-login/bl-link-aadhaar",
+          "est_time_min": 5,
+          "fee_note_en": "Free if newly linked; ₹1,000 penalty fee if linking expired PAN",
+          "fee_note_hi": "सत्यापन निःशुल्क",
+          "depends_on": [
+            "pan_instant_epan"
+          ],
+          "docs_required": [
+            {
+              "doc": "aadhaar",
+              "mandatory": true
+            },
+            {
+              "doc": "pan_card",
+              "mandatory": true
+            }
+          ],
+          "fields": [
+            {
+              "label_en": "PAN Number",
+              "label_hi": "पैन नंबर",
+              "profile_key": "pan",
+              "required": true
+            },
+            {
+              "label_en": "Aadhaar Number",
+              "label_hi": "आधार नंबर",
+              "profile_key": "aadhaar",
+              "required": true
+            }
+          ],
+          "tips": [
+            "Name, Date of Birth, and Gender on PAN and Aadhaar must match character-by-character.",
+            "If details differ, update Aadhaar or PAN first before submitting link request."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ration_card",
+      "name_en": "Apply for Ration Card (NFSA)",
+      "name_hi": "राशन कार्ड आवेदन (एनएफएसए)",
+      "summary_en": "Apply for Antyodaya (AAY) or Priority Household (PHH) food security card, add family members, and enable One Nation One Ration Card (ONORC).",
+      "summary_hi": "खाद्य सुरक्षा कार्ड (अंत्योदय/पीएचएच) के लिए आवेदन करें, परिवार के सदस्य जोड़ें और वन नेशन वन राशन कार्ड चालू करें।",
+      "icon": "bowlFood",
+      "keywords": {
+        "en": [
+          "ration",
+          "ration card",
+          "nfsa",
+          "food security",
+          "bpl card",
+          "apl card",
+          "aay",
+          "phh",
+          "quota",
+          "grain quota",
+          "onorc",
+          "rashan"
+        ],
+        "hi": [
+          "राशन",
+          "राशन कार्ड",
+          "राशन कार्ड बनाना",
+          "बीपीएल कार्ड",
+          "खाद्य सुरक्षा",
+          "अंत्योदय",
+          "राशन कोटा",
+          "कोटेदार",
+          "राशन कार्ड आवेदन"
+        ]
+      },
+      "steps": [
+        {
+          "id": "ration_eligibility_check",
+          "portal": "NFSA",
+          "form_name": "Household Category & Income Criteria Check",
+          "title_en": "Determine card category (AAY / PHH / BPL)",
+          "title_hi": "राशन कार्ड श्रेणी व पात्रता की पहचान",
+          "why_en": "Determines grain quota (35kg/month for AAY or 5kg/person for PHH) based on annual household income and urban/rural status.",
+          "why_hi": "वार्षिक पारिवारिक आय के आधार पर सब्सिडी अनाज कोटा तय करता है।",
+          "url": "https://nfsa.gov.in/portal/State_UT_Portals",
+          "est_time_min": 10,
+          "fee_note_en": "Free",
+          "fee_note_hi": "निःशुल्क",
+          "depends_on": [],
+          "docs_required": [
+            {
+              "doc": "income_certificate",
+              "mandatory": true
+            },
+            {
+              "doc": "caste_certificate",
+              "mandatory": false
+            },
+            {
+              "doc": "address_proof",
+              "mandatory": true
+            }
+          ],
+          "fields": [
+            {
+              "label_en": "State",
+              "label_hi": "राज्य",
+              "profile_key": "state",
+              "required": true
+            },
+            {
+              "label_en": "City / District",
+              "label_hi": "शहर / जिला",
+              "profile_key": "city",
+              "required": true
+            },
+            {
+              "label_en": "PIN Code",
+              "label_hi": "पिन कोड",
+              "profile_key": "pincode",
+              "required": true
+            }
+          ],
+          "tips": [
+            "AAY (Antyodaya Anna Yojana) covers poorest households with fixed 35 kg foodgrain per month.",
+            "PHH (Priority Households) receive 5 kg foodgrain per member per month at subsidized rates."
+          ]
+        },
+        {
+          "id": "ration_application_submission",
+          "portal": "NFSA",
+          "form_name": "RCMS State Food & Civil Supplies Application Form",
+          "title_en": "Submit online family ration application",
+          "title_hi": "परिवार विवरण व राशन आवेदन जमा करें",
+          "why_en": "Registers the female head of the family as the primary cardholder under NFSA guidelines with Aadhaar-seeded member records.",
+          "why_hi": "एनएफएसए नियमों के अनुसार परिवार की वरिष्ठ महिला को मुख्य मुखिया बनाकर सभी सदस्यों के आधार जोड़ें।",
+          "url": "https://nfsa.gov.in/portal/State_UT_Portals",
+          "est_time_min": 20,
+          "fee_note_en": "₹5 to ₹50 application processing fee depending on State",
+          "fee_note_hi": "राज्य अनुसार ₹5 से ₹50 प्रोसेसिंग शुल्क",
+          "depends_on": [
+            "ration_eligibility_check"
+          ],
+          "docs_required": [
+            {
+              "doc": "aadhaar",
+              "mandatory": true
+            },
+            {
+              "doc": "passport_photo",
+              "mandatory": true
+            },
+            {
+              "doc": "bank_proof",
+              "mandatory": true
+            },
+            {
+              "doc": "address_proof",
+              "mandatory": true
+            },
+            {
+              "doc": "income_certificate",
+              "mandatory": true
+            }
+          ],
+          "fields": [
+            {
+              "label_en": "Head of Family Name",
+              "label_hi": "मुखिया का नाम",
+              "profile_key": "full_name",
+              "required": true
+            },
+            {
+              "label_en": "Father / Husband Name",
+              "label_hi": "पिता / पति का नाम",
+              "profile_key": "father_name",
+              "required": true
+            },
+            {
+              "label_en": "Date of Birth",
+              "label_hi": "जन्म तिथि",
+              "profile_key": "dob",
+              "required": true
+            },
+            {
+              "label_en": "Gender",
+              "label_hi": "लिंग",
+              "profile_key": "gender",
+              "required": true
+            },
+            {
+              "label_en": "Mobile Number",
+              "label_hi": "मोबाइल नंबर",
+              "profile_key": "mobile",
+              "required": true
+            },
+            {
+              "label_en": "Aadhaar Number",
+              "label_hi": "आधार नंबर",
+              "profile_key": "aadhaar",
+              "required": true
+            },
+            {
+              "label_en": "Bank Account Number",
+              "label_hi": "बैंक खाता संख्या",
+              "profile_key": "bank_account_no",
+              "required": true
+            },
+            {
+              "label_en": "Bank IFSC",
+              "label_hi": "बैंक आईएफएससी",
+              "profile_key": "bank_ifsc",
+              "required": true
+            },
+            {
+              "label_en": "Address",
+              "label_hi": "पता",
+              "profile_key": "address_line",
+              "required": true
+            },
+            {
+              "label_en": "PIN Code",
+              "label_hi": "पिन कोड",
+              "profile_key": "pincode",
+              "required": true
+            },
+            {
+              "label_en": "State",
+              "label_hi": "राज्य",
+              "profile_key": "state",
+              "required": true
+            },
+            {
+              "label_en": "City",
+              "label_hi": "शहर",
+              "profile_key": "city",
+              "required": true
+            }
+          ],
+          "tips": [
+            "Designate eldest female member (18+) as Head of Family (mandatory under Sec 12 NFSA).",
+            "Keep Aadhaar cards of all family members handy for seed verification."
+          ]
+        },
+        {
+          "id": "ration_field_verification",
+          "portal": "NFSA",
+          "form_name": "Physical Verification by Supply Inspector",
+          "title_en": "Field & residence verification",
+          "title_hi": "सप्लाई इंस्पेक्टर द्वारा निवास सत्यापन",
+          "why_en": "Block Supply Officer (BSO) or Food Inspector verifies physical residence and income criteria before approving card creation.",
+          "why_hi": "खाद्य निरीक्षक द्वारा परिवार के निवास स्थान और दस्तावेजों का भौतिक सत्यापन किया जाता है।",
+          "url": "https://nfsa.gov.in/",
+          "est_time_min": 15,
+          "fee_note_en": "No fee (do not pay any agent)",
+          "fee_note_hi": "कोई शुल्क नहीं",
+          "depends_on": [
+            "ration_application_submission"
+          ],
+          "docs_required": [
+            {
+              "doc": "address_proof",
+              "mandatory": true
+            },
+            {
+              "doc": "id_proof",
+              "mandatory": true
+            }
+          ],
+          "fields": [],
+          "tips": [
+            "Keep originals of electricity bill and income certificate ready for inspector review.",
+            "Track application acknowledgment number on your State Food Dept RCMS portal."
+          ]
+        },
+        {
+          "id": "ration_onorc_fps_activation",
+          "portal": "NFSA",
+          "form_name": "Fair Price Shop (FPS) & ONORC Linking",
+          "title_en": "Card issuance & One Nation One Ration Card (ONORC) activation",
+          "title_hi": "राशन कार्ड डाउनलोड व वन नेशन वन राशन कार्ड चालू करें",
+          "why_en": "Enables monthly biometric/e-PoS foodgrain collection anywhere across India regardless of home state.",
+          "why_hi": "देश में किसी भी उचित मूल्य की दुकान (कोटेदार) से बायोमेट्रिक ई-पॉस द्वारा राशन प्राप्त करने की सुविधा।",
+          "url": "https://web.umang.gov.in/",
+          "est_time_min": 5,
+          "fee_note_en": "Free (e-Ration card digital copy)",
+          "fee_note_hi": "निःशुल्क डिजिटल राशन कार्ड",
+          "depends_on": [
+            "ration_field_verification"
+          ],
+          "docs_required": [
+            {
+              "doc": "aadhaar",
+              "mandatory": true
+            }
+          ],
+          "fields": [
+            {
+              "label_en": "Aadhaar Number",
+              "label_hi": "आधार नंबर",
+              "profile_key": "aadhaar",
+              "required": true
+            },
+            {
+              "label_en": "Mobile Number",
+              "label_hi": "मोबाइल नंबर",
+              "profile_key": "mobile",
+              "required": true
+            }
+          ],
+          "tips": [
+            "Download the 'Mera Ration' official app on Android/iOS to check nearest FPS and monthly quota entitlement.",
+            "Migrant workers can lift their ration quota from any e-PoS shop in India under ONORC."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "voter_id",
+      "name_en": "Apply for Voter ID / EPIC Card",
+      "name_hi": "वोटर आईडी (मतदाता पहचान पत्र) बनवाएँ",
+      "summary_en": "New elector registration via Form 6 on ECI Voters Portal, Booth Level Officer (BLO) verification, and free e-EPIC download.",
+      "summary_hi": "चुनाव आयोग पोर्टल पर फॉर्म 6 भरें, बीएलओ सत्यापन और डिजिटल ई-ईपीआईसी वोटर कार्ड डाउनलोड करें।",
+      "icon": "userCheck",
+      "keywords": {
+        "en": [
+          "voter",
+          "voter id",
+          "epic",
+          "election",
+          "eci",
+          "form 6",
+          "vote",
+          "voters portal",
+          "e-epic",
+          "nvsp",
+          "election card",
+          "matdata"
+        ],
+        "hi": [
+          "वोटर",
+          "वोटर आईडी",
+          "मतदाता",
+          "पहचान पत्र",
+          "चुनाव पहचान पत्र",
+          "फॉर्म 6",
+          "वोटर कार्ड",
+          "ईपीआईसी",
+          "वोट देना"
+        ]
+      },
+      "steps": [
+        {
+          "id": "voter_form6_submission",
+          "portal": "ECI",
+          "form_name": "Form 6 (New Elector Registration)",
+          "title_en": "Submit Form 6 on ECI Voters Portal",
+          "title_hi": "मतदाता पोर्टल पर फॉर्म 6 ऑनलाइन भरें",
+          "why_en": "For all Indian citizens aged 18+ to register in the Electoral Roll for their Assembly Constituency.",
+          "why_hi": "18 वर्ष या उससे अधिक आयु के सभी भारतीय नागरिकों के लिए मतदाता सूची में नाम दर्ज कराने हेतु।",
+          "url": "https://voters.eci.gov.in/form6",
+          "est_time_min": 12,
+          "fee_note_en": "Free of cost",
+          "fee_note_hi": "पूर्णतः निःशुल्क",
+          "depends_on": [],
+          "docs_required": [
+            {
+              "doc": "passport_photo",
+              "mandatory": true
+            },
+            {
+              "doc": "id_proof",
+              "mandatory": true
+            },
+            {
+              "doc": "address_proof",
+              "mandatory": true
+            },
+            {
+              "doc": "dob_proof",
+              "mandatory": true
+            }
+          ],
+          "fields": [
+            {
+              "label_en": "Full Name",
+              "label_hi": "पूरा नाम",
+              "profile_key": "full_name",
+              "required": true
+            },
+            {
+              "label_en": "Relative's Name",
+              "label_hi": "रिश्तेदार का नाम",
+              "profile_key": "father_name",
+              "required": true
+            },
+            {
+              "label_en": "Date of Birth",
+              "label_hi": "जन्म तिथि",
+              "profile_key": "dob",
+              "required": true
+            },
+            {
+              "label_en": "Gender",
+              "label_hi": "लिंग",
+              "profile_key": "gender",
+              "required": true
+            },
+            {
+              "label_en": "Mobile Number",
+              "label_hi": "मोबाइल नंबर",
+              "profile_key": "mobile",
+              "required": true
+            },
+            {
+              "label_en": "Email ID",
+              "label_hi": "ईमेल आईडी",
+              "profile_key": "email",
+              "required": false
+            },
+            {
+              "label_en": "Address",
+              "label_hi": "पता",
+              "profile_key": "address_line",
+              "required": true
+            },
+            {
+              "label_en": "PIN Code",
+              "label_hi": "पिन कोड",
+              "profile_key": "pincode",
+              "required": true
+            },
+            {
+              "label_en": "State",
+              "label_hi": "राज्य",
+              "profile_key": "state",
+              "required": true
+            },
+            {
+              "label_en": "City / Constituency",
+              "label_hi": "शहर / विधानसभा",
+              "profile_key": "city",
+              "required": true
+            }
+          ],
+          "tips": [
+            "Upload a clear front-facing passport photograph with white background (< 2MB).",
+            "Save the Reference Form tracking number for real-time status updates."
+          ]
+        },
+        {
+          "id": "voter_blo_verification",
+          "portal": "ECI",
+          "form_name": "Booth Level Officer (BLO) Residence Check",
+          "title_en": "Booth Level Officer (BLO) physical verification",
+          "title_hi": "बीएलओ द्वारा निवास व पहचान सत्यापन",
+          "why_en": "Your local polling booth officer visits or contacts you to verify permanent residency in the constituency.",
+          "why_hi": "स्थानीय बीएलओ द्वारा पते और निवास की पुष्टि की जाती है।",
+          "url": "https://voters.eci.gov.in/",
+          "est_time_min": 10,
+          "fee_note_en": "Free",
+          "fee_note_hi": "निःशुल्क",
+          "depends_on": [
+            "voter_form6_submission"
+          ],
+          "docs_required": [
+            {
+              "doc": "address_proof",
+              "mandatory": true
+            },
+            {
+              "doc": "id_proof",
+              "mandatory": true
+            }
+          ],
+          "fields": [],
+          "tips": [
+            "Keep your original address proof (Aadhaar or electricity bill) ready during the BLO visit.",
+            "You can find your BLO's name and contact number on the Voter Portal under 'Know Your Polling Station'."
+          ]
+        },
+        {
+          "id": "voter_download_eepic",
+          "portal": "ECI",
+          "form_name": "Digital e-EPIC Download & Speed Post Delivery",
+          "title_en": "Download digital e-EPIC & track card delivery",
+          "title_hi": "डिजिटल ई-ईपीआईसी डाउनलोड करें व स्पीड पोस्ट से कार्ड प्राप्त करें",
+          "why_en": "Instant digitally signed PDF voter card valid for voting; physical color PVC card arrives via India Post.",
+          "why_hi": "मतदान के लिए वैध डिजिटल वोटर आईडी डाउनलोड करें; ओरिजिनल पीवीसी कार्ड डाक द्वारा घर आएगा।",
+          "url": "https://voters.eci.gov.in/download-epic",
+          "est_time_min": 5,
+          "fee_note_en": "Free (PVC card dispatched by Election Department)",
+          "fee_note_hi": "निःशुल्क पीवीसी कार्ड वितरण",
+          "depends_on": [
+            "voter_blo_verification"
+          ],
+          "docs_required": [],
+          "fields": [
+            {
+              "label_en": "Mobile Number",
+              "label_hi": "मोबाइल नंबर",
+              "profile_key": "mobile",
+              "required": true
+            }
+          ],
+          "tips": [
+            "Digital e-EPIC is equal in legal validity to the physical card for voter identification at polling booths.",
+            "Physical PVC card is delivered free via India Post Speed Post."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ayushman_card",
+      "name_en": "Ayushman Bharat Golden Card (PM-JAY)",
+      "name_hi": "आयुष्मान भारत कार्ड (₹5 लाख मुफ्त इलाज)",
+      "summary_en": "Check family SECC / ration eligibility on NHA Beneficiary Portal, complete Aadhaar e-KYC, and generate ₹5 Lakh cashless health cover card.",
+      "summary_hi": "एनएचए पोर्टल पर पात्रता जांचें, आधार ई-केवाईसी करें और ₹5 लाख तक के कैशलेस इलाज का आयुष्मान कार्ड बनाएं।",
+      "icon": "heartbeat",
+      "keywords": {
+        "en": [
+          "ayushman",
+          "ayushman card",
+          "pmjay",
+          "pm-jay",
+          "golden card",
+          "health card",
+          "5 lakh insurance",
+          "nha",
+          "abha",
+          "free hospital treatment",
+          "ayushman bharat"
+        ],
+        "hi": [
+          "आयुष्मान",
+          "आयुष्मान कार्ड",
+          "गोल्डन कार्ड",
+          "पीएमजेएवाई",
+          "मुफ्त इलाज",
+          "5 लाख स्वास्थ्य बीमा",
+          "आभा कार्ड",
+          "हेल्थ कार्ड"
+        ]
+      },
+      "steps": [
+        {
+          "id": "ayushman_eligibility_search",
+          "portal": "PMJAY",
+          "form_name": "Am I Eligible (SECC / Ration Card Search)",
+          "title_en": "Verify family health scheme eligibility",
+          "title_hi": "आयुष्मान योजना पात्रता व परिवार विवरण जांचें",
+          "why_en": "Checks whether your family is listed in SECC 2011 database or covered State NFSA Ration beneficiary registers.",
+          "why_hi": "जांचें कि क्या आपका नाम सामाजिक-आर्थिक जाति जनगणना (SECC) या राज्य राशन कार्ड सूची में शामिल है।",
+          "url": "https://beneficiary.nha.gov.in/",
+          "est_time_min": 5,
+          "fee_note_en": "Free",
+          "fee_note_hi": "निःशुल्क",
+          "depends_on": [],
+          "docs_required": [
+            {
+              "doc": "aadhaar",
+              "mandatory": true
+            },
+            {
+              "doc": "ration_card",
+              "mandatory": false
+            }
+          ],
+          "fields": [
+            {
+              "label_en": "State",
+              "label_hi": "राज्य",
+              "profile_key": "state",
+              "required": true
+            },
+            {
+              "label_en": "City / District",
+              "label_hi": "शहर / जिला",
+              "profile_key": "city",
+              "required": true
+            },
+            {
+              "label_en": "PIN Code",
+              "label_hi": "पिन कोड",
+              "profile_key": "pincode",
+              "required": true
+            },
+            {
+              "label_en": "Aadhaar / Ration Card No",
+              "label_hi": "आधार / राशन कार्ड नंबर",
+              "profile_key": "aadhaar",
+              "required": true
+            }
+          ],
+          "tips": [
+            "You can search by Aadhaar Number, Ration Card (Family ID), or Location (PM-JAY ID).",
+            "All members in an eligible ration card are automatically covered."
+          ]
+        },
+        {
+          "id": "ayushman_ekyc_verification",
+          "portal": "PMJAY",
+          "form_name": "Aadhaar Face / OTP / Fingerprint e-KYC",
+          "title_en": "Complete biometric or OTP e-KYC",
+          "title_hi": "आधार ई-केवाईसी व लाइव फोटो सत्यापन",
+          "why_en": "Authenticates identity and updates the latest live photograph for tamper-proof hospital authorization.",
+          "why_hi": "अस्पताल में कैशलेस क्लेम के लिए पहचान व फोटो का बायोमेट्रिक/ओटीपी मिलान।",
+          "url": "https://beneficiary.nha.gov.in/",
+          "est_time_min": 10,
+          "fee_note_en": "Free on portal / Ayushman App",
+          "fee_note_hi": "पोर्टल व आयुष्मान ऐप पर निःशुल्क",
+          "depends_on": [
+            "ayushman_eligibility_search"
+          ],
+          "docs_required": [
+            {
+              "doc": "aadhaar",
+              "mandatory": true
+            },
+            {
+              "doc": "ration_card",
+              "mandatory": false
+            }
+          ],
+          "fields": [
+            {
+              "label_en": "Full Name",
+              "label_hi": "पूरा नाम",
+              "profile_key": "full_name",
+              "required": true
+            },
+            {
+              "label_en": "Date of Birth",
+              "label_hi": "जन्म तिथि",
+              "profile_key": "dob",
+              "required": true
+            },
+            {
+              "label_en": "Gender",
+              "label_hi": "लिंग",
+              "profile_key": "gender",
+              "required": true
+            },
+            {
+              "label_en": "Mobile Number",
+              "label_hi": "मोबाइल नंबर",
+              "profile_key": "mobile",
+              "required": true
+            },
+            {
+              "label_en": "Aadhaar Number",
+              "label_hi": "आधार नंबर",
+              "profile_key": "aadhaar",
+              "required": true
+            },
+            {
+              "label_en": "Address",
+              "label_hi": "पता",
+              "profile_key": "address_line",
+              "required": true
+            },
+            {
+              "label_en": "PIN Code",
+              "label_hi": "पिन कोड",
+              "profile_key": "pincode",
+              "required": true
+            }
+          ],
+          "tips": [
+            "You can use the 'Ayushman App' with Aadhaar FaceRD for instant face-authentication on mobile.",
+            "Match score above 80% auto-approves the card instantly."
+          ]
+        },
+        {
+          "id": "ayushman_download_card",
+          "portal": "PMJAY",
+          "form_name": "Ayushman PVC Card / PDF Generation & ABHA Linking",
+          "title_en": "Download Ayushman Card & link ABHA Health ID",
+          "title_hi": "आयुष्मान कार्ड डाउनलोड करें व आभा हेल्थ आईडी लिंक करें",
+          "why_en": "Instant access to 29,000+ empaneled government and private hospitals across India for cashless medical treatments.",
+          "why_hi": "देशभर के 29,000+ अस्पतालों में ₹5 लाख तक के मुफ्त इलाज के लिए डिजिटल कार्ड डाउनलोड करें।",
+          "url": "https://beneficiary.nha.gov.in/",
+          "est_time_min": 5,
+          "fee_note_en": "Free digital download; free PVC card distributed via Asha worker / CSC",
+          "fee_note_hi": "डिजिटल डाउनलोड निःशुल्क",
+          "depends_on": [
+            "ayushman_ekyc_verification"
+          ],
+          "docs_required": [],
+          "fields": [
+            {
+              "label_en": "Mobile Number",
+              "label_hi": "मोबाइल नंबर",
+              "profile_key": "mobile",
+              "required": true
+            }
+          ],
+          "tips": [
+            "Present this Ayushman Card / PM-JAY ID at the 'Ayushman Mitra' desk in any empaneled hospital.",
+            "Covers pre-existing conditions, hospitalization, surgeries, and medicines up to ₹5,00,000 per family per year."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "birth_certificate",
+      "name_en": "Birth Certificate Registration",
+      "name_hi": "जन्म प्रमाणपत्र पंजीकरण",
+      "summary_en": "Register birth under Registration of Births and Deaths (RBD) Act via Civil Registration System (CRS), verify hospital slips, and obtain QR-verified digital certificate.",
+      "summary_hi": "सिविल रजिस्ट्रेशन सिस्टम (CRS) पर जन्म पंजीकरण करें, अस्पताल पर्ची सत्यापित कराएं और डिजिटल क्यूआर प्रमाणपत्र प्राप्त करें।",
+      "icon": "baby",
+      "keywords": {
+        "en": [
+          "birth",
+          "birth certificate",
+          "crs",
+          "crsorgi",
+          "newborn",
+          "janam praman patra",
+          "municipal birth certificate",
+          "nagar nigam birth",
+          "gram panchayat birth"
+        ],
+        "hi": [
+          "जन्म",
+          "जन्म प्रमाणपत्र",
+          "जन्म प्रमाण पत्र",
+          "नगर निगम जन्म प्रमाणपत्र",
+          "नवजात",
+          "सीआरएस",
+          "जन्म पंजीकरण",
+          "ग्राम पंचायत जन्म"
+        ]
+      },
+      "steps": [
+        {
+          "id": "birth_crs_reporting",
+          "portal": "CRS",
+          "form_name": "Form 1 (Birth Reporting & Registration)",
+          "title_en": "Submit Form 1 on Civil Registration System",
+          "title_hi": "सीआरएस पोर्टल पर जन्म सूचना (फॉर्म 1) भरें",
+          "why_en": "Reporting within 21 days of birth is statutory and free of penalty under the RBD Act.",
+          "why_hi": "जन्म के 21 दिनों के भीतर पंजीकरण कानूनी रूप से अनिवार्य और बिना किसी विलंब शुल्क के होता है।",
+          "url": "https://crsorgi.gov.in/web/index.php/auth/signUp",
+          "est_time_min": 15,
+          "fee_note_en": "Free within 21 days; nominal late fee applicable between 21–30 days",
+          "fee_note_hi": "21 दिन के भीतर निःशुल्क",
+          "depends_on": [],
+          "docs_required": [
+            {
+              "doc": "hospital_discharge_slip",
+              "mandatory": true
+            },
+            {
+              "doc": "aadhaar",
+              "mandatory": true
+            },
+            {
+              "doc": "marriage_certificate",
+              "mandatory": false
+            },
+            {
+              "doc": "address_proof",
+              "mandatory": true
+            }
+          ],
+          "fields": [
+            {
+              "label_en": "Child's Date of Birth",
+              "label_hi": "जन्म तिथि",
+              "profile_key": "dob",
+              "required": true
+            },
+            {
+              "label_en": "Child's Gender",
+              "label_hi": "लिंग",
+              "profile_key": "gender",
+              "required": true
+            },
+            {
+              "label_en": "Father's Full Name",
+              "label_hi": "पिता का पूरा नाम",
+              "profile_key": "father_name",
+              "required": true
+            },
+            {
+              "label_en": "Mother's Full Name",
+              "label_hi": "माता का पूरा नाम",
+              "profile_key": "full_name",
+              "required": true
+            },
+            {
+              "label_en": "Mobile Number",
+              "label_hi": "मोबाइल नंबर",
+              "profile_key": "mobile",
+              "required": true
+            },
+            {
+              "label_en": "Email ID",
+              "label_hi": "ईमेल आईडी",
+              "profile_key": "email",
+              "required": false
+            },
+            {
+              "label_en": "Permanent Address",
+              "label_hi": "स्थायी पता",
+              "profile_key": "address_line",
+              "required": true
+            },
+            {
+              "label_en": "PIN Code",
+              "label_hi": "पिन कोड",
+              "profile_key": "pincode",
+              "required": true
+            },
+            {
+              "label_en": "State",
+              "label_hi": "राज्य",
+              "profile_key": "state",
+              "required": true
+            },
+            {
+              "label_en": "City / Town",
+              "label_hi": "शहर / कस्बा",
+              "profile_key": "city",
+              "required": true
+            }
+          ],
+          "tips": [
+            "For hospital births, ensure the hospital has entered institutional discharge record in CRS.",
+            "Double check parent name spellings as per their Aadhaar cards before submission."
+          ]
+        },
+        {
+          "id": "birth_registrar_verification",
+          "portal": "CRS",
+          "form_name": "Verification by Registrar (Births & Deaths)",
+          "title_en": "Registrar & Nagar Nigam / Panchayat approval",
+          "title_hi": "रजिस्ट्रार / नगर निगम / ग्राम पंचायत सत्यापन",
+          "why_en": "Local Registrar of Births & Deaths reconciles hospital institutional registers with submitted parent documents.",
+          "why_hi": "अस्पताल के रिकॉर्ड और माता-पिता के पहचान पत्रों का मिलान कर स्वीकृति दी जाती है।",
+          "url": "https://crsorgi.gov.in/",
+          "est_time_min": 10,
+          "fee_note_en": "Free",
+          "fee_note_hi": "निःशुल्क",
+          "depends_on": [
+            "birth_crs_reporting"
+          ],
+          "docs_required": [
+            {
+              "doc": "hospital_discharge_slip",
+              "mandatory": true
+            },
+            {
+              "doc": "id_proof",
+              "mandatory": true
+            }
+          ],
+          "fields": [],
+          "tips": [
+            "Track approval status via the Application Reference Number generated on CRS.",
+            "If birth occurred at home, an affidavit or verification letter from the local Ward Parshad / Gram Pradhan is required."
+          ]
+        },
+        {
+          "id": "birth_download_certificate",
+          "portal": "CRS",
+          "form_name": "Digitally Signed Certificate Issuance (Form 5)",
+          "title_en": "Download QR-coded official birth certificate",
+          "title_hi": "डिजिटल हस्ताक्षरित जन्म प्रमाणपत्र डाउनलोड करें",
+          "why_en": "Official proof of age and identity required for school admission, passport, Aadhaar, and inheritance rights.",
+          "why_hi": "स्कूल प्रवेश, पासपोर्ट, आधार और नागरिक अधिकारों के लिए आवश्यक आधिकारिक जन्म प्रमाणपत्र।",
+          "url": "https://crsorgi.gov.in/",
+          "est_time_min": 5,
+          "fee_note_en": "First copy is free; ₹5 to ₹10 for additional certified copies",
+          "fee_note_hi": "प्रथम डिजिटल प्रति निःशुल्क",
+          "depends_on": [
+            "birth_registrar_verification"
+          ],
+          "docs_required": [],
+          "fields": [
+            {
+              "label_en": "Mobile Number",
+              "label_hi": "मोबाइल नंबर",
+              "profile_key": "mobile",
+              "required": true
+            }
+          ],
+          "tips": [
+            "The certificate carries a verifiable cryptographic QR code and digital seal from the Registrar.",
+            "Save digital copy to DigiLocker for instant lifetime government verification."
           ]
         }
       ]
