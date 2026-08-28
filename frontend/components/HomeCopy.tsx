@@ -18,32 +18,25 @@ export function HomeCopy() {
   const { lang } = useApp();
   return (
     <div className="relative">
-      {/* Tiranga Micro-Accent Trim */}
-      <div className="flex items-center gap-2 mb-3">
-        <div className="h-1.5 w-16 rounded-full bg-gradient-to-r from-[#FF9933] via-white to-[#138808] border border-line/40 shadow-xs" />
+      {/* Subtle India Stack Pill */}
+      <div className="flex items-center gap-2 mb-3 sm:mb-4">
+        <div className="h-1.5 w-12 rounded-full bg-gradient-to-r from-[#FF9933] via-white to-[#138808] border border-line/40 shadow-xs" />
         <span className="inline-flex items-center gap-1.5 rounded-full bg-surface border border-line px-2.5 py-0.5 font-mono text-[10px] font-semibold text-ink shadow-2xs">
           <span className="relative flex h-1.5 w-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-leaf opacity-75" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-leaf" />
           </span>
-          INDIA STACK · DPI ENGINE
-        </span>
-        <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint hidden sm:inline">
-          12 GOVT APIS CONNECTED
+          INDIA STACK · DPI COPILOT
         </span>
       </div>
 
-      <p className="rise font-mono text-[11px] uppercase tracking-[0.2em] text-saffron-deep font-bold">
-        {t(lang, "hero.eyebrow")}
-      </p>
       <h1
-        className="rise mt-2.5 sm:mt-3 w-full text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] font-bold sm:font-semibold leading-[1.12] tracking-tight text-ink break-words"
+        className="rise w-full text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-bold sm:font-semibold leading-[1.12] tracking-tight text-ink break-words"
         style={{ animationDelay: "60ms" }}
       >
         {t(lang, "hero.h1a")}{" "}
-        <span className="relative inline-block text-saffron-deep">
+        <span className="text-saffron-deep">
           {t(lang, "hero.h1b")}
-          <span className="absolute -bottom-0.5 left-0 right-0 h-1 bg-gradient-to-r from-saffron/80 via-saffron/40 to-leaf/80 rounded-full" />
         </span>
       </h1>
       <p
@@ -52,20 +45,6 @@ export function HomeCopy() {
       >
         {t(lang, "hero.sub")}
       </p>
-
-      {/* Live DPI Network Connectors Strip */}
-      <div className="mt-3.5 flex flex-wrap items-center gap-1.5 font-mono text-[10px] text-faint">
-        <span className="text-muted font-semibold mr-1">Direct Gateways:</span>
-        {["UIDAI", "GSTN", "MoRTH", "Passport Seva", "DigiLocker", "PM-JAY"].map((gw) => (
-          <span
-            key={gw}
-            className="inline-flex items-center gap-1 rounded-md bg-surface border border-line px-2 py-0.5 hover:border-saffron/40 hover:text-ink transition-colors"
-          >
-            <span className="h-1 w-1 rounded-full bg-leaf" />
-            {gw}
-          </span>
-        ))}
-      </div>
     </div>
   );
 }
