@@ -25,12 +25,46 @@ const LABEL_CLS: Record<PortalHealth, string> = {
   down: "text-alert",
 };
 
+const DEFAULT_PORTALS: Pick<PortalStatus, "portal_id" | "name_en" | "name_hi" | "short" | "url">[] = [
+  { portal_id: "MCA", name_en: "Ministry of Corporate Affairs", name_hi: "कॉर्पोरेट कार्य मंत्रालय", short: "MCA", url: "https://www.mca.gov.in/content/mca/global/en/home.html" },
+  { portal_id: "GST", name_en: "GST Portal", name_hi: "जीएसटी पोर्टल", short: "GST", url: "https://www.gst.gov.in/" },
+  { portal_id: "EPFO", name_en: "EPFO", name_hi: "ईपीएफओ", short: "EPFO", url: "https://unifiedportal-emp.epfindia.gov.in/epfo/" },
+  { portal_id: "FSSAI", name_en: "FSSAI", name_hi: "एफएसएसएआई", short: "FSSAI", url: "https://foscos.fssai.gov.in/" },
+  { portal_id: "MSME", name_en: "Udyam (MSME)", name_hi: "उद्यम (एमएसएमई)", short: "Udyam", url: "https://udyamregistration.gov.in/" },
+  { portal_id: "SHRAM", name_en: "Shram Suvidha", name_hi: "श्रम सुविधा", short: "Shram", url: "https://shramsuvidha.gov.in/home" },
+  { portal_id: "VAHAN", name_en: "Parivahan (VAHAN)", name_hi: "परिवहन (वाहन)", short: "Vahan", url: "https://vahan.parivahan.gov.in/vahanservice/" },
+  { portal_id: "SARATHI", name_en: "Parivahan (Sarathi)", name_hi: "परिवहन (सारथी)", short: "Sarathi", url: "https://sarathi.parivahan.gov.in/sarathiservice/stateSelection.do" },
+  { portal_id: "IT", name_en: "Income Tax e-Filing", name_hi: "आयकर ई-फाइलिंग", short: "IT", url: "https://eportal.incometax.gov.in/iec/foservices/#/login" },
+  { portal_id: "CPGRAMS", name_en: "CPGRAMS", name_hi: "सीपीग्राम", short: "CPGRAMS", url: "https://pgportal.gov.in/Signin" },
+  { portal_id: "RTI", name_en: "RTI Online", name_hi: "आरटीआई ऑनलाइन", short: "RTI", url: "https://rtionline.gov.in/index.php" },
+  { portal_id: "PASSPORT", name_en: "Passport Seva", name_hi: "पासपोर्ट सेवा", short: "Passport", url: "https://www.passportindia.gov.in/psp/" },
+  { portal_id: "NETC", name_en: "NETC FASTag", name_hi: "एनईटीसी फास्टैग", short: "FASTag", url: "https://ihmcl.co.in/fastag-user/" },
+  { portal_id: "IRDAI", name_en: "Insurance (IRDAI)", name_hi: "बीमा (इरडा)", short: "Insurance", url: "https://bimabharosa.irdai.gov.in/" },
+  { portal_id: "UIDAI", name_en: "Unique Identification Authority of India (UIDAI)", name_hi: "भारतीय विशिष्ट पहचान प्राधिकरण (यूआईडीएआई)", short: "UIDAI", url: "https://myaadhaar.uidai.gov.in/" },
+  { portal_id: "NSDL", name_en: "Protean TIN-PAN (NSDL)", name_hi: "प्रोटीन टिन-पैन (एनएसडीएल)", short: "NSDL", url: "https://www.protean-tinpan.com/" },
+  { portal_id: "NFSA", name_en: "National Food Security Portal (NFSA)", name_hi: "राष्ट्रीय खाद्य सुरक्षा पोर्टल (एनएफएसए)", short: "NFSA", url: "https://nfsa.gov.in/" },
+  { portal_id: "ECI", name_en: "Election Commission of India (Voters Portal)", name_hi: "भारत निर्वाचन आयोग (मतदाता सेवा पोर्टल)", short: "Voters (ECI)", url: "https://voters.eci.gov.in/" },
+  { portal_id: "PMJAY", name_en: "National Health Authority (Ayushman PM-JAY)", name_hi: "राष्ट्रीय स्वास्थ्य प्राधिकरण (आयुष्मान भारत)", short: "PM-JAY", url: "https://beneficiary.nha.gov.in/" },
+  { portal_id: "CRS", name_en: "Civil Registration System (ORGI)", name_hi: "सिविल रजिस्ट्रेशन सिस्टम (जन्म एवं मृत्यु)", short: "CRS", url: "https://crsorgi.gov.in/" },
+];
+
+function defaultStatuses(): PortalStatus[] {
+  return DEFAULT_PORTALS.map((p) => ({
+    ...p,
+    status: "up" as PortalHealth,
+    avg_latency_ms: 0,
+    checked_at: "",
+  }));
+}
+
 export function StatusBoard({ compact = false }: { compact?: boolean }) {
   const { lang, announce } = useApp();
-  const [statuses, setStatuses] = useState<PortalStatus[] | null>(null);
+  const [statuses, setStatuses] = useState<PortalStatus[]>(defaultStatuses);
+  const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const forceRef = useRef(false);
+  const hasDataRef = useRef(false);
 
   useEffect(() => {
     let alive = true;
@@ -42,11 +76,13 @@ export function StatusBoard({ compact = false }: { compact?: boolean }) {
         .then((data) => {
           if (alive) {
             setStatuses(data.portals);
+            setLoaded(true);
+            hasDataRef.current = true;
             setError(false);
           }
         })
         .catch(() => {
-          if (alive) setError(true);
+          if (alive && !hasDataRef.current) setError(true);
         });
     };
     load(forceRef.current);
@@ -104,23 +140,7 @@ export function StatusBoard({ compact = false }: { compact?: boolean }) {
         </div>
       )}
 
-      {!error && statuses === null && (
-        <ul className="divide-y divide-line/70" aria-hidden>
-          {Array.from({ length: compact ? 8 : 14 }).map((_, i) => (
-            <li key={i} className="flex items-center gap-3 px-4 py-2">
-              <span className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-line" />
-              <span
-                className="h-3 flex-1 animate-pulse rounded bg-line"
-                style={{ maxWidth: `${45 + ((i * 13) % 40)}%` }}
-              />
-              <span className="h-3 w-10 shrink-0 animate-pulse rounded bg-line" />
-              <span className="h-3 w-12 shrink-0 animate-pulse rounded bg-line" />
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {!error && statuses !== null && (
+      {!error && (
         <ul className="divide-y divide-line/70">
           {statuses.slice(0, compact ? 8 : statuses.length).map((p) => {
             const portalName = lang === "hi" ? p.name_hi : p.name_en;
@@ -146,15 +166,21 @@ export function StatusBoard({ compact = false }: { compact?: boolean }) {
                     className="shrink-0 text-transparent transition-colors group-hover:text-faint"
                   />
                 </a>
-                <span className="hidden w-14 shrink-0 text-right font-mono text-[11px] text-faint sm:block">
-                  {p.avg_latency_ms}ms
+                <span
+                  className={`hidden w-14 shrink-0 text-right font-mono text-[11px] sm:block ${
+                    loaded ? "text-faint" : "text-line"
+                  }`}
+                >
+                  {loaded ? `${p.avg_latency_ms}ms` : "—"}
                 </span>
                 <span
                   className={`shrink-0 text-right font-mono text-[11px] font-medium ${
-                    LABEL_CLS[p.status]
+                    loaded
+                      ? LABEL_CLS[p.status]
+                      : "text-line"
                   }`}
                 >
-                  {t(lang, LABEL_KEY[p.status])}
+                  {loaded ? t(lang, LABEL_KEY[p.status]) : t(lang, "status.checking")}
                 </span>
               </li>
             );
