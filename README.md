@@ -1,114 +1,181 @@
 # SarkariScript
 
-**AI-powered government form navigator & auto-filler for Indian citizens.**
-Type your goal in Hindi, English or Hinglish — get a dependency-mapped roadmap
-across every portal involved, with forms pre-filled from a citizen profile you
-enter once. Built for the "Build What Moves India" theme.
+**AI-powered government paperwork copilot & auto-filler for Indian citizens.**  
+Type or speak your goal in Hindi, English, Hinglish, or 7 regional languages — get a dependency-mapped roadmap across every government portal involved, with forms pre-filled from a citizen profile you enter once. Built for the *"Build What Moves India"* theme.
 
-## What it does
+---
 
-| Feature | Where |
-|---|---|
-| Intent parser (Hindi / Hinglish / English → life event + city + conditions) | `backend/services/intent.py` — Gemini when `GEMINI_API_KEY` is set, deterministic on-device keyword engine otherwise |
-| Knowledge base: 6 life events, 26 steps, 14 portals, real deep links | `backend/kb/knowledge_base.json` |
-| Dependency-aware roadmap (topological DAG, conditional steps) | `/roadmap/[eventId]` |
-| Smart form pre-filler ("fill once") | Citizen profile in browser storage, pre-fill badges per form field |
-| Document checklist with upload-once reuse tracking | Step detail panels |
-| Portal health monitor | Home page right rail |
-| Complaint → RTI escalation pipeline (Sec 6(1) draft generator) | `/rti` |
+## ✨ What It Does
 
-Life events today: **Start a Business · Buy a Vehicle · Driving Licence · File ITR · File a Grievance · Fresh Passport**.
-Adding a new journey = one JSON entry, no code changes.
+| Feature | Description | Where |
+|---|---|---|
+| **Multilingual Intent Parser** | Parses goals in Hindi, Hinglish, English, or regional languages into structured life events, location, and conditional dependencies. | `backend/services/intent.py` — Gemini 2.0 Flash when `GEMINI_API_KEY` is set; deterministic on-device keyword engine otherwise |
+| **Dependency-Mapped Roadmaps** | Interactive Directed Acyclic Graph (DAG) with prerequisites, turnaround times, and fee breakdowns. | `/roadmap/[eventId]` |
+| **"Fill Once, Use Everywhere" Profile** | Pre-fills repetitive fields (PAN, Aadhaar, DOB, address, parent names) across multiple portals from a single local citizen profile. | `/profile` + Step Detail Accordions |
+| **Document Checklist & Reuse Tracker** | Tracks shared documents (e.g. Aadhaar, Address Proof) across multiple steps with upload-once counters. | Step detail panels + PDF export |
+| **Printable PDF Roadmap Generator** | Generates official, clean printable documents with offline checklists, pre-filled field summaries, portal links, and a physical application tracking log. | `/roadmap/[eventId]` → **"Print / PDF Roadmap"** |
+| **Voice & Speech Copilot (Alt+V)** | Speak your goal directly in any language. Dual-engine: Native Web Speech API with automatic local Whisper STT fallback. | Global search bar + `/rti` |
+| **Audio Reader (Text-to-Speech)** | Listen to roadmaps and step-by-step instructions read aloud in regional voices. | Top action bar on roadmap views |
+| **Accessibility Suite (Alt+A)** | Full accessibility toolbar: 3 font scaling levels (100%, 115%, 130%), high-contrast themes (Natural, Light+, Dark+), OpenDyslexic mode, and screen-reader announcements. | Header Accessibility Eye button |
+| **Live Portal Health Monitor** | Real-time HTTP uptime pings and latency metrics across all 14 government portals, cached for 5 min. | Home page status board |
+| **Grievance → RTI Escalation Engine** | Transforms delayed CPGRAMS / grievance reference numbers into formal Section 6(1) Right to Information (RTI) applications. | `/rti` |
 
-## Architecture
+### Supported Life Events Today
+1. **Start a Business** (MSME Udyam, GST REG-01, FSSAI Food Licence, Shop & Establishment)
+2. **Buy a Vehicle** (Parivahan Vahan, Road Tax, HSRP, Fastag)
+3. **Driving Licence** (Sarathi Learner Licence, Driving Slot, Permanent DL)
+4. **File Income Tax Return (ITR)** (AIS/TIS, e-Filing Portal, e-Verification)
+5. **File a Grievance** (CPGRAMS Central Portal, State Grievance Portals)
+6. **Fresh Passport Application** (Passport Seva, Document Advisory, Appointment Booking)
 
+> Adding a new government journey requires **only one JSON entry** in `backend/kb/knowledge_base.json` — zero code changes.
+
+---
+
+## 🌐 8 Supported Indian Languages
+
+SarkariScript is fully localized across 8 Indian languages:
+- **English**
+- **हिन्दी** (Hindi)
+- **বাংলা** (Bengali)
+- **मराठी** (Marathi)
+- **தமிழ்** (Tamil)
+- **తెలుగు** (Telugu)
+- **ગુજરાતી** (Gujarati)
+- **ಕನ್ನಡ** (Kannada)
+
+Switch languages instantly using the language selector (`🌐 EN ▾`) in the navigation bar.
+
+---
+
+## 🎙️ Cross-Browser Voice & Speech-to-Text Architecture
+
+SarkariScript features a resilient **dual-engine voice architecture**:
+
+1. **Native Web Speech API**: Uses browser-native speech recognition for zero-latency streaming on supported browsers (Chrome, Edge, Safari).
+2. **Offline Local Whisper Fallback**: If native Web Speech is blocked (e.g. Brave browser, mobile browsers without speech services, or offline environments), the frontend seamlessly streams recorded audio to `POST /api/stt/transcribe`.
+3. **Backend faster-whisper Engine**: Runs a local, private [faster-whisper](https://github.com/SYSTRAN/faster-whisper) `base` model (~75 MB) on the server — 100% private, no external APIs or keys required.
+
+### STT Configuration (Optional Environment Variables)
+| Variable | Default | Purpose |
+|---|---|---|
+| `SARKARISCRIPT_STT_MODEL` | `base` | Whisper model size (`tiny`, `base`, `small`) |
+| `SARKARISCRIPT_STT_DEVICE` | `auto` | Execution device (`cpu`, `cuda`, or `auto`) |
+| `SARKARISCRIPT_STT_COMPUTE` | `auto` | Compute precision type (`int8`, `float32`, `auto`) |
+| `SARKARISCRIPT_STT_MODEL_DIR` | `~/.cache/huggingface/hub` | Cache directory for downloaded Whisper models |
+
+---
+
+## 📄 Printable PDF Roadmap Generator
+
+The **Print / PDF Roadmap** feature transforms any interactive roadmap into a structured, multi-page printable document designed for offline use:
+- **Official Print Header**: Timestamp, applicant name, state/city, estimated total time, and step summary.
+- **Master Document Checklist**: Pre-flight checklist with printable `[ ]` checkmarks to verify physical photocopies before visiting offices.
+- **Step-by-Step Execution Guide**: Official portal URLs, fees, pre-filled form fields, and filing tips.
+- **Physical Application Tracking Log**: Printable table to record application reference numbers, submission dates, acknowledgment slips, officer contacts, and follow-up notes.
+
+---
+
+## ♿ Accessibility & Universal Design (WCAG 2.2 AA)
+
+Built from the ground up to be accessible for every citizen:
+- **Font Scaling (`A`, `A+`, `A++`)**: 100%, 115%, and 130% scaling, engineered with fluid wraps for ultra-small mobile screens (e.g. iPhone SE 320px).
+- **High-Contrast Themes**:
+  - `Natural`: Warm paper tones for balanced reading.
+  - `Light+`: High-contrast pure white background with dark black borders.
+  - `Dark+`: Deep OLED black (`#000000`) for high contrast in low light.
+- **High-Legibility / Dyslexia-Friendly Mode**: Enhanced letter spacing and dyslexia-friendly font styling.
+- **Screen Reader Announcements**: Non-visual live notifications for step toggles, voice states, and route transitions.
+- **Keyboard Shortcuts**:
+  - `Alt + V`: Toggle voice search dictation
+  - `Alt + A`: Open accessibility preferences modal
+  - `Alt + H`: Quick navigation home
+  - `Esc`: Close open modal/drawer
+
+---
+
+## 🔒 Privacy First
+
+- **Zero Cloud Storage for Personal Data**: Citizen profile data, uploaded document checklist states, and roadmap progress (`sarkariscript:v2`) are stored **exclusively in your browser's local storage**.
+- No personal Aadhaar, PAN, or profile data is stored on backend databases.
+
+---
+
+## 🚀 Quickstart & Installation
+
+### Option 1: One-Command Start (Recommended)
+
+Run the included automated launch script from the project root:
+
+```bash
+./start.sh
 ```
-frontend/  Next.js 16 (App Router, Tailwind v4, Phosphor icons)
-backend/   Python FastAPI + httpx (Gemini REST), JSON knowledge base
-```
 
-The citizen profile, uploaded-document state and step progress live only in the
-browser's localStorage — nothing personal leaves the device except fields you
-explicitly submit to the demo API.
+This script automatically:
+1. Frees ports `8000` and `3000` if previously occupied.
+2. Creates and activates the backend Python virtual environment (`backend/.venv`).
+3. Installs backend dependencies and preloads the Whisper STT model.
+4. Installs frontend dependencies and builds the Next.js app.
+5. Launches both services in detached sessions with health validation:
+   - **Frontend Web**: [http://localhost:3000](http://localhost:3000)
+   - **Backend API & Swagger Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
 
-## Run it
+---
 
-Backend (Python 3.12):
+### Option 2: Manual Setup
 
+#### 1. Backend (Python 3.12+ / 3.14)
 ```bash
 cd backend
 python3 -m venv .venv
-./.venv/bin/pip install -r requirements.txt
-./.venv/bin/uvicorn main:app --port 8000
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# Optional: Add Gemini API key for advanced natural language understanding
+cp .env.example .env # Add GEMINI_API_KEY=your_key
+
+uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
-Optional — enable Gemini intent parsing:
-
-```bash
-cp backend/.env.example backend/.env   # add GEMINI_API_KEY=...
-# then: GEMINI_API_KEY=... uvicorn main:app --port 8000
-```
-
-Without a key the rule-based parser handles Hindi/Hinglish/English offline —
-demos never break on venue Wi-Fi.
-
-Frontend (Node 20+):
-
+#### 2. Frontend (Node.js 20+)
 ```bash
 cd frontend
 npm install
-npm run dev        # http://localhost:3000
+npm run dev # Starts development server at http://localhost:3000
 ```
 
-Set `NEXT_PUBLIC_API_URL` if the backend runs elsewhere.
+---
 
-## 2-minute demo script
+## 📡 API Reference
 
-1. Type *"Mujhe Lucknow mein kirana dukaan kholni hai"* → roadmap appears:
-   Shram Suvidha → Udyam → GST REG-01 → FSSAI (food condition auto-detected;
-   EPFO/MCA correctly excluded).
-2. Open *My details*, fill name/PAN/Aadhaar once, return to the roadmap —
-   GST fields show green "pre-filled" chips; only unique fields remain manual.
-3. Tick a document once (e.g. Aadhaar) — it flips to uploaded in every step
-   that needs it ("reused across forms" summary under the header).
-4. Portal status board shows live uptime (real HTTP pings + response time,
-   refreshed every 5 min) for all 14 portals.
-5. Go to *RTI tool*: paste a CPGRAMS number pending 45 days → one click
-   generates a print-ready Section 6(1) application.
-
-## API
-
-| Method | Path | Purpose |
+| Method | Endpoint | Description |
 |---|---|---|
-| GET | `/api/health` | liveness |
-| GET | `/api/life-events[/{id}]` | knowledge base listing |
-| POST | `/api/navigate` | `{query}` → intent + ordered roadmap |
-| GET | `/api/portals/status` | live uptime board (real HTTP pings + response time, refreshed every 5 min) |
-| POST | `/api/rti/draft` | complaint details → RTI letter |
-| GET | `/api/stt/config` | whether the local speech-to-text engine is available |
-| POST | `/api/stt/transcribe` | audio upload (webm/mp4/ogg) → text (multipart: `audio`, `language`) |
+| `GET` | `/api/health` | Service health status check |
+| `GET` | `/api/life-events` | Retrieve full list of available life journeys |
+| `GET` | `/api/life-events/{id}` | Retrieve specific life event and its DAG step dependencies |
+| `POST` | `/api/navigate` | Parse natural language intent `{ query: string }` and return ordered roadmap |
+| `GET` | `/api/portals/status` | Live HTTP uptime status and latency across government portals |
+| `POST` | `/api/rti/draft` | Generate a formatted Section 6(1) RTI application letter |
+| `GET` | `/api/stt/config` | Check local Whisper speech-to-text engine availability |
+| `POST` | `/api/stt/transcribe` | Transcribe multipart audio payload (`audio`, `language`) using local Whisper |
 
-### Speech-to-text fallback
+---
 
-When the browser's native Web Speech API is unavailable or blocked (e.g.
-Brave), the frontend records audio with `MediaRecorder` and sends it to
-`POST /api/stt/transcribe`, which runs **local** [faster-whisper](https://github.com/SYSTRAN/faster-whisper)
-— fully offline, no API key. The Whisper `base` model (~75 MB) is downloaded
-from Hugging Face on first request.
+## 🎬 2-Minute Demo Script
 
-Configure it with environment variables (optional):
+1. **Voice or Text Search**:
+   - Type or speak (press `Alt+V`): *"Mujhe Lucknow mein grocery store kholna hai"*.
+   - SarkariScript parses your intent, selects the **Start a Business** journey, pre-selects the **Food Business (FSSAI)** condition, and generates a tailored 4-step roadmap.
+2. **Fill Once, Use Everywhere**:
+   - Open **Citizen Profile** (`/profile`), enter your basic details once (Name, DOB, PAN, Aadhaar).
+   - Return to the roadmap — form fields now display green **Pre-filled** badges with zero re-typing required.
+3. **Document Checklist**:
+   - Check off **Aadhaar Card** once in Step 1 — notice it automatically marks completed in every subsequent step that requires it, with the reusable docs counter updating in real time.
+4. **Printable PDF Roadmap**:
+   - Click **"Print / PDF Roadmap"** (or `Ctrl+P`) — preview the print-formatted document with offline checklists, portal links, and the physical application verification table.
+5. **RTI Escalation**:
+   - Go to **RTI Drafter** (`/rti`), enter an overdue grievance registration number (e.g. `PMOPG/E/2026/0123456`) pending 45 days, and click **Generate RTI Application** to obtain a ready-to-file Section 6(1) letter.
 
-| Variable | Default | Purpose |
-|---|---|---|
-| `SARKARISCRIPT_STT_MODEL` | `base` | Whisper model size (e.g. `tiny`, `base`, `small`) |
-| `SARKARISCRIPT_STT_DEVICE` | `auto` | `cpu`, `cuda`, or `auto` |
-| `SARKARISCRIPT_STT_COMPUTE` | `auto` | compute type override |
-| `SARKARISCRIPT_STT_MODEL_DIR` | `~/.cache/huggingface/hub` | where the model is stored |
+---
 
-Speech-to-text (and live portal checks) depend on the environment that runs the
-backend: the speech model caches on disk, and portal checks are cached in
-process for 5 minutes.
-
-> Disclaimer: demo/hackathon project. Not affiliated with the Government of
-> India. Links point to official portals; always verify documents on the
-> portal itself.
+> **Disclaimer**: This is an open-source civic technology project built for demonstration and hackathon purposes. SarkariScript is not affiliated with or endorsed by the Government of India. External portal links point to official government URLs; citizens should always verify requirements directly on the respective portals.
