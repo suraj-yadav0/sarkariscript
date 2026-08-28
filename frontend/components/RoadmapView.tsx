@@ -27,6 +27,7 @@ import { apiGet, apiPost } from "@/lib/api";
 import { t } from "@/lib/i18n";
 import { useApp } from "@/lib/store";
 import { DigiLockerModal } from "@/components/DigiLockerModal";
+import { CostTimelineTracker } from "@/components/CostTimelineTracker";
 import { isStepReady, topoSortSteps } from "@/lib/dag";
 import { useSpeechSynthesis } from "@/lib/useSpeechSynthesis";
 import type { Lang, LifeEventMeta, RoadmapResponse, Step } from "@/lib/types";
@@ -458,6 +459,16 @@ export function RoadmapView({ eventId }: { eventId: string }) {
               </div>
             </div>
           )}
+        </div>
+
+        {/* Financial & Statutory Turnaround Timeline Tracker */}
+        <div className="mt-4 sm:mt-5">
+          <CostTimelineTracker
+            eventId={roadmap.event.id}
+            eventName={eventName}
+            steps={visibleSteps}
+            lang={lang}
+          />
         </div>
       </header>
 

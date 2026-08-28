@@ -14,6 +14,7 @@ Type or speak your goal in Hindi, English, Hinglish, or 7 regional languages —
 | **"Fill Once, Use Everywhere" Profile** | Pre-fills repetitive fields (PAN, Aadhaar, DOB, address, parent names) across multiple portals from a single local citizen profile. | `/profile` + Step Detail Accordions |
 | **DigiLocker Integration (India Stack)** | 1-Click sync of authentic issued records (Aadhaar, PAN, Class X, Ration Card) to auto-fill profile and verify document checklists. | `/profile` + Roadmap Checklists |
 | **Document Checklist & Reuse Tracker** | Tracks shared documents (e.g. Aadhaar, Address Proof) across multiple steps with upload-once counters. | Step detail panels + PDF export |
+| **Financial & SLA Turnaround Calculator** | Computes exact statutory government fees, working-day turnaround SLAs, anti-broker savings estimates, and itemized payment breakdowns. | `/roadmap/[eventId]` Top Dashboard |
 | **Printable PDF Roadmap Generator** | Generates official, clean printable documents with offline checklists, pre-filled field summaries, portal links, and a physical application tracking log. | `/roadmap/[eventId]` → **"Print / PDF Roadmap"** |
 | **Voice & Speech Copilot (Alt+V)** | Speak your goal directly in any language. Dual-engine: Native Web Speech API with automatic local Whisper STT fallback. | Global search bar + `/rti` |
 | **Audio Reader (Text-to-Speech)** | Listen to roadmaps and step-by-step instructions read aloud in regional voices. | Top action bar on roadmap views |
