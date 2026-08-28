@@ -3,7 +3,6 @@ import { PromptBox } from "@/components/PromptBox";
 import { EventsGrid } from "@/components/EventsGrid";
 import {
   HomeCopy,
-  DemoPersonaQuickBar,
   EventsGridTitle,
   HowItWorksBlock,
 } from "@/components/HomeCopy";
@@ -25,8 +24,7 @@ export default function HomePage() {
         </aside>
       </section>
 
-      <section className="border-t border-line py-12">
-        <DemoPersonaQuickBar />
+      <section className="border-t border-line py-14">
         <EventsGridTitle />
         <EventsGrid />
       </section>
