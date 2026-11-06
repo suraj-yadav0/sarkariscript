@@ -1,7 +1,7 @@
 # SarkariScript
 
 **AI-powered government paperwork copilot and auto-filler for Indian citizens.**  
-Type or speak your goal in Hindi, English, Hinglish, or 7 regional languages — get a dependency-mapped roadmap across every government portal involved, with forms pre-filled from a citizen profile you enter once. Built for the *"Build What Moves India"* theme.
+Type or speak your goal in Hindi, English, Hinglish, or 7 regional languages — get a dependency-mapped roadmap across every government portal involved, with forms pre-filled from a citizen profile you enter once. Built for the *"Build What Moves India"* .
 
 ---
 
